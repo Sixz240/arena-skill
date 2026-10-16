@@ -10,7 +10,11 @@ Placar; relógio; tempo de jogo ajustável,partida,must,yes,no,
 Pausa com substituições e troca de tática,partida,must,yes,no,
 Estatísticas de fim de jogo,partida,should,yes,no,
 Dificuldade da IA,partida,should,yes,no,
-Câmera 3D e jogadores 3D,partida,could,yes,no,reescopo: 2D de cima
+Partida em 3D com estádio e câmera de TV,partida,must,yes,no,3D estilizado (low-poly); não realista
+Jogadores 3D animados (correr; passar; chutar; carrinho; cabeceio; goleiro),partida,must,yes,no,animações de licença livre ou próprias
+Uniformes aplicados como textura nos modelos 3D,visual,must,yes,no,
+Replay dos gols,partida,could,yes,no,
+Desempenho 30+ fps em celular médio,plataforma,must,no,no,
 Narração,partida,could,yes,no,original licenciado; clone só com sons próprios
 Modo Amistoso,modos,must,yes,no,
 Modo Campeonato/Liga com tabela e simulação de rodadas,modos,must,yes,no,

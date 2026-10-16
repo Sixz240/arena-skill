@@ -1,6 +1,6 @@
 # Recon map: FIFA 14 mobile (Android)
 
-Scope: jogo de futebol para Android inspirado no FIFA 14 mobile. Partida com controle por toque, mais os modos Amistoso, Campeonato/Liga, Copa mata-mata e Carreira. Times: Brasileirão Série A, as 5 grandes ligas europeias, seleções e clubes sul-americanos. Escudos e cores de uniforme atuais. Nomes reais dos jogadores.
+Scope: jogo de futebol **3D** para Android inspirado no FIFA 14 mobile. Partida em 3D com câmera de TV e controle por toque, mais os modos Amistoso, Campeonato/Liga, Copa mata-mata e Carreira. Times: Brasileirão Série A, as 5 grandes ligas europeias, seleções e clubes sul-americanos. Escudos e cores de uniforme atuais. Nomes reais dos jogadores.
 For: uso pessoal do usuário (não publicar nem vender; ver "Out of scope").
 Date: 2026-10-16
 
@@ -33,7 +33,7 @@ Escolher um time e jogar uma partida de futebol controlando os jogadores pelo to
 | S03 | Escolha de times | Amistoso / Copa / Carreira | escolher time da casa e visitante | filtro por liga, grade de escudos, estrelas de força | lista, busca vazia |
 | S04 | Escalação e tática | antes da partida e em pausa | titulares, reservas, formação | campo com 11 jogadores, lista do elenco, seletor de formação (4-4-2, 4-3-3...) | padrão, jogador lesionado/suspenso (carreira) |
 | S05 | Escolha de uniforme | antes da partida | uniforme 1 ou 2, evitar cores iguais | prévia das camisas | conflito de cores |
-| S06 | Partida | depois de S03-S05 | jogar | campo, jogadores, bola, placar, relógio, minimapa, botões (modo clássico) | 1º/2º tempo, prorrogação, pênaltis, pausado |
+| S06 | Partida (3D) | depois de S03-S05 | jogar | estádio e campo 3D, jogadores 3D animados, bola, câmera de TV, placar, relógio, minimapa, botões (modo clássico) | 1º/2º tempo, prorrogação, pênaltis, pausado |
 | S07 | Pausa | botão de pausa em S06 | substituições, tática, sair | menu sobreposto | padrão |
 | S08 | Fim de jogo / estatísticas | apito final | resultado | placar, gols, posse, chutes, cartões, melhor jogador | vitória, empate, derrota |
 | S09 | Campeonato: tabela | modo Liga | acompanhar temporada | tabela de classificação, próxima rodada, artilharia | início, meio, campeão |
@@ -133,7 +133,7 @@ Relationships: League 1-n Team, Team 1-n Player, Competition n-n Team, Competiti
 
 ## Feature matrix
 
-See `features.csv`. Must: 23, should: 10, could: 4, skip: 7. Três linhas (Brasileirão, editor, APK 64 bits) não estavam no original e não contam na nota de paridade.
+See `features.csv`. Must: 27, should: 10, could: 4, skip: 7. Quatro linhas (Brasileirão, editor, APK 64 bits, desempenho) não estavam no original e não contam na nota de paridade.
 
 ## Out of scope (cannot or should not be cloned)
 
@@ -150,10 +150,18 @@ See `features.csv`. Must: 23, should: 10, could: 4, skip: 7. Três linhas (Brasi
 
 Screens 17, flows 6, entities 7.
 Hard parts:
-1. **Motor da partida:** física da bola, IA dos 21 outros jogadores, regras (impedimento, faltas, bola parada), controle por gesto que pareça bom. Em 3D como o original é trabalho de estúdio.
-2. **Dados:** cerca de 250 times e 6.000+ jogadores com nomes reais atualizados. Elencos mudam toda janela; precisa de uma fonte atualizável (Wikipédia, seções "Current squad") mais o editor.
-3. **Escudos e uniformes atuais:** buscar ~250 escudos com fallback, e descrever as cores/padrões de ~750 uniformes.
-4. **Modo Carreira:** mercado, evolução, finanças, IA dos outros clubes.
-5. **Empacotar como APK 64 bits.**
+1. **Motor da partida em 3D:** física da bola, IA dos 21 outros jogadores, regras (impedimento, faltas, bola parada) e controle por gesto que pareça bom.
+2. **Jogadores 3D animados:** modelos, uniformes aplicados como textura, e animações de correr, passar, chutar, carrinho, cabecear, goleiro defendendo e comemorar. Todos feitos do zero ou de pacotes com licença livre (por exemplo, animações do Mixamo, modelos CC0).
+3. **Dados:** cerca de 250 times e 6.000+ jogadores com nomes reais atualizados, que mudam a cada janela; precisa de fonte atualizável (Wikipédia) mais o editor.
+4. **Escudos e uniformes atuais:** ~250 escudos com fallback, e cores/padrões de ~750 uniformes gerados como textura.
+5. **Desempenho no celular:** 22 jogadores animados a 30+ fps em aparelhos médios.
+6. **Modo Carreira:** mercado, evolução, finanças, IA dos outros clubes.
 
-Size: **XL** como pedido (partida 3D igual ao FIFA 14). Proposta de reescopo para **L**: partida em 2D com câmera de cima (estilo clássico, tipo Sensible Soccer / Dream League antigo), feita em tecnologia web e empacotada como APK (Capacitor), que já sai em 64 bits. Começar só com Amistoso + Brasileirão, depois somar ligas e modos.
+Size: **XL**. Igual ao FIFA 14 (gráficos realistas, captura de movimento, narração) não dá para uma pessoa só. O 3D que cabe é **estilizado**: jogadores low-poly (estilo cartoon, sem rostos reais), um estádio genérico, câmera de TV e animações prontas de licença livre. Plano em etapas, cada uma jogável:
+
+1. **Partida 3D jogável:** Amistoso, 2 times, gestos, regras básicas, câmera de TV. (o mais longo)
+2. **Dados:** Brasileirão com escudos, uniformes e nomes reais; depois as outras ligas e seleções.
+3. **Modos:** Liga, depois Copa, depois Carreira.
+4. **Acabamento:** pênaltis, estatísticas, replays, sons próprios.
+
+Tecnologia a decidir no `/replica-architect`: um motor de jogo (Godot ou Unity) exporta APK 64 bits direto.
