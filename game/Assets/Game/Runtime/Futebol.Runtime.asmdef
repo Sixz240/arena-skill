@@ -1,0 +1,17 @@
+{
+    "name": "Futebol.Runtime",
+    "rootNamespace": "Futebol.Runtime",
+    "references": [
+        "Futebol.Core",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

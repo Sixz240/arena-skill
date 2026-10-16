@@ -1,0 +1,487 @@
+{
+ "_about": "Uniformes dos clubes da Premier League 2026/27 (casa e fora). Mesmo formato de kits-brasileirao-2026.json. Casa: cores tradicionais do clube; 'confidence' diz o quanto confiar. Fora: alternativa genérica nas cores do clube (o modelo real muda toda temporada), sempre a conferir. A cor do número é escolhida para contrastar com a camisa. Escudos: página 'wiki_page' na Wikipédia em inglês, buscada pelo jogo quando abre (uso pessoal). Lista de clubes: os 17 que ficaram de 2025/26 + Coventry City, Ipswich Town e Hull City (subiram); saíram West Ham, Burnley e Wolves.",
+ "league": "eng-premier-league",
+ "season": "2026/27",
+ "teams": [
+  {
+   "id": "arsenal",
+   "name": "Arsenal",
+   "short": "ARS",
+   "wiki_page": "Arsenal F.C.",
+   "home": {
+    "pattern": "sleeves",
+    "primary": "#EF0107",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#EF0107",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#EF0107",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#EF0107"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "aston-villa",
+   "name": "Aston Villa",
+   "short": "AVL",
+   "wiki_page": "Aston Villa F.C.",
+   "home": {
+    "pattern": "sleeves",
+    "primary": "#670E36",
+    "secondary": "#95BFE5",
+    "shorts": "#FFFFFF",
+    "socks": "#670E36",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "bournemouth",
+   "name": "Bournemouth",
+   "short": "BOU",
+   "wiki_page": "AFC Bournemouth",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#DA291C",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#DA291C",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#DA291C"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "brentford",
+   "name": "Brentford",
+   "short": "BRE",
+   "wiki_page": "Brentford F.C.",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#E30613",
+    "secondary": "#FFFFFF",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#E30613",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#E30613"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "brighton",
+   "name": "Brighton & Hove Albion",
+   "short": "BHA",
+   "wiki_page": "Brighton & Hove Albion F.C.",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#0057B8",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#0057B8",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#0057B8"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "chelsea",
+   "name": "Chelsea",
+   "short": "CHE",
+   "wiki_page": "Chelsea F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#034694",
+    "secondary": "#FFFFFF",
+    "shorts": "#034694",
+    "socks": "#FFFFFF",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#034694",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#034694"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "coventry",
+   "name": "Coventry City",
+   "short": "COV",
+   "wiki_page": "Coventry City F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#59CBE8",
+    "secondary": "#0B2240",
+    "shorts": "#FFFFFF",
+    "socks": "#59CBE8",
+    "number": "#0B2240"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#0B2240",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "crystal-palace",
+   "name": "Crystal Palace",
+   "short": "CRY",
+   "wiki_page": "Crystal Palace F.C.",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#C4122E",
+    "secondary": "#1B458F",
+    "shorts": "#1B458F",
+    "socks": "#1B458F",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#1B458F",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#1B458F"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "everton",
+   "name": "Everton",
+   "short": "EVE",
+   "wiki_page": "Everton F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#003399",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#003399",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#003399"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "fulham",
+   "name": "Fulham",
+   "short": "FUL",
+   "wiki_page": "Fulham F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#FFFFFF",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "hull",
+   "name": "Hull City",
+   "short": "HUL",
+   "wiki_page": "Hull City A.F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#F18A01",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#F18A01",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#F18A01",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "ipswich",
+   "name": "Ipswich Town",
+   "short": "IPS",
+   "wiki_page": "Ipswich Town F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#3A64A3",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#3A64A3",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#3A64A3",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#3A64A3"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "leeds",
+   "name": "Leeds United",
+   "short": "LEE",
+   "wiki_page": "Leeds United F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#1D428A",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#1D428A"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#1D428A",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "liverpool",
+   "name": "Liverpool",
+   "short": "LIV",
+   "wiki_page": "Liverpool F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#C8102E",
+    "secondary": "#FFFFFF",
+    "shorts": "#C8102E",
+    "socks": "#C8102E",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#C8102E",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#C8102E"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "man-city",
+   "name": "Manchester City",
+   "short": "MCI",
+   "wiki_page": "Manchester City F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#6CABDD",
+    "secondary": "#1C2C5B",
+    "shorts": "#FFFFFF",
+    "socks": "#6CABDD",
+    "number": "#1C2C5B"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#1C2C5B",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#1C2C5B"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "man-utd",
+   "name": "Manchester United",
+   "short": "MUN",
+   "wiki_page": "Manchester United F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#DA291C",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#DA291C",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#DA291C"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "newcastle",
+   "name": "Newcastle United",
+   "short": "NEW",
+   "wiki_page": "Newcastle United F.C.",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#000000",
+    "secondary": "#FFFFFF",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "nottm-forest",
+   "name": "Nottingham Forest",
+   "short": "NFO",
+   "wiki_page": "Nottingham Forest F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#DD0000",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#DD0000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#DD0000",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#DD0000"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "sunderland",
+   "name": "Sunderland",
+   "short": "SUN",
+   "wiki_page": "Sunderland A.F.C.",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#EB172B",
+    "secondary": "#FFFFFF",
+    "shorts": "#000000",
+    "socks": "#EB172B",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#EB172B",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#EB172B"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "tottenham",
+   "name": "Tottenham Hotspur",
+   "short": "TOT",
+   "wiki_page": "Tottenham Hotspur F.C.",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#132257",
+    "shorts": "#132257",
+    "socks": "#FFFFFF",
+    "number": "#132257"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#132257",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  }
+ ]
+}
