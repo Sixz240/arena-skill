@@ -13,7 +13,7 @@ Jogo offline para um jogador. **Não há servidor, login, pagamentos nem e-mail*
 | controles | Unity Input System (touch + gestos) | toque, arrasto e deslize com pressão/velocidade; botões clássicos como alternativa |
 | física | física do Unity (PhysX) só para a bola; jogadores por movimento cinemático | física completa nos 22 jogadores é cara e difícil de controlar |
 | animação | Mecanim (Animator + Blend Trees), Humanoid rig | um rig para todos os jogadores; animações de licença livre (ex.: Mixamo) ou próprias |
-| modelos 3D | um corpo low-poly humanoide, 2-3 tipos físicos, cabelos e tons de pele variáveis | estilo cartoon, sem rostos reais; 22 em campo a 30+ fps |
+| modelos 3D | **semi-realistas**: corpo humanoide base (ex.: MakeHuman, exportação CC0), 3 tipos físicos, 6 tons de pele, 10 cabelos, 8 rostos genéricos; LOD0 ~8k tris, LOD1 ~3k, LOD2 ~1k | pedido do usuário; rostos genéricos, nunca de jogadores reais; LOD mantém 22 em campo a 30+ fps |
 | uniformes | textura gerada em runtime (shader com máscaras de padrão + cores do `kits`) | ~750 uniformes sem fazer 750 texturas |
 | UI | Unity UI Toolkit | menus, tabelas e listas grandes (elencos) |
 | dados | SQLite no aparelho (`data.db` + `save.db`), via sqlite-net | 6.000+ jogadores, filtros, editor; consultas rápidas |
