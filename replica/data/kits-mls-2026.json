@@ -1,0 +1,727 @@
+{
+ "_about": "Uniformes dos clubes da MLS 2026 (casa e fora). Mesmo formato de kits-brasileirao-2026.json. Casa: cores tradicionais do clube; 'confidence' diz o quanto confiar. Fora: alternativa genérica nas cores do clube (o modelo real muda toda temporada), sempre a conferir. A cor do número é escolhida para contrastar com a camisa. Escudos: página 'wiki_page' na Wikipédia em inglês, buscada pelo jogo quando abre (uso pessoal). Lista de clubes: 30 clubes, 15 no Leste e 15 no Oeste.",
+ "league": "usa-mls",
+ "season": "2026",
+ "teams": [
+  {
+   "id": "atlanta",
+   "name": "Atlanta United",
+   "short": "ATL",
+   "wiki_page": "Atlanta United FC",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#80000A",
+    "secondary": "#221F1F",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#221F1F",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#221F1F"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "montreal",
+   "name": "CF Montréal",
+   "short": "MTL",
+   "wiki_page": "CF Montréal",
+   "home": {
+    "pattern": "plain",
+    "primary": "#003DA6",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#003DA6",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#003DA6",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#003DA6"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "charlotte",
+   "name": "Charlotte FC",
+   "short": "CLT",
+   "wiki_page": "Charlotte FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#1A85C8",
+    "secondary": "#000000",
+    "shorts": "#1A85C8",
+    "socks": "#1A85C8",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#1A85C8",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#1A85C8"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "chicago",
+   "name": "Chicago Fire",
+   "short": "CHI",
+   "wiki_page": "Chicago Fire FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#AF2626",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#AF2626",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#AF2626",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#AF2626"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "columbus",
+   "name": "Columbus Crew",
+   "short": "CLB",
+   "wiki_page": "Columbus Crew",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FEDD00",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#FEDD00",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#FEDD00",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FEDD00"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "dc-united",
+   "name": "D.C. United",
+   "short": "DC",
+   "wiki_page": "D.C. United",
+   "home": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#EF3E42",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#EF3E42",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#EF3E42"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "cincinnati",
+   "name": "FC Cincinnati",
+   "short": "CIN",
+   "wiki_page": "FC Cincinnati",
+   "home": {
+    "pattern": "plain",
+    "primary": "#263B80",
+    "secondary": "#F05323",
+    "shorts": "#263B80",
+    "socks": "#263B80",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#F05323",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#F05323"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "inter-miami",
+   "name": "Inter Miami",
+   "short": "MIA",
+   "wiki_page": "Inter Miami CF",
+   "home": {
+    "pattern": "plain",
+    "primary": "#F7B5CD",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#F7B5CD",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#F7B5CD",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#F7B5CD"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "nashville",
+   "name": "Nashville SC",
+   "short": "NSH",
+   "wiki_page": "Nashville SC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#ECE83A",
+    "secondary": "#1F1646",
+    "shorts": "#1F1646",
+    "socks": "#ECE83A",
+    "number": "#1F1646"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#1F1646",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "new-england",
+   "name": "New England Revolution",
+   "short": "NE",
+   "wiki_page": "New England Revolution",
+   "home": {
+    "pattern": "plain",
+    "primary": "#0A2240",
+    "secondary": "#CE0E2D",
+    "shorts": "#0A2240",
+    "socks": "#0A2240",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#CE0E2D",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#CE0E2D"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "nycfc",
+   "name": "New York City FC",
+   "short": "NYC",
+   "wiki_page": "New York City FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#6CACE4",
+    "secondary": "#041E42",
+    "shorts": "#041E42",
+    "socks": "#6CACE4",
+    "number": "#041E42"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#041E42",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#041E42"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "ny-red-bulls",
+   "name": "New York Red Bulls",
+   "short": "RBNY",
+   "wiki_page": "New York Red Bulls",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#ED1E36",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#ED1E36"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#ED1E36",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#ED1E36"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "orlando",
+   "name": "Orlando City",
+   "short": "ORL",
+   "wiki_page": "Orlando City SC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#633492",
+    "secondary": "#FFFFFF",
+    "shorts": "#633492",
+    "socks": "#633492",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#633492",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#633492"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "philadelphia",
+   "name": "Philadelphia Union",
+   "short": "PHI",
+   "wiki_page": "Philadelphia Union",
+   "home": {
+    "pattern": "plain",
+    "primary": "#071B2C",
+    "secondary": "#B19B69",
+    "shorts": "#071B2C",
+    "socks": "#071B2C",
+    "number": "#B19B69"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#B19B69",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "toronto",
+   "name": "Toronto FC",
+   "short": "TOR",
+   "wiki_page": "Toronto FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#B81137",
+    "secondary": "#FFFFFF",
+    "shorts": "#B81137",
+    "socks": "#B81137",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#B81137",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#B81137"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "austin",
+   "name": "Austin FC",
+   "short": "ATX",
+   "wiki_page": "Austin FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#00B140",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#00B140",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#00B140",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "colorado",
+   "name": "Colorado Rapids",
+   "short": "COL",
+   "wiki_page": "Colorado Rapids",
+   "home": {
+    "pattern": "plain",
+    "primary": "#862633",
+    "secondary": "#8BB8E8",
+    "shorts": "#862633",
+    "socks": "#862633",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "dallas",
+   "name": "FC Dallas",
+   "short": "DAL",
+   "wiki_page": "FC Dallas",
+   "home": {
+    "pattern": "h_hoops",
+    "primary": "#E81F3E",
+    "secondary": "#2A4076",
+    "shorts": "#2A4076",
+    "socks": "#E81F3E",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#2A4076",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#2A4076"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "houston",
+   "name": "Houston Dynamo",
+   "short": "HOU",
+   "wiki_page": "Houston Dynamo FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FF6B00",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#FF6B00",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#FF6B00",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "la-galaxy",
+   "name": "LA Galaxy",
+   "short": "LA",
+   "wiki_page": "LA Galaxy",
+   "home": {
+    "pattern": "sash",
+    "primary": "#FFFFFF",
+    "secondary": "#00245D",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#00245D"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#00245D",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "lafc",
+   "name": "Los Angeles FC",
+   "short": "LAFC",
+   "wiki_page": "Los Angeles FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#C39E6D",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#C39E6D"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#C39E6D",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "minnesota",
+   "name": "Minnesota United",
+   "short": "MIN",
+   "wiki_page": "Minnesota United FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#585958",
+    "secondary": "#8CD2F4",
+    "shorts": "#585958",
+    "socks": "#585958",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "portland",
+   "name": "Portland Timbers",
+   "short": "POR",
+   "wiki_page": "Portland Timbers",
+   "home": {
+    "pattern": "plain",
+    "primary": "#004812",
+    "secondary": "#D69A00",
+    "shorts": "#004812",
+    "socks": "#004812",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#D69A00",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "rsl",
+   "name": "Real Salt Lake",
+   "short": "RSL",
+   "wiki_page": "Real Salt Lake",
+   "home": {
+    "pattern": "plain",
+    "primary": "#B30838",
+    "secondary": "#013A81",
+    "shorts": "#013A81",
+    "socks": "#B30838",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#013A81",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#013A81"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "san-diego",
+   "name": "San Diego FC",
+   "short": "SD",
+   "wiki_page": "San Diego FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#00205B",
+    "secondary": "#F5B335",
+    "shorts": "#00205B",
+    "socks": "#00205B",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "san-jose",
+   "name": "San Jose Earthquakes",
+   "short": "SJ",
+   "wiki_page": "San Jose Earthquakes",
+   "home": {
+    "pattern": "plain",
+    "primary": "#0067B1",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#0067B1",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#0067B1",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#0067B1"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "seattle",
+   "name": "Seattle Sounders",
+   "short": "SEA",
+   "wiki_page": "Seattle Sounders FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#5D9741",
+    "secondary": "#236192",
+    "shorts": "#236192",
+    "socks": "#5D9741",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#236192",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#236192"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "sporting-kc",
+   "name": "Sporting Kansas City",
+   "short": "SKC",
+   "wiki_page": "Sporting Kansas City",
+   "home": {
+    "pattern": "plain",
+    "primary": "#91B0D5",
+    "secondary": "#002F65",
+    "shorts": "#002F65",
+    "socks": "#91B0D5",
+    "number": "#002F65"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#002F65",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "st-louis",
+   "name": "St. Louis City",
+   "short": "STL",
+   "wiki_page": "St. Louis City SC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#DD004A",
+    "secondary": "#0A1E3F",
+    "shorts": "#0A1E3F",
+    "socks": "#DD004A",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#0A1E3F",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#0A1E3F"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "vancouver",
+   "name": "Vancouver Whitecaps",
+   "short": "VAN",
+   "wiki_page": "Vancouver Whitecaps FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#00245E",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#00245E"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#00245E",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  }
+ ]
+}

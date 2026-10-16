@@ -51,7 +51,7 @@ create table kits (
   id text primary key,
   team_id text not null references teams(id) on delete cascade,
   slot text not null check (slot in ('home','away','third','gk')),
-  pattern text not null check (pattern in ('plain','v_stripes','h_hoops','sash','halves','chest_band','tricolor_stripes')),
+  pattern text not null check (pattern in ('plain','v_stripes','h_hoops','sash','halves','chest_band','tricolor_stripes','sleeves')),
   shirt_primary text not null check (shirt_primary glob '#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]'),
   shirt_secondary text,
   shirt_tertiary text,                 -- terceira cor (tricolores: São Paulo, Fluminense, Grêmio)

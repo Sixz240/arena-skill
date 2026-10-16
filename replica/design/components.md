@@ -44,7 +44,7 @@ Crest (escudo)
   used on   S03, S06, S08-S11, S13
 
 Shirt (camisa, UI e 3D)
-  variants  pattern: plain, v_stripes, h_hoops, sash, halves, chest_band, tricolor_stripes
+  variants  pattern: plain, v_stripes, h_hoops, sash, halves, chest_band, tricolor_stripes, sleeves (mangas de outra cor: Arsenal, Aston Villa)
   slots     home, away, gk
   regras    número nas costas sempre sobre um painel liso na cor 'primary' (listras não atrapalham a leitura); conflito de cor = diferença < 25 em deltaE entre camisas -> trocar para away
   tokens    cores de kits-brasileirao-2026.json
