@@ -1,0 +1,487 @@
+{
+ "_about": "Uniformes dos 20 clubes da LaLiga 2026/27 (casa e fora). Mesmo formato de kits-brasileirao-2026.json. As cores são as tradicionais de cada clube. 'confidence' vale para o uniforme de casa; o uniforme de fora muda a cada temporada e aqui é uma alternativa genérica nas cores do clube, a conferir na seção de uniformes da página do clube na Wikipédia. Os escudos vêm da página 'wiki_page' (Wikipédia em inglês), buscados pelo jogo quando abre (uso pessoal).",
+ "league": "esp-laliga",
+ "season": "2026/27",
+ "teams": [
+  {
+   "id": "athletic",
+   "name": "Athletic Club",
+   "short": "ATH",
+   "wiki_page": "Athletic Bilbao",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#D2001F",
+    "secondary": "#FFFFFF",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#D2001F",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "atletico-madrid",
+   "name": "Atlético de Madrid",
+   "short": "ATM",
+   "wiki_page": "Atlético Madrid",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#CB3524",
+    "secondary": "#FFFFFF",
+    "shorts": "#1F2D6B",
+    "socks": "#CB3524",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#1F2D6B",
+    "secondary": "#CB3524",
+    "shorts": "#1F2D6B",
+    "socks": "#1F2D6B",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "osasuna",
+   "name": "Osasuna",
+   "short": "OSA",
+   "wiki_page": "CA Osasuna",
+   "home": {
+    "pattern": "plain",
+    "primary": "#C8102E",
+    "secondary": "#0C1C4D",
+    "shorts": "#0C1C4D",
+    "socks": "#C8102E",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#C8102E",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#0C1C4D"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "celta",
+   "name": "Celta de Vigo",
+   "short": "CEL",
+   "wiki_page": "RC Celta de Vigo",
+   "home": {
+    "pattern": "plain",
+    "primary": "#8AC3EE",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#8AC3EE",
+    "number": "#0B2240"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#0B2240",
+    "secondary": "#8AC3EE",
+    "shorts": "#0B2240",
+    "socks": "#0B2240",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "alaves",
+   "name": "Deportivo Alavés",
+   "short": "ALA",
+   "wiki_page": "Deportivo Alavés",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#0057B8",
+    "secondary": "#FFFFFF",
+    "shorts": "#0057B8",
+    "socks": "#0057B8",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#0057B8",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "elche",
+   "name": "Elche",
+   "short": "ELC",
+   "wiki_page": "Elche CF",
+   "home": {
+    "pattern": "chest_band",
+    "primary": "#FFFFFF",
+    "secondary": "#00843D",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#00843D"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#00843D",
+    "secondary": "#FFFFFF",
+    "shorts": "#00843D",
+    "socks": "#00843D",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "barcelona",
+   "name": "FC Barcelona",
+   "short": "BAR",
+   "wiki_page": "FC Barcelona",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#A50044",
+    "secondary": "#004D98",
+    "shorts": "#004D98",
+    "socks": "#004D98",
+    "number": "#FDC52C"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#A50044",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#004D98"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "getafe",
+   "name": "Getafe",
+   "short": "GET",
+   "wiki_page": "Getafe CF",
+   "home": {
+    "pattern": "plain",
+    "primary": "#005999",
+    "secondary": "#FFFFFF",
+    "shorts": "#005999",
+    "socks": "#005999",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#005999",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#005999"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "levante",
+   "name": "Levante",
+   "short": "LEV",
+   "wiki_page": "Levante UD",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#B4053F",
+    "secondary": "#0A346F",
+    "shorts": "#0A346F",
+    "socks": "#0A346F",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#B4053F",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#0A346F"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "malaga",
+   "name": "Málaga",
+   "short": "MAL",
+   "wiki_page": "Málaga CF",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#0A5DAA",
+    "secondary": "#FFFFFF",
+    "shorts": "#0A5DAA",
+    "socks": "#0A5DAA",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#0A5DAA",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "racing",
+   "name": "Racing de Santander",
+   "short": "RAC",
+   "wiki_page": "Racing de Santander",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#00843D",
+    "shorts": "#000000",
+    "socks": "#00843D",
+    "number": "#00843D"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#00843D",
+    "secondary": "#FFFFFF",
+    "shorts": "#00843D",
+    "socks": "#00843D",
+    "number": "#FFFFFF"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "rayo",
+   "name": "Rayo Vallecano",
+   "short": "RAY",
+   "wiki_page": "Rayo Vallecano",
+   "home": {
+    "pattern": "sash",
+    "primary": "#FFFFFF",
+    "secondary": "#E30613",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#E30613"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#E30613",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "deportivo",
+   "name": "Deportivo de La Coruña",
+   "short": "DEP",
+   "wiki_page": "Deportivo de La Coruña",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#1660AC",
+    "secondary": "#FFFFFF",
+    "shorts": "#1660AC",
+    "socks": "#1660AC",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#1660AC",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "espanyol",
+   "name": "Espanyol",
+   "short": "ESP",
+   "wiki_page": "RCD Espanyol",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#007FC8",
+    "secondary": "#FFFFFF",
+    "shorts": "#007FC8",
+    "socks": "#007FC8",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#007FC8",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "betis",
+   "name": "Real Betis",
+   "short": "BET",
+   "wiki_page": "Real Betis",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#00954C",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#00954C",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#00954C",
+    "secondary": "#FFFFFF",
+    "shorts": "#00954C",
+    "socks": "#00954C",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "real-madrid",
+   "name": "Real Madrid",
+   "short": "RMA",
+   "wiki_page": "Real Madrid CF",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#1D2D5C",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#1D2D5C"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#1D2D5C",
+    "secondary": "#FFFFFF",
+    "shorts": "#1D2D5C",
+    "socks": "#1D2D5C",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "real-sociedad",
+   "name": "Real Sociedad",
+   "short": "RSO",
+   "wiki_page": "Real Sociedad",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#0067B1",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#0067B1",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#0067B1",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "sevilla",
+   "name": "Sevilla",
+   "short": "SEV",
+   "wiki_page": "Sevilla FC",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#D4021D",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#D4021D"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#D4021D",
+    "secondary": "#FFFFFF",
+    "shorts": "#D4021D",
+    "socks": "#D4021D",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "valencia",
+   "name": "Valencia",
+   "short": "VAL",
+   "wiki_page": "Valencia CF",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#EE7F00",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "villarreal",
+   "name": "Villarreal",
+   "short": "VIL",
+   "wiki_page": "Villarreal CF",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFE667",
+    "secondary": "#005187",
+    "shorts": "#005187",
+    "socks": "#FFE667",
+    "number": "#005187"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#005187",
+    "secondary": "#FFE667",
+    "shorts": "#005187",
+    "socks": "#005187",
+    "number": "#FFE667"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  }
+ ]
+}
