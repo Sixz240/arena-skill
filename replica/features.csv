@@ -1,22 +1,22 @@
 feature,area,priority,original,clone,notes
-Partida com controle por gesto (arrastar mover; tocar passar; deslizar chutar),partida,must,yes,no,core loop
-Defesa por toque (pressionar) e deslize (carrinho),partida,must,yes,no,
+Partida com controle por gesto (arrastar mover; tocar passar; deslizar chutar),partida,must,yes,partial,core loop; arrastar/tocar/deslizar no motor (testado); camada Unity escrita mas não rodada aqui
+Defesa por toque (pressionar) e deslize (carrinho),partida,must,yes,partial,carrinho por deslize ok; tocar no adversário para pressionar ainda não; toque em companheiro troca o controle
 Controle clássico com botões na tela,partida,should,yes,no,original permite escolher nas opções
-IA dos companheiros e adversários,partida,must,yes,no,parte mais difícil
-Regras: lateral; escanteio; tiro de meta; faltas; cartões,partida,must,yes,no,
+IA dos companheiros e adversários,partida,must,yes,partial,"parte mais difícil; 4-4-2, pressão, passe em profundidade, chute; sem táticas nem variação por estilo"
+Regras: lateral; escanteio; tiro de meta; faltas; cartões,partida,must,yes,partial,"lateral, escanteio e tiro de meta ok; faltas e cartões ainda não"
 Impedimento,partida,should,yes,no,
 Pênaltis; prorrogação e disputa de pênaltis,partida,must,yes,no,necessário para Copa
-Placar; relógio; tempo de jogo ajustável,partida,must,yes,no,
-Pausa com substituições e troca de tática,partida,must,yes,no,
-Estatísticas de fim de jogo,partida,should,yes,no,
+Placar; relógio; tempo de jogo ajustável,partida,must,yes,partial,placar e relógio ok; duração do tempo só no código (falta S17)
+Pausa com substituições e troca de tática,partida,must,yes,partial,pausa e recomeçar ok; substituições e tática ainda não
+Estatísticas de fim de jogo,partida,should,yes,yes,"posse, chutes, no alvo, passes, gols com minuto (S08)"
 Dificuldade da IA,partida,should,yes,no,
-Partida em 3D com estádio e câmera de TV,partida,must,yes,no,3D estilizado (low-poly); não realista
-Jogadores 3D animados (correr; passar; chutar; carrinho; cabeceio; goleiro),partida,must,yes,no,animações de licença livre ou próprias
-Uniformes aplicados como textura nos modelos 3D,visual,must,yes,no,
+Partida em 3D com estádio e câmera de TV,partida,must,yes,partial,3D estilizado (low-poly); não realista; estádio genérico gerado por código; câmera de TV ok
+Jogadores 3D animados (correr; passar; chutar; carrinho; cabeceio; goleiro),partida,must,yes,partial,animações de licença livre ou próprias; bonecos provisórios de formas simples com corrida procedural; falta modelo semi-realista e animações
+Uniformes aplicados como textura nos modelos 3D,visual,must,yes,partial,textura gerada por padrão no tronco; mangas por cor; sem número nas costas ainda
 Replay dos gols,partida,could,yes,no,
 Desempenho 30+ fps em celular médio,plataforma,must,no,no,
 Narração,partida,could,yes,no,original licenciado; clone só com sons próprios
-Modo Amistoso,modos,must,yes,no,
+Modo Amistoso,modos,must,yes,partial,partida Flamengo x Palmeiras fixa; falta escolher times (S03)
 Modo Campeonato/Liga com tabela e simulação de rodadas,modos,must,yes,no,
 Modo Copa mata-mata,modos,must,yes,no,
 Modo Carreira: elenco; calendário; temporadas,modos,must,yes,no,
@@ -30,14 +30,14 @@ Seleções nacionais,dados,must,yes,no,
 Clubes sul-americanos (Libertadores),dados,must,yes,no,
 Nomes reais dos jogadores atualizados,dados,must,yes,no,uso pessoal; ver notas legais
 Atributos e notas próprios dos jogadores,dados,must,yes,no,não copiar as notas da EA
-Escudos atuais buscados na Wikipédia com fallback,visual,must,yes,no,uso pessoal
-Uniformes atuais (cores e padrão) casa/fora/goleiro,visual,must,yes,no,desenhados do zero
-Escolha de uniforme e aviso de conflito de cores,visual,should,yes,no,
+Escudos atuais buscados na Wikipédia com fallback,visual,must,yes,partial,uso pessoal; CrestService com cache e escudo genérico de reserva; não testado em aparelho
+Uniformes atuais (cores e padrão) casa/fora/goleiro,visual,must,yes,partial,"desenhados do zero; 5 ligas (108 clubes); faltam Serie A, Ligue 1, sul-americanos e seleções"
+Escolha de uniforme e aviso de conflito de cores,visual,should,yes,partial,troca automática para o uniforme 2 em conflito; sem tela de escolha (S05)
 Escalação e formações,elenco,must,yes,no,
 Editor de times e jogadores,dados,should,no,no,necessário para corrigir elencos que mudam
 Atualizar elencos pela internet,dados,should,yes,no,original tinha atualizações de elenco; clone via Wikipédia
 Configurações (controles; som; idioma),config,should,yes,no,
-App Android 64 bits (APK),plataforma,must,no,no,motivo do projeto
+App Android 64 bits (APK),plataforma,must,no,partial,motivo do projeto; menu Futebol configura IL2CPP + ARM64 e gera APK; build não feito aqui (sem Unity)
 Funciona offline (sem escudos),plataforma,should,yes,no,
 Estádios com nomes reais,visual,could,yes,no,
 Ultimate Team (cartas; mercado online),modos,could,yes,skip,precisa de servidores e mercado online; fora do escopo pedido
