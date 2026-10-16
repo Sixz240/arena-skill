@@ -1,0 +1,45 @@
+feature,area,priority,original,clone,notes
+Partida com controle por gesto (arrastar mover; tocar passar; deslizar chutar),partida,must,yes,no,core loop
+Defesa por toque (pressionar) e deslize (carrinho),partida,must,yes,no,
+Controle clássico com botões na tela,partida,should,yes,no,original permite escolher nas opções
+IA dos companheiros e adversários,partida,must,yes,no,parte mais difícil
+Regras: lateral; escanteio; tiro de meta; faltas; cartões,partida,must,yes,no,
+Impedimento,partida,should,yes,no,
+Pênaltis; prorrogação e disputa de pênaltis,partida,must,yes,no,necessário para Copa
+Placar; relógio; tempo de jogo ajustável,partida,must,yes,no,
+Pausa com substituições e troca de tática,partida,must,yes,no,
+Estatísticas de fim de jogo,partida,should,yes,no,
+Dificuldade da IA,partida,should,yes,no,
+Câmera 3D e jogadores 3D,partida,could,yes,no,reescopo: 2D de cima
+Narração,partida,could,yes,no,original licenciado; clone só com sons próprios
+Modo Amistoso,modos,must,yes,no,
+Modo Campeonato/Liga com tabela e simulação de rodadas,modos,must,yes,no,
+Modo Copa mata-mata,modos,must,yes,no,
+Modo Carreira: elenco; calendário; temporadas,modos,must,yes,no,
+Carreira: transferências e orçamento,modos,must,yes,no,
+Carreira: evolução e envelhecimento dos jogadores,modos,should,yes,no,
+Carreira: lesões; suspensões; moral,modos,could,yes,no,
+Salvar e continuar campeonato/carreira,modos,must,yes,no,
+Brasileirão Série A (20 clubes atuais),dados,must,no,no,original de 2013 tinha o Brasileirão? não confirmado
+Ligas europeias top 5,dados,must,yes,no,
+Seleções nacionais,dados,must,yes,no,
+Clubes sul-americanos (Libertadores),dados,must,yes,no,
+Nomes reais dos jogadores atualizados,dados,must,yes,no,uso pessoal; ver notas legais
+Atributos e notas próprios dos jogadores,dados,must,yes,no,não copiar as notas da EA
+Escudos atuais buscados na Wikipédia com fallback,visual,must,yes,no,uso pessoal
+Uniformes atuais (cores e padrão) casa/fora/goleiro,visual,must,yes,no,desenhados do zero
+Escolha de uniforme e aviso de conflito de cores,visual,should,yes,no,
+Escalação e formações,elenco,must,yes,no,
+Editor de times e jogadores,dados,should,no,no,necessário para corrigir elencos que mudam
+Atualizar elencos pela internet,dados,should,yes,no,original tinha atualizações de elenco; clone via Wikipédia
+Configurações (controles; som; idioma),config,should,yes,no,
+App Android 64 bits (APK),plataforma,must,no,no,motivo do projeto
+Funciona offline (sem escudos),plataforma,should,yes,no,
+Estádios com nomes reais,visual,could,yes,no,
+Ultimate Team (cartas; mercado online),modos,could,yes,skip,precisa de servidores e mercado online; fora do escopo pedido
+Compras dentro do app,monetização,could,yes,skip,uso pessoal
+Gráficos; sons; código e arquivos OBB do FIFA 14,assets,could,yes,skip,propriedade da EA; nunca extrair nem reutilizar
+Marca FIFA / EA SPORTS,marca,could,yes,skip,o clone precisa de nome próprio
+Notas e atributos oficiais da EA,dados,could,yes,skip,dados da EA
+Rostos e modelos 3D de jogadores reais,visual,could,yes,skip,direito de imagem; licença
+Narração e trilha sonora licenciadas,áudio,could,yes,skip,licenciado
