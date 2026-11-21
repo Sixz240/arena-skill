@@ -201,7 +201,7 @@ body.spray #b-spray{background:var(--ouro);color:#000}
   };
 
   // ---------------- TEXTURAS ----------------
-  function canvas(w, h, f) { const c = document.createElement("canvas"); c.width = w; c.height = h; f(c.getContext("2d"), w, h); const t = new T.CanvasTexture(c); t.magFilter = T.NearestFilter; return t; }
+  function canvas(w, h, f) { const c = document.createElement("canvas"); c.width = w; c.height = h; f(c.getContext("2d"), w, h); const t = new T.CanvasTexture(c); t.magFilter = T.NearestFilter; t.encoding = T.sRGBEncoding; return t; }
   const texCamisa = {};
   function camisa(id) {
     if (texCamisa[id]) return texCamisa[id];
@@ -246,7 +246,7 @@ body.spray #b-spray{background:var(--ouro);color:#000}
   }
 
   // ---------------- MUNDO ----------------
-  let renderer, scene, camera, clock;
+  let renderer, scene, camera, clock, sol;
   const pintaveis = [], obstaculos = [], torcedores = [], carros = [], pichos = [];
   let jog, trio;
   const placar = { bahia: 0, coxa: 0, cap: 0 }, sprays = { bahia: 0, coxa: 0, cap: 0 };
@@ -255,13 +255,20 @@ body.spray #b-spray{background:var(--ouro);color:#000}
     renderer = new T.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
     renderer.setSize(innerWidth, innerHeight);
+    renderer.outputEncoding = T.sRGBEncoding;
+    renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
     $("palco").appendChild(renderer.domElement);
     scene = new T.Scene();
-    scene.background = new T.Color("#8fc6ff");
-    scene.fog = new T.Fog("#8fc6ff", 60, 220);
-    camera = new T.PerspectiveCamera(62, innerWidth / innerHeight, .1, 400);
-    scene.add(new T.HemisphereLight("#ffffff", "#5c6b4a", .85));
-    const sol = new T.DirectionalLight("#fff6dd", .75); sol.position.set(40, 80, 20); scene.add(sol);
+    scene.background = new T.Color("#ffc896");
+    scene.fog = new T.Fog("#f4c9a0", 70, 260);
+    camera = new T.PerspectiveCamera(60, innerWidth / innerHeight, .1, 800);
+    scene.add(new T.HemisphereLight("#cfe3ff", "#6b5a45", .75));
+    sol = new T.DirectionalLight("#ffe2b8", 1.6); sol.position.set(30, 45, 25); sol.castShadow = true;
+    const tam = ehToque ? 1024 : 2048; sol.shadow.mapSize.set(tam, tam);
+    Object.assign(sol.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 1, far: 140 }); sol.shadow.bias = -.0006; sol.shadow.normalBias = .03;
+    scene.add(sol); scene.add(sol.target);
+    montarCeu();
     clock = new T.Clock();
     montarAvenida();
     montarZonas();
@@ -283,46 +290,135 @@ body.spray #b-spray{background:var(--ouro);color:#000}
     renderer.setAnimationLoop(quadro);
   }
 
-  function caixa(w, h, d, mat, x, y, z) { const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); scene.add(m); return m; }
+  // ---- materiais com sombra ----
+  const MAT = {};
+  function mat(cor, extra) {
+    const k = cor + (extra ? JSON.stringify(extra) : "");
+    if (!MAT[k]) MAT[k] = new T.MeshStandardMaterial(Object.assign({ color: cor, roughness: .85, metalness: 0 }, extra || {}));
+    return MAT[k];
+  }
+  function malha(geo, m, x, y, z, pai) {
+    const o = new T.Mesh(geo, m);
+    o.position.set(x || 0, y || 0, z || 0);
+    o.castShadow = true; o.receiveShadow = true;
+    (pai || scene).add(o);
+    return o;
+  }
+  function caixa(w, h, d, m, x, y, z, pai) { return malha(new T.BoxGeometry(w, h, d), m, x, y, z, pai); }
+  function texRuido(base, var1, w, h, extra) {
+    const t = canvas(w || 128, h || 128, (g, W, H) => {
+      g.fillStyle = base; g.fillRect(0, 0, W, H);
+      for (let i = 0; i < W * H / 6; i++) { g.fillStyle = `rgba(${var1},${Math.random() * .06})`; g.fillRect(Math.random() * W, Math.random() * H, 1 + Math.random() * 2, 1 + Math.random() * 2); }
+      if (extra) extra(g, W, H);
+    });
+    t.magFilter = T.LinearFilter; t.wrapS = t.wrapT = T.RepeatWrapping; t.anisotropy = 4;
+    return t;
+  }
+  function montarCeu() {
+    const tex = canvas(4, 256, (g) => { const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, "#2f6fd6"); gr.addColorStop(.45, "#7fb4ee"); gr.addColorStop(.62, "#ffd9a8"); gr.addColorStop(.7, "#ffb27a"); gr.addColorStop(1, "#ffb27a"); g.fillStyle = gr; g.fillRect(0, 0, 4, 256); });
+    tex.magFilter = T.LinearFilter;
+    const ceu = new T.Mesh(new T.SphereGeometry(380, 24, 16), new T.MeshBasicMaterial({ map: tex, side: T.BackSide, fog: false, depthWrite: false }));
+    scene.add(ceu); ceuMesh = ceu;
+    for (let i = 0; i < 14; i++) {
+      const nuvem = new T.Group();
+      for (let j = 0; j < 4; j++) { const s = new T.Mesh(new T.SphereGeometry(rnd(6, 11), 10, 8), new T.MeshBasicMaterial({ color: "#fff6ec", fog: false, transparent: true, opacity: .9 })); s.position.set(j * 9 - 13, rnd(-2, 2), rnd(-3, 3)); s.scale.y = .55; nuvem.add(s); }
+      const a = Math.random() * Math.PI * 2; nuvem.position.set(Math.cos(a) * 260, rnd(95, 150), Math.sin(a) * 260); nuvem.lookAt(0, nuvem.position.y, 0);
+      ceu.add(nuvem);
+    }
+  }
+  let ceuMesh = null;
   function montarAvenida() {
-    const asfalto = new T.Mesh(new T.PlaneGeometry(28, 620), new T.MeshLambertMaterial({ color: "#3b3f46" }));
-    asfalto.rotation.x = -Math.PI / 2; scene.add(asfalto); pintaveis.push(asfalto);
-    const calc = new T.MeshLambertMaterial({ color: "#b9b4a8" });
-    for (const s of [-1, 1]) { const c = caixa(6, .18, 620, calc, s * 11, .09, 0); pintaveis.push(c); }
+    const texAsf = texRuido("#34373d", "200,200,200", 128, 128); texAsf.repeat.set(4, 90);
+    const asfalto = new T.Mesh(new T.PlaneGeometry(28, 620), new T.MeshStandardMaterial({ map: texAsf, roughness: .95 }));
+    asfalto.rotation.x = -Math.PI / 2; asfalto.receiveShadow = true; scene.add(asfalto); pintaveis.push(asfalto);
+    const texCal = texRuido("#c9c2b4", "0,0,0", 128, 128, (g, W, H) => { g.strokeStyle = "rgba(0,0,0,.18)"; g.lineWidth = 2; for (let i = 0; i <= W; i += 32) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, H); g.stroke(); g.beginPath(); g.moveTo(0, i); g.lineTo(W, i); g.stroke(); } });
+    texCal.repeat.set(1.5, 155);
+    for (const s of [-1, 1]) {
+      const c = caixa(6, .2, 620, new T.MeshStandardMaterial({ map: texCal, roughness: .9 }), s * 11, .1, 0); pintaveis.push(c);
+      caixa(.25, .24, 620, mat("#9a948a"), s * 8.05, .12, 0);
+    }
     const faixa = new T.MeshBasicMaterial({ color: "#f3f3f3" });
     for (let z = -300; z < 300; z += 8) { const f = new T.Mesh(new T.PlaneGeometry(.3, 4), faixa); f.rotation.x = -Math.PI / 2; f.position.set(0, .02, z); scene.add(f); }
-    const grama = new T.Mesh(new T.PlaneGeometry(400, 700), new T.MeshLambertMaterial({ color: "#6f9b4f" }));
-    grama.rotation.x = -Math.PI / 2; grama.position.y = -.05; scene.add(grama);
-    const coresPredio = ["#c9b79c", "#a7b3c2", "#d8d0c3", "#8e9aa8", "#c2a48a", "#b0b8a4", "#9fa7b8"];
+    for (const zf of [-135, -45, 90, 135]) for (let x = -6.5; x <= 6.5; x += 1.3) { const f = new T.Mesh(new T.PlaneGeometry(.7, 3), faixa); f.rotation.x = -Math.PI / 2; f.position.set(x, .021, zf); scene.add(f); }
+    const grama = new T.Mesh(new T.PlaneGeometry(500, 760), mat("#6f9b4f"));
+    grama.rotation.x = -Math.PI / 2; grama.position.y = -.05; grama.receiveShadow = true; scene.add(grama);
+    const coresPredio = ["#d8c8ad", "#a9b6c6", "#e3dccf", "#8f9cab", "#c9a98d", "#b6bfa8", "#a2a9bd", "#e0b9a0"];
+    const lojas = ["#c0392b", "#2c7a7b", "#d68910", "#6c3483", "#1f618d", "#117a65"];
     for (const s of [-1, 1]) {
       let z = -300;
       while (z < 300) {
-        const d = rnd(14, 26), w = rnd(12, 20), h = rnd(14, 48);
-        const tex = texJanelas(pick(coresPredio)); tex.wrapS = tex.wrapT = T.RepeatWrapping; tex.repeat.set(Math.round(d / 8), Math.round(h / 12));
-        const m = caixa(w, h, d, new T.MeshLambertMaterial({ map: tex }), s * (14 + w / 2), h / 2, z + d / 2);
-        pintaveis.push(m);
-        z += d + rnd(1, 4);
+        const d = rnd(14, 26), w = rnd(12, 20), h = rnd(16, 52);
+        const cx = s * (14 + w / 2), cz = z + d / 2, cor = pick(coresPredio);
+        const tex = texJanelasHD(cor); tex.repeat.set(Math.max(1, Math.round(d / 7)), Math.max(1, Math.round((h - 4.5) / 7)));
+        const lado = new T.MeshStandardMaterial({ map: tex, roughness: .8 });
+        const m = caixa(w, h - 4.5, d, lado, cx, 4.5 + (h - 4.5) / 2, cz); pintaveis.push(m);
+        // térreo com loja, vitrine e toldo
+        const terreo = caixa(w, 4.5, d, mat("#5b5f66"), cx, 2.25, cz); pintaveis.push(terreo);
+        const fx = s * 14 - s * .02;
+        const vit = new T.Mesh(new T.PlaneGeometry(d * .8, 2.6), new T.MeshStandardMaterial({ color: "#9fd3ff", roughness: .15, metalness: .4, emissive: "#24435e", emissiveIntensity: .35 }));
+        vit.position.set(fx - s * .01, 1.7, cz); vit.rotation.y = -s * Math.PI / 2; scene.add(vit);
+        const corLoja = pick(lojas);
+        const toldo = caixa(1.6, .12, d * .85, mat(corLoja), s * 13.3, 3.5, cz); toldo.rotation.z = s * .25;
+        const placa = caixa(.15, .8, d * .5, mat(corLoja, { emissive: corLoja, emissiveIntensity: .25 }), fx - s * .08, 4.05, cz);
+        void placa;
+        // topo: mureta e caixa d'água / ar-condicionado
+        caixa(w, .6, .3, mat("#7d7d7d"), cx, h + .3, z + .15); caixa(w, .6, .3, mat("#7d7d7d"), cx, h + .3, z + d - .15);
+        caixa(.3, .6, d, mat("#7d7d7d"), cx - w / 2 + .15, h + .3, cz); caixa(.3, .6, d, mat("#7d7d7d"), cx + w / 2 - .15, h + .3, cz);
+        if (Math.random() < .7) caixa(rnd(2, 4), rnd(1.5, 3), rnd(2, 4), mat("#9aa0a6"), cx + rnd(-w / 4, w / 4), h + 1.2, cz + rnd(-d / 4, d / 4));
+        z += d + rnd(1.5, 4);
       }
       for (let z2 = -290; z2 < 300; z2 += 22) {
-        caixa(.18, 5, .18, new T.MeshLambertMaterial({ color: "#555" }), s * 8.4, 2.5, z2);
-        caixa(1.4, .15, .3, new T.MeshLambertMaterial({ color: "#555" }), s * 7.8, 5, z2);
-        const tronco = caixa(.35, 2.4, .35, new T.MeshLambertMaterial({ color: "#6b4a2b" }), s * 12.6, 1.2, z2 + 11);
-        const copa = new T.Mesh(new T.IcosahedronGeometry(1.7, 0), new T.MeshLambertMaterial({ color: "#3f7d3a" }));
-        copa.position.set(s * 12.6, 3.4, z2 + 11); scene.add(copa);
-        obstaculos.push({ x: s * 12.6, z: z2 + 11, r: .5 });
-        void tronco;
+        // poste curvo com luz
+        const poste = new T.Group(); poste.position.set(s * 8.5, 0, z2); scene.add(poste);
+        malha(new T.CylinderGeometry(.09, .14, 6, 8), mat("#4a4f57", { metalness: .5, roughness: .5 }), 0, 3, 0, poste);
+        const braco = malha(new T.CylinderGeometry(.06, .06, 1.6, 6), mat("#4a4f57", { metalness: .5, roughness: .5 }), -s * .7, 6, 0, poste); braco.rotation.z = Math.PI / 2;
+        malha(new T.CylinderGeometry(.28, .18, .25, 10), mat("#2c2f35"), -s * 1.4, 5.9, 0, poste);
+        const lampada = new T.Mesh(new T.SphereGeometry(.16, 8, 6), new T.MeshBasicMaterial({ color: "#fff2c4" })); lampada.position.set(-s * 1.4, 5.75, 0); poste.add(lampada); lampadas.push(lampada);
+        obstaculos.push({ x: s * 8.5, z: z2, r: .25 });
+        // árvore com copa redonda
+        const tx = s * 12.6, tz = z2 + 11;
+        malha(new T.CylinderGeometry(.18, .28, 2.6, 8), mat("#6b4a2b"), tx, 1.3, tz);
+        const verde = pick(["#3f7d3a", "#4b8c3f", "#3a7234", "#5a9a45"]);
+        for (let k = 0; k < 5; k++) { const r = rnd(1, 1.5); malha(new T.SphereGeometry(r, 10, 8), mat(verde), tx + rnd(-.8, .8), 3.2 + rnd(0, 1.2), tz + rnd(-.8, .8)); }
+        const canteiro = new T.Mesh(new T.CircleGeometry(.9, 16), mat("#5b3d24")); canteiro.rotation.x = -Math.PI / 2; canteiro.position.set(tx, .21, tz); scene.add(canteiro);
+        obstaculos.push({ x: tx, z: tz, r: .5 });
+        if (Math.random() < .5) { // banco
+          const bz = z2 + 4; caixa(.5, .08, 1.8, mat("#8a5a33"), s * 12.4, .5, bz); caixa(.08, .5, 1.8, mat("#8a5a33"), s * 12.7, .8, bz);
+          for (const dz of [-.8, .8]) caixa(.4, .5, .08, mat("#333"), s * 12.4, .25, bz + dz);
+        }
       }
     }
+  }
+  const lampadas = [];
+  function texJanelasHD(cor) {
+    const t = canvas(128, 128, (g) => {
+      g.fillStyle = cor; g.fillRect(0, 0, 128, 128);
+      g.fillStyle = "rgba(0,0,0,.08)"; for (let y = 0; y < 128; y += 4) g.fillRect(0, y, 128, 1);
+      for (const [x, y] of [[14, 18], [74, 18], [14, 78], [74, 78]]) {
+        g.fillStyle = "rgba(0,0,0,.25)"; g.fillRect(x - 3, y - 3, 46, 40);
+        const acesa = Math.random() < .28;
+        const gr = g.createLinearGradient(x, y, x + 40, y + 34); gr.addColorStop(0, acesa ? "#ffe9b0" : "#5d7ea3"); gr.addColorStop(1, acesa ? "#ffcf73" : "#24364f");
+        g.fillStyle = gr; g.fillRect(x, y, 40, 34);
+        g.fillStyle = "rgba(255,255,255,.85)"; g.fillRect(x + 19, y, 2, 34); g.fillRect(x, y + 16, 40, 2);
+        g.fillStyle = "rgba(255,255,255,.18)"; g.fillRect(x + 3, y + 3, 12, 10);
+        g.fillStyle = "rgba(0,0,0,.3)"; g.fillRect(x - 4, y + 36, 48, 4);
+      }
+    });
+    t.magFilter = T.LinearFilter; t.wrapS = t.wrapT = T.RepeatWrapping; t.anisotropy = 4;
+    return t;
   }
   function montarZonas() {
     for (const id of IDS) {
       const t = TIMES[id];
-      const anel = new T.Mesh(new T.RingGeometry(20, 22, 48), new T.MeshBasicMaterial({ color: t.cor, transparent: true, opacity: .55 }));
+      const anel = new T.Mesh(new T.RingGeometry(20, 22, 64), new T.MeshBasicMaterial({ color: t.cor, transparent: true, opacity: .6 }));
       anel.rotation.x = -Math.PI / 2; anel.position.set(0, .03, t.zona); scene.add(anel);
+      const piso = new T.Mesh(new T.CircleGeometry(20, 64), new T.MeshBasicMaterial({ color: t.cor, transparent: true, opacity: .12, depthWrite: false }));
+      piso.rotation.x = -Math.PI / 2; piso.position.set(0, .025, t.zona); scene.add(piso);
       for (const s of [-1, 1]) {
-        caixa(.25, 9, .25, new T.MeshLambertMaterial({ color: "#ddd" }), s * 6, 4.5, t.zona);
-        const fl = new T.Mesh(new T.PlaneGeometry(4.2, 2.8), new T.MeshLambertMaterial({ map: bandeira(id), side: T.DoubleSide }));
-        fl.position.set(s * 6 + s * 2.1, 7.4, t.zona); scene.add(fl); fl.userData.ondula = Math.random() * 6; zonasFlags.push(fl);
+        malha(new T.CylinderGeometry(.12, .16, 9, 10), mat("#e6e6e6", { metalness: .6, roughness: .35 }), s * 6, 4.5, t.zona);
+        malha(new T.SphereGeometry(.22, 10, 8), mat("#f5c518", { metalness: .7, roughness: .3 }), s * 6, 9.1, t.zona);
+        const fl = new T.Mesh(new T.PlaneGeometry(4.2, 2.8, 12, 1), new T.MeshStandardMaterial({ map: bandeira(id), side: T.DoubleSide, roughness: .9 }));
+        fl.castShadow = true; fl.position.set(s * 6 + s * 2.1, 7.4, t.zona); scene.add(fl); fl.userData.ondula = Math.random() * 6; fl.userData.base = fl.geometry.attributes.position.array.slice(); fl.userData.lado = s; zonasFlags.push(fl);
       }
       const faixa = rotulo(`PRAÇA DA TORCIDA DO ${t.nome.toUpperCase()}`, t.cor, 512);
       faixa.position.set(0, 10.5, t.zona); faixa.scale.set(14, 1.75, 1); faixa.material.depthTest = true; scene.add(faixa);
@@ -331,62 +427,96 @@ body.spray #b-spray{background:var(--ouro);color:#000}
   const zonasFlags = [];
   function montarTrio() {
     const g = new T.Group();
-    const corpo = new T.Mesh(new T.BoxGeometry(3.4, 2.6, 10), new T.MeshLambertMaterial({ color: "#222" })); corpo.position.y = 1.5; g.add(corpo);
-    const cab = new T.Mesh(new T.BoxGeometry(3.2, 2.2, 2.4), new T.MeshLambertMaterial({ color: "#f5c518" })); cab.position.set(0, 1.4, 6); g.add(cab);
-    for (const s of [-1, 1]) { const cx = new T.Mesh(new T.BoxGeometry(.2, 1.6, 7), new T.MeshLambertMaterial({ color: "#444" })); cx.position.set(s * 1.75, 1.6, -.5); g.add(cx); }
-    const palco = new T.Mesh(new T.BoxGeometry(3.6, .2, 10.2), new T.MeshLambertMaterial({ color: "#6a6a6a" })); palco.position.y = 2.9; g.add(palco);
-    for (const z of [-4.5, 4.5]) for (const s of [-1, 1]) { const p = new T.Mesh(new T.BoxGeometry(.12, 1.2, .12), new T.MeshLambertMaterial({ color: "#ccc" })); p.position.set(s * 1.7, 3.6, z); g.add(p); }
-    for (const z of [-2.5, 2.5]) { const r = new T.Mesh(new T.BoxGeometry(3.6, .1, .1), new T.MeshLambertMaterial({ color: "#ccc" })); r.position.set(0, 4.2, z * 1.8); g.add(r); }
+    const corpo = caixa(3.4, 2.4, 10, mat("#1d1f24", { metalness: .3, roughness: .5 }), 0, 1.6, 0, g);
+    const cab = caixa(3.2, 2.2, 2.4, mat("#f5c518", { metalness: .3, roughness: .45 }), 0, 1.5, 6, g);
+    caixa(3, .9, .05, new T.MeshStandardMaterial({ color: "#9fd3ff", roughness: .1, metalness: .5 }), 0, 1.95, 7.21, g);
+    for (const sx of [-1.45, 1.45]) for (const sz of [-3.5, 0, 3.5, 6]) { const r = malha(new T.CylinderGeometry(.55, .55, .45, 14), mat("#111"), sx, .55, sz, g); r.rotation.z = Math.PI / 2; }
+    for (const s of [-1, 1]) for (const z of [-3, 0, 3]) { // caixas de som
+      caixa(.25, 1.6, 2.4, mat("#2a2a2a"), s * 1.8, 1.6, z, g);
+      for (const dy of [-.35, .35]) { const cone = malha(new T.CylinderGeometry(.42, .42, .06, 16), mat("#555", { metalness: .5 }), s * 1.95, 1.6 + dy, z, g); cone.rotation.z = Math.PI / 2; }
+    }
+    caixa(3.6, .2, 10.2, mat("#6a6a6a", { metalness: .4 }), 0, 2.9, 0, g);
+    for (const z of [-4.9, 4.9]) for (const s of [-1, 1]) malha(new T.CylinderGeometry(.06, .06, 1.2, 6), mat("#ccc", { metalness: .7 }), s * 1.7, 3.6, z, g);
+    for (const s of [-1, 1]) { const corr = malha(new T.CylinderGeometry(.05, .05, 9.8, 6), mat("#ccc", { metalness: .7 }), s * 1.7, 4.2, 0, g); corr.rotation.x = Math.PI / 2; }
+    const luzes = []; for (let i = 0; i < 10; i++) { const l = new T.Mesh(new T.SphereGeometry(.12, 6, 5), new T.MeshBasicMaterial({ color: pick(["#ff3b3b", "#3bff6b", "#3b8bff", "#ffe23b"]) })); l.position.set(i % 2 ? 1.7 : -1.7, 4.3, -4.5 + i); g.add(l); luzes.push(l); }
     const placa = rotulo("TRIO DAS TORCIDAS", "#f5c518", 512); placa.position.set(0, 5.2, 0); placa.scale.set(7, .9, 1); placa.material.depthTest = true; g.add(placa);
     g.position.set(0, 0, -90); scene.add(g);
-    pintaveis.push(corpo);
-    trio = { g, x: 0, z: -90, hx: 1.8, hz: 6.2 };
-    obstaculos.push({ box: true, x0: -1.9, x1: 1.9, z0: -96.2, z1: -83.8, h: 3 });
+    pintaveis.push(corpo, cab);
+    trio = { g, x: 0, z: -90, hx: 1.8, hz: 6.2, luzes };
+    obstaculos.push({ box: true, x0: -1.9, x1: 1.9, z0: -96.2, z1: -82.8, h: 3 });
   }
   function criarCarro(x, z, cor) {
     const g = new T.Group();
-    const corpo = new T.Mesh(new T.BoxGeometry(2, .8, 4.2), new T.MeshLambertMaterial({ color: cor })); corpo.position.y = .7; g.add(corpo);
-    const cab = new T.Mesh(new T.BoxGeometry(1.8, .7, 2.2), new T.MeshLambertMaterial({ color: "#a9d4ff" })); cab.position.set(0, 1.45, -.2); g.add(cab);
+    const pint = mat(cor, { metalness: .55, roughness: .35 });
+    const corpo = caixa(1.9, .55, 4.3, pint, 0, .62, 0, g);
+    caixa(1.86, .25, 1.2, pint, 0, .98, 1.45, g); // capô
+    caixa(1.86, .25, .9, pint, 0, .98, -1.65, g); // porta-malas
+    const cabine = caixa(1.7, .62, 2.1, pint, 0, 1.2, -.2, g);
+    const vidro = new T.MeshStandardMaterial({ color: "#1d2a3a", roughness: .1, metalness: .6 });
+    const vf = caixa(1.6, .5, .05, vidro, 0, 1.22, .87, g); vf.rotation.x = -.45;
+    caixa(1.6, .48, .05, vidro, 0, 1.22, -1.27, g);
+    for (const s of [-1, 1]) caixa(.04, .45, 1.8, vidro, s * .86, 1.22, -.2, g);
+    for (const s of [-1, 1]) { caixa(.38, .16, .05, new T.MeshBasicMaterial({ color: "#fffbe0" }), s * .62, .72, 2.16, g); caixa(.38, .14, .05, new T.MeshBasicMaterial({ color: "#d61f1f" }), s * .62, .76, -2.16, g); }
+    caixa(1.95, .18, .2, mat("#222"), 0, .45, 2.18, g); caixa(1.95, .18, .2, mat("#222"), 0, .45, -2.18, g);
     const rodas = [];
-    for (const sx of [-1, 1]) for (const sz of [-1.3, 1.3]) { const r = new T.Mesh(new T.CylinderGeometry(.38, .38, .3, 10), new T.MeshLambertMaterial({ color: "#111" })); r.rotation.z = Math.PI / 2; r.position.set(sx * 1, .38, sz); g.add(r); rodas.push(r); }
+    for (const sx of [-1, 1]) for (const sz of [-1.35, 1.35]) {
+      const r = new T.Group(); r.position.set(sx * .95, .38, sz); g.add(r);
+      const pneu = malha(new T.CylinderGeometry(.38, .38, .28, 16), mat("#151515"), 0, 0, 0, r); pneu.rotation.z = Math.PI / 2;
+      const calota = malha(new T.CylinderGeometry(.22, .22, .3, 10), mat("#c8c8c8", { metalness: .8, roughness: .3 }), 0, 0, 0, r); calota.rotation.z = Math.PI / 2;
+      rodas.push(r);
+    }
     g.position.set(x, 0, z); scene.add(g);
-    pintaveis.push(corpo);
+    pintaveis.push(corpo, cabine);
     return { g, rodas, vel: 0, dir: 0 };
   }
 
   // ---------------- TORCEDORES ----------------
+  const GEO = {
+    cabeca: new T.SphereGeometry(.27, 16, 12), cabelo: new T.SphereGeometry(.285, 16, 10, 0, Math.PI * 2, 0, Math.PI * .55),
+    torso: new T.CylinderGeometry(.3, .25, .78, 14), ombro: new T.SphereGeometry(.3, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+    quadril: new T.SphereGeometry(.25, 12, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2),
+    braco: new T.CylinderGeometry(.095, .085, .62, 10), mao: new T.SphereGeometry(.095, 10, 8),
+    perna: new T.CylinderGeometry(.125, .11, .78, 10), tenis: new T.SphereGeometry(.15, 10, 8),
+    olho: new T.SphereGeometry(.035, 8, 6), nariz: new T.SphereGeometry(.045, 8, 6), pescoco: new T.CylinderGeometry(.1, .11, .14, 10),
+    rabo: new T.SphereGeometry(.17, 10, 8), mastro: new T.CylinderGeometry(.025, .025, 1.8, 6),
+  };
   function criarTorcedor(time, tipo, nome, eJogador) {
     const g = new T.Group();
-    const pele = new T.MeshLambertMaterial({ color: pick(["#f1c9a5", "#d9a37e", "#a86f4c", "#7a4a2e", "#e8b896"]) });
-    const camisaM = new T.MeshLambertMaterial({ map: camisa(time) });
-    const calca = new T.MeshLambertMaterial({ color: pick(["#24324d", "#2b2b2b", "#4a3b2a", "#556070"]) });
-    const cabeloCor = tipo === "velho" || tipo === "velha" ? "#d6d6d6" : pick(["#2b1a10", "#111", "#5a3a1e", "#c9a14a"]);
-    const cab = new T.MeshLambertMaterial({ color: cabeloCor });
-    const parte = (w, h, d, m, x, y, z, pai) => { const o = new T.Mesh(new T.BoxGeometry(w, h, d), m); o.position.set(x, y, z); (pai || g).add(o); return o; };
-    const perna = (x) => { const p = new T.Group(); p.position.set(x, .85, 0); g.add(p); parte(.28, .85, .3, calca, 0, -.42, 0, p); parte(.3, .14, .4, new T.MeshLambertMaterial({ color: "#eee" }), 0, -.82, .05, p); return p; };
-    const braco = (x) => { const b = new T.Group(); b.position.set(x, 1.62, 0); g.add(b); parte(.22, .72, .24, camisaM, 0, -.3, 0, b); parte(.2, .18, .2, pele, 0, -.72, 0, b); return b; };
-    const pL = perna(-.17), pR = perna(.17);
-    parte(.68, .8, .38, camisaM, 0, 1.25, 0);
-    const aL = braco(-.46), aR = braco(.46);
-    parte(.5, .5, .48, pele, 0, 1.95, 0);
-    parte(.52, .14, .5, cab, 0, 2.25, 0);
-    if (tipo === "mulher" || tipo === "velha") parte(.52, .55, .14, cab, 0, 1.95, -.24);
-    if (tipo === "velho") parte(.06, .06, .5, new T.MeshLambertMaterial({ color: "#222" }), 0, 1.98, .25);
-    parte(.07, .07, .02, new T.MeshBasicMaterial({ color: "#111" }), -.11, 1.98, .245);
-    parte(.07, .07, .02, new T.MeshBasicMaterial({ color: "#111" }), .11, 1.98, .245);
+    const corPele = pick(["#f1c9a5", "#d9a37e", "#a86f4c", "#7a4a2e", "#e8b896", "#5c3a22"]);
+    const pele = mat(corPele, { roughness: .7 });
+    const camisaM = new T.MeshStandardMaterial({ map: camisa(time), roughness: .8 });
+    const calca = mat(pick(["#24324d", "#2b2b2b", "#4a3b2a", "#556070", "#3d4f2a"]));
+    const cabeloCor = tipo === "velho" || tipo === "velha" ? "#d9d9d9" : pick(["#2b1a10", "#111", "#5a3a1e", "#c9a14a", "#7a2e1a"]);
+    const cab = mat(cabeloCor, { roughness: .6 });
+    const tenis = mat(pick(["#f2f2f2", "#222", TIMES[time].cor]));
+    const perna = (x) => { const p = new T.Group(); p.position.set(x, .86, 0); g.add(p); malha(GEO.perna, calca, 0, -.39, 0, p); const t = malha(GEO.tenis, tenis, 0, -.8, .06, p); t.scale.set(1, .55, 1.5); return p; };
+    const braco = (x) => { const b = new T.Group(); b.position.set(x, 1.55, 0); g.add(b); malha(GEO.braco, camisaM, 0, -.28, 0, b); malha(GEO.mao, pele, 0, -.64, 0, b); return b; };
+    const pL = perna(-.14), pR = perna(.14);
+    malha(GEO.quadril, calca, 0, .92, 0, g).scale.set(1.1, .5, .85);
+    const torso = malha(GEO.torso, camisaM, 0, 1.28, 0, g); torso.scale.z = .72;
+    malha(GEO.ombro, camisaM, 0, 1.6, 0, g).scale.set(1.05, .45, .72);
+    const aL = braco(-.37), aR = braco(.37);
+    malha(GEO.pescoco, pele, 0, 1.72, 0, g);
+    const cabeca = new T.Group(); cabeca.position.set(0, 1.98, 0); g.add(cabeca);
+    malha(GEO.cabeca, pele, 0, 0, 0, cabeca).scale.set(1, 1.06, .98);
+    malha(GEO.cabelo, cab, 0, .03, -.02, cabeca).rotation.x = .35;
+    if (tipo === "mulher" || tipo === "velha") { const r = malha(GEO.rabo, cab, 0, -.08, -.26, cabeca); r.scale.set(1, tipo === "mulher" ? 1.6 : 1, .8); }
+    for (const s of [-1, 1]) malha(GEO.olho, mat("#151515", { roughness: .3 }), s * .095, .03, .245, cabeca);
+    malha(GEO.nariz, pele, 0, -.04, .27, cabeca);
+    if (tipo === "velho") { for (const s of [-1, 1]) { const o = malha(new T.TorusGeometry(.06, .012, 6, 12), mat("#222"), s * .095, .03, .26, cabeca); void o; } caixa(.08, .012, .012, mat("#222"), 0, .03, .27, cabeca); }
     let flag = null;
     if (eJogador || Math.random() < .45) {
-      flag = new T.Group(); flag.position.set(0, -.7, 0); aR.add(flag);
-      parte(.05, 1.8, .05, new T.MeshLambertMaterial({ color: "#ddd" }), 0, .6, 0, flag);
-      const pano = new T.Mesh(new T.PlaneGeometry(1.1, .74), new T.MeshLambertMaterial({ map: bandeira(time), side: T.DoubleSide }));
-      pano.position.set(0, 1.15, -.56); pano.rotation.y = Math.PI / 2; flag.add(pano);
+      flag = new T.Group(); flag.position.set(0, -.64, 0); aR.add(flag);
+      malha(GEO.mastro, mat("#e0e0e0", { metalness: .5 }), 0, .6, 0, flag);
+      const pano = new T.Mesh(new T.PlaneGeometry(1.1, .74), new T.MeshStandardMaterial({ map: bandeira(time), side: T.DoubleSide, roughness: .9 }));
+      pano.castShadow = true; pano.position.set(0, 1.15, -.56); pano.rotation.y = Math.PI / 2; flag.add(pano);
     }
-    const esc = tipo === "crianca" ? .7 : (tipo === "velho" || tipo === "velha") ? .94 : 1;
+    const esc = tipo === "crianca" ? .68 : (tipo === "velho" || tipo === "velha") ? .94 : rnd(.96, 1.06);
     g.scale.setScalar(esc);
     const tag = rotulo(nome, TIMES[time].cor);
     tag.position.y = 2.75; g.add(tag);
     scene.add(g);
-    const t = { g, time, tipo, nome, pL, pR, aL, aR, flag, fase: Math.random() * 6, vy: 0, chao: true, eJogador, bolha: null, bolhaT: 0, acao: null, acaoT: 0, prox: rnd(3, 12), esc };
+    const t = { g, time, tipo, nome, pL, pR, aL, aR, flag, cabeca, torso, fase: Math.random() * 6, vy: 0, chao: true, eJogador, bolha: null, bolhaT: 0, acao: null, acaoT: 0, prox: rnd(3, 12), esc };
     torcedores.push(t);
     return t;
   }
@@ -395,6 +525,7 @@ body.spray #b-spray{background:var(--ouro);color:#000}
     t.fase += dt * (4 + vel * 1.4);
     const s = Math.sin(t.fase) * .8 * anda;
     t.pL.rotation.x = s; t.pR.rotation.x = -s;
+    if (t.torso) { t.torso.rotation.y = Math.sin(t.fase) * .12 * anda; t.cabeca.position.y = 1.98 + Math.abs(Math.cos(t.fase)) * .04 * anda; t.cabeca.rotation.z = Math.sin(t.fase * .5) * .05; }
     if (t.acao === "acenar" || t.acao === "pular") { t.aR.rotation.x = -2.7 + Math.sin(t.fase * 2) * .3; t.aR.rotation.z = .2; t.aL.rotation.x = t.acao === "pular" ? -2.7 : -s * .8; }
     else { t.aR.rotation.x = t.flag ? -.9 + Math.sin(t.fase * .5) * .1 : -s * .8; t.aR.rotation.z = 0; t.aL.rotation.x = s * .8; }
     if (t.bolha) { t.bolhaT -= dt; if (t.bolhaT <= 0) { t.g.remove(t.bolha); t.bolha = null; } }
@@ -709,7 +840,14 @@ body.spray #b-spray{background:var(--ouro);color:#000}
     tPichoBot -= dt;
     if (tPichoBot <= 0) { tPichoBot = rnd(1.2, 3); botPicha(pick(torcedores.filter((x) => !x.eJogador))); }
     if (noTrio && Math.random() < dt * 2) { const b = pick(torcedores.filter((x) => !x.eJogador && x.g.position.distanceTo(p) < 30)); if (b) { b.acao = "pular"; b.acaoT = 1.5; } }
-    for (const f of zonasFlags) f.rotation.y = Math.sin(tempo * 2 + f.userData.ondula) * .25;
+    for (const f of zonasFlags) {
+      const pa = f.geometry.attributes.position, base = f.userData.base;
+      for (let k = 0; k < pa.count; k++) { const x = base[k * 3], dx = (x * f.userData.lado + 2.1); pa.array[k * 3 + 2] = Math.sin(tempo * 4 + x * 1.6 + f.userData.ondula) * .18 * dx; }
+      pa.needsUpdate = true;
+    }
+    sol.position.set(p.x + 30, 45, p.z + 25); sol.target.position.set(p.x, 0, p.z);
+    if (ceuMesh) ceuMesh.position.set(camera.position.x, 0, camera.position.z);
+    if (trio.luzes) trio.luzes.forEach((l, k) => { l.visible = noTrio ? ((Math.floor(tempo * 6) + k) % 3 !== 0) : ((Math.floor(tempo * 2) + k) % 2 === 0); });
     // câmera
     const foco = vTmp.set(p.x, p.y + (dirigindo ? 1.2 : 1.8), p.z);
     const dd = dirigindo ? dist + 3 : dist;
