@@ -24769,7 +24769,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   var M = (new Function(MOTOR_SRC + "; return Motor;"))();
   var CHAVE = "nws-xadrez-mittens";
   var FALAS = {
-    inicio: ["Miau! Eu gosto de xadrez.", "Miau. Pode começar, eu espero.", "Ninguém me venceu hoje. Você vai ser o próximo.", "Eu sou o Mittens. Já sabe como isso termina, né?", "Prepare-se. Meu treino é dormir 18 horas e ganhar o resto."],
+    inicio: ["Miau! Eu gosto de xadrez.", "O destino trouxe você aqui, mas eu vivo aqui por todo o tempo e espaço, para sempre.", "Miau. Pode começar, eu espero.", "Ninguém me venceu hoje. Você vai ser o próximo.", "Eu sou o Mittens. Já sabe como isso termina, né?", "Prepare-se. Meu treino é dormir 18 horas e ganhar o resto."],
     captura: ["Obrigado pela peça.", "Nham. Mais uma pra minha coleção.", "Você deixou isso cair? Agora é meu.", "Hmm, essa peça estava gostosa."],
     perdeuPeca: ["Isso foi... aceitável.", "Ai. Mas eu tenho um plano.", "Pode ficar, eu dou outra pra você também.", "Arranhou um pouquinho."],
     xeque: ["Xeque. Corre, ratinho!", "Xeque! Cadê seu rei agora?", "Seu rei está suando, hein?"],
@@ -24779,11 +24779,12 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
     venceu: ["Eu me tornei Mittens, o destruidor de reis.", "Xeque-mate. Miau.", "Mais um pra lista. Volte quando tiver treinado.", "Foi divertido. Pra mim."],
     perdeu: ["O quê? Você trapaceo... quer dizer, miau.", "O quê?! Isso não pode estar certo... Parabéns, você é lendário!", "Impossível... Você venceu o Mittens."],
     empate: ["Empate. Você teve sorte hoje.", "Hmm, ninguém ganhou. Vamos de novo?"],
+    mateForcado: ["Miau. Você não vai durar muito nesta partida."],
     pensando: ["Hmm...", "Deixa eu pensar...", "Calculando sua derrota...", "", "Shhh. Gatos precisam de silêncio pra caçar."],
     mestres: ["Grandes mestres já sentaram nessa cadeira. Todos saíram chorando.", "Já derrotei mestres do xadrez antes do meu cochilo da tarde.", "Campeões, mestres internacionais... todos viraram arranhador pra mim.", "Os mestres do xadrez estudam aberturas. Eu estudo eles.", "Sabe quantos grandes mestres eu já venci? Nem eu sei mais. Perdi a conta entre um sachê e outro.", "Um grande mestre uma vez me ofereceu empate. Eu recusei. Ele ainda está pensando no lance 40."],
     enrolando: ["Por que ter pressa? Eu gosto de brincar com a comida.", "Eu poderia acabar agora... mas qual seria a graça?", "Vou fazer uma dama. Talvez duas. Talvez três.", "Seu rei pode correr. Eu tenho o dia todo.", "Gatos não matam o rato de primeira. Eles brincam antes."],
     promoveu: ["Mais uma dama. Eu coleciono elas.", "Olha que linda minha dama nova!", "Damas, damas e mais damas. Miau."],
-    sinistro: ["Eu me tornei Mittens, o destruidor de reis.", "Eu existo neste tabuleiro através de todos os tempos e realidades.", "Miau! Eu gosto de xadrez.", "Eu vejo você pensando. Eu sempre vejo.", "Você sentiu isso? Fui eu, chegando mais perto.", "Não precisa ter medo. Ainda.", "Eu estava aqui antes de você e vou estar aqui depois."]
+    sinistro: ["Eu sou um tigre, e você está na selva que eu chamo de eternidade.", "O destino trouxe você aqui, mas eu vivo aqui por todo o tempo e espaço, para sempre.", "Todos os enxadristas acabam desmoronando sob minhas patas poderosas... quer dizer, miau.", "Não entendo por que o xadrez tem cavalos em vez de gatos.", "Eu me tornei Mittens, o destruidor de reis.", "Eu existo neste tabuleiro através de todos os tempos e realidades.", "Miau! Eu gosto de xadrez.", "Eu vejo você pensando. Eu sempre vejo.", "Você sentiu isso? Fui eu, chegando mais perto.", "Não precisa ter medo. Ainda.", "Eu estava aqui antes de você e vou estar aqui depois."]
   };
   var PECA = { 1: "♟", 2: "♞", 3: "♝", 4: "♜", 5: "♛", 6: "♚" };
   var pick = function (l) { return l[Math.floor(Math.random() * l.length)]; };
@@ -24833,7 +24834,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   ].join("\n");
   document.head.appendChild(css);
 
-  var jogo, eu, ov, tabEl, falaEl, selec = -1, alvos = [], ultimo = null, lancesSan = [], pensando = false, worker = null, acabou = false, avalAnterior = 0, ultimaFala = 0;
+  var jogo, eu, ov, tabEl, falaEl, selec = -1, alvos = [], ultimo = null, lancesSan = [], pensando = false, worker = null, acabou = false, avalAnterior = 0, avisouMate = false, ultimaFala = 0;
   function criarWorker() {
     try { var url = URL.createObjectURL(new Blob([MOTOR_SRC], { type: "text/javascript" })); var w = new Worker(url); return w; } catch (e) { return null; }
   }
@@ -24882,7 +24883,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   function comecar(cor) {
     if (worker) worker.terminate();
     worker = criarWorker();
-    jogo = new M.Jogo(); eu = cor; selec = -1; alvos = []; ultimo = null; lancesSan = []; acabou = false; pensando = false; avalAnterior = 0;
+    jogo = new M.Jogo(); eu = cor; selec = -1; alvos = []; ultimo = null; lancesSan = []; acabou = false; pensando = false; avalAnterior = 0; avisouMate = false;
     desenhar(); falar(Math.random() < .35 ? "mestres" : "inicio", true);
     if (jogo.lado !== eu) setTimeout(vezDoMittens, 500);
   }
@@ -24971,7 +24972,8 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
       if (e) { fimDeJogo(e); return; }
       var val = r.valor || 0;
       var promo = (m >> 14) & 7;
-      if (jogo.emXeque()) falar("xeque", true);
+      if (val > 90000 && !avisouMate) { avisouMate = true; falar("mateForcado", true); }
+      else if (jogo.emXeque()) falar("xeque", true);
       else if (promo) falar("promoveu", true);
       else if (r.enrolou && Math.random() < .5) falar("enrolando", true);
       else if (cap) falar("captura");
@@ -25084,7 +25086,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   var APLAUSO_BOT = { mittens: ["Hmm... Nada mal, humano.", "Miau. Esse foi bom.", "Até eu jogaria isso.", "Bom lance. Eu teria achado em 0,01 segundo, mas bom.", "Parabéns. Ainda assim, eu sou o destruidor de reis."], toto: ["Au au! 👏🐶", "*bate as patinhas* 👏"], robo: ["LANCE APROVADO. 👏 BIP.", "EFICIÊNCIA: 100%. 👏"], joao: ["Ok, esse foi PRO. 👏", "Respeito, mano. 👏"], cida: ["Muito bem, meu netinho! 👏", "Isso, querido! 👏"], ze: ["Uau, como você fez isso? 👏", "Que lance! 👏"] };
   var MITTENS_T = { id: "mittens", nome: "Mittens", clube: "Treinador", cor: "#ffd23f",
     falas: { inicio: ["Miau! Hoje eu sou seu treinador.", "Eu me tornei Mittens, o destruidor de reis.", "Vamos treinar. Eu aviso quando você acertar.", "Você tem sorte. Grandes mestres pagariam pra treinar comigo."],
-      gabar: ["Eu me tornei Mittens, o destruidor de reis.", "Eu existo neste tabuleiro através de todos os tempos e realidades.", "Grandes mestres já choraram nessa cadeira.", "Estou jogando com uma pata só, viu?", "Já venci campeões antes do meu cochilo da tarde.", "Treinar você é fácil. Treinar campeões do mundo, isso sim dá trabalho.", "Miau! Eu gosto de xadrez. E xadrez gosta de mim."], captura: ["Peguei. Presta atenção nas peças soltas.", "Miau. Essa peça estava sem defesa."], perdeu: ["Boa! Você achou a peça solta.", "Hmm, você aprende rápido."], xeque: ["Xeque. Como você sai dessa?", "Olha o rei!"], venceu: ["Xeque-mate. Eu me tornei Mittens, o destruidor de reis. ", "Xeque-mate. Miau. Vamos de novo? ", "Treino é assim: perde, aprende, volta. Eu nunca perco, mas você pode aprender."], derrota: ["O quê? Você trapaceo... quer dizer, miau. Parabéns. ", "Você venceu seu treinador. Interessante."] } };
+      gabar: ["Eu sou um tigre, e você está na selva que eu chamo de eternidade.", "O destino trouxe você aqui, mas eu vivo aqui por todo o tempo e espaço, para sempre.", "Todos os enxadristas acabam desmoronando sob minhas patas poderosas... quer dizer, miau.", "Não entendo por que o xadrez tem cavalos em vez de gatos.", "Eu me tornei Mittens, o destruidor de reis.", "Eu existo neste tabuleiro através de todos os tempos e realidades.", "Grandes mestres já choraram nessa cadeira.", "Estou jogando com uma pata só, viu?", "Já venci campeões antes do meu cochilo da tarde.", "Treinar você é fácil. Treinar campeões do mundo, isso sim dá trabalho.", "Miau! Eu gosto de xadrez. E xadrez gosta de mim."], captura: ["Peguei. Presta atenção nas peças soltas.", "Miau. Essa peça estava sem defesa."], perdeu: ["Boa! Você achou a peça solta.", "Hmm, você aprende rápido."], xeque: ["Xeque. Como você sai dessa?", "Olha o rei!"], venceu: ["Xeque-mate. Eu me tornei Mittens, o destruidor de reis. ", "Xeque-mate. Miau. Vamos de novo? ", "Treino é assim: perde, aprende, volta. Eu nunca perco, mas você pode aprender."], derrota: ["O quê? Você trapaceo... quer dizer, miau. Parabéns. ", "Você venceu seu treinador. Interessante."] } };
   window.abrirXadrezTreino = function (id, nv) {
     if (document.getElementById("xb-ov")) return;
     var base = ADV.concat(DESAFIANTES).find(function (a) { return a.id === id; });
@@ -25249,7 +25251,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   function comecar(cor) {
     if (worker) worker.terminate();
     worker = criarWorker();
-    jogo = new M.Jogo(); eu = cor; selec = -1; alvos = []; ultimo = null; lancesSan = []; acabou = false; pensando = false;
+    jogo = new M.Jogo(); eu = cor; selec = -1; alvos = []; ultimo = null; lancesSan = []; acabou = false; pensando = false; if (adv) adv.avisouMate = false;
     ids = new Array(128).fill(null);
     for (var f = 0; f < 8; f++) { ids[16 + f] = PEOES_B[f]; ids[96 + f] = PEOES_P[f]; }
     ov.innerHTML = '<div class="xb-top"><button class="xb-btn" id="xb-voltar">← Adversários</button><h2>' + titulo() + '</h2><span style="width:60px"></span></div>' +
@@ -25358,7 +25360,8 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
         aplicar(m);
         var e = jogo.estado(); desenhar();
         if (e) { fimDeJogo(e); return; }
-        if (jogo.emXeque()) falar("xeque", true); else if (cap) falar("captura");
+        if (adv.id === "mittens" && (r.valor || 0) > 90000 && !adv.avisouMate) { adv.avisouMate = true; falaEl.querySelector("div").textContent = "Miau. Você não vai durar muito nesta partida."; ultimaFala = Date.now(); }
+        else if (jogo.emXeque()) falar("xeque", true); else if (cap) falar("captura");
         else if (adv.falas.gabar && Math.random() < .3) falar("gabar", true);
       }, espera);
     };
