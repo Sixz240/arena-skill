@@ -25190,6 +25190,21 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
     telaAdversarios();
     if (advId) { var a0 = LISTA.find(function (a) { return a.id === advId; }); if (a0) { adv = a0; escolherCor(); } }
   };
+  // falas de cada treinador na tela de escolher
+  var ESCOLHA = {
+    pedro: ["Me escolhe que eu te ensino a finalizar... digo, a dar mate!", "Treino de artilheiro: bora?", "Comigo é gol, ou melhor, xeque-mate."],
+    mauricio: ["Me escolhe e eu te ensino a dominar o meio-campo.", "Organização tática. Vamos treinar?", "Quer aprender a controlar o centro? Tô aqui."],
+    jean: ["Bora, Bahêa! Me escolhe aí!", "Treino com raça de Esquadrão. Topa?", "Comigo você aprende na garra."],
+    hulk: ["Me escolhe se tiver coragem!", "Treino pesado. Só pros fortes.", "Força total no tabuleiro. Bora?"],
+    toto: ["Au au! (me escolhe, me escolhe!)", "*abana o rabo esperando você*", "Au? Au au! 🐾"],
+    ze: ["Me escolhe! Eu também tô aprendendo!", "Bora aprender juntos?", "Prometo não chorar se perder... muito."],
+    cida: ["Vem cá, meu netinho, a vó te ensina.", "Escolhe a vó, que tem bolo depois.", "Senta aqui que a vó explica com calma."],
+    churras: ["Me escolhe que depois tem picanha!", "Treino de pracinha, do jeito antigo.", "Bora, sobrinho! O tio te ensina."],
+    bia: ["Quer aprender tática de verdade? Me escolhe.", "Garfos, cravadas e descobertos. Bora?", "Eu te mostro as jogadas que ninguém vê."],
+    joao: ["Me escolhe, noob. Eu te deixo PRO.", "Treino de PRO, sem choro.", "Quer subir de Elo? Fala comigo, mano."],
+    robo: ["SELECIONE ESTE TREINADOR. BIP.", "PROGRAMA DE TREINO CARREGADO. AGUARDANDO HUMANO.", "PROBABILIDADE DE VOCÊ ME ESCOLHER: 99,7%."]
+  };
+  window.XADREZ_FALA_ESCOLHA = function (id) { if (id === "mittens") return "O livre-arbítrio é uma ilusão. Você já me escolheu, só ainda não sabe disso."; var l = ESCOLHA[id]; return l ? pick(l) : ""; };
   // lista de todos os treinadores (para a tela de Treinadores)
   window.XADREZ_BOTS = function () {
     var pl = carregar();
@@ -25808,7 +25823,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
       '<div style="font-weight:900;color:#ffd23f;margin:0 0 6px">1. ESCOLHA O NÍVEL</div><div id="xt-niveis" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px"></div>' +
       '<div style="font-weight:900;color:#ffd23f;margin:0 0 6px">2. ESCOLHA O TREINADOR</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
     bots.forEach(function (b) {
-      h += '<button class="xt-bot" data-id="' + b.id + '" style="display:flex;align-items:center;gap:8px;text-align:left;background:#1a0c20;border:1px solid ' + b.cor + ';border-radius:12px;padding:8px;color:#fff;font:inherit;width:auto;margin:0;cursor:pointer"><img src="' + b.foto + '" style="width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:top;flex:none;border:2px solid ' + b.cor + '"><span style="min-width:0"><b style="display:block;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + b.nome + '</b><small style="display:block;color:#d9b8e6;font-size:.72rem">' + b.sub + '</small><small style="display:block;color:#ffd23f;font-size:.7rem">' + (b.v ? "🏆 Vencido " + b.v + "x" : "Ainda não vencido") + "</small></span></button>";
+      h += '<button class="xt-bot" data-id="' + b.id + '" style="display:flex;align-items:flex-start;gap:8px;text-align:left;background:#1a0c20;border:1px solid ' + b.cor + ';border-radius:12px;padding:8px;color:#fff;font:inherit;width:auto;margin:0;cursor:pointer"><img src="' + b.foto + '" style="width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:top;flex:none;border:2px solid ' + b.cor + '"><span style="min-width:0"><b style="display:block;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + b.nome + '</b><small style="display:block;color:#d9b8e6;font-size:.72rem">' + b.sub + '</small><small style="display:block;color:#ffd23f;font-size:.7rem">' + (b.v ? "🏆 Vencido " + b.v + "x" : "Ainda não vencido") + "</small>" + (window.XADREZ_FALA_ESCOLHA ? '<span style="display:block;margin-top:5px;background:#fff;color:#222;border-radius:10px 10px 10px 2px;padding:5px 7px;font-size:.72rem;line-height:1.3;font-style:italic">“' + window.XADREZ_FALA_ESCOLHA(b.id) + "”</span>" : "") + "</span></button>";
     });
     t.innerHTML = h + "</div></div>";
     document.body.appendChild(t);
