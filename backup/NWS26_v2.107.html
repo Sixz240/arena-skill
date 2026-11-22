@@ -25081,9 +25081,10 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   ];
   var APLAUSO = ["👏 Boa jogada!", "👏👏 Isso aí!", "Excelente lance! 👏", "Mandou bem! 👏", "Perfeito! 👏👏👏", "É assim que se joga! 👏"];
   var MELHOR = ["🌟 MELHOR LANCE! 👏👏👏", "Era exatamente esse! 👏🌟", "Lance de mestre! 👏👏"];
-  var APLAUSO_BOT = { mittens: ["Hmm... 👏 Nada mal, humano.", "Miau 👏 Esse foi bom.", "👏 Até eu jogaria isso."], toto: ["Au au! 👏🐶", "*bate as patinhas* 👏"], robo: ["LANCE APROVADO. 👏 BIP.", "EFICIÊNCIA: 100%. 👏"], joao: ["Ok, esse foi PRO. 👏", "Respeito, mano. 👏"], cida: ["Muito bem, meu netinho! 👏", "Isso, querido! 👏"], ze: ["Uau, como você fez isso? 👏", "Que lance! 👏"] };
+  var APLAUSO_BOT = { mittens: ["Hmm... 👏 Nada mal, humano.", "Miau 👏 Esse foi bom.", "👏 Até eu jogaria isso.", "👏 Bom lance. Eu teria achado em 0,01 segundo, mas bom.", "👏 Parabéns. Ainda assim, eu sou o destruidor de reis."], toto: ["Au au! 👏🐶", "*bate as patinhas* 👏"], robo: ["LANCE APROVADO. 👏 BIP.", "EFICIÊNCIA: 100%. 👏"], joao: ["Ok, esse foi PRO. 👏", "Respeito, mano. 👏"], cida: ["Muito bem, meu netinho! 👏", "Isso, querido! 👏"], ze: ["Uau, como você fez isso? 👏", "Que lance! 👏"] };
   var MITTENS_T = { id: "mittens", nome: "Mittens", clube: "Treinador", cor: "#ffd23f",
-    falas: { inicio: ["Miau! Hoje eu sou seu treinador.", "Eu me tornei Mittens, o treinador de reis.", "Vamos treinar. Eu aplaudo quando você acertar. 🐾"], captura: ["Peguei. Presta atenção nas peças soltas.", "Miau. Essa peça estava sem defesa."], perdeu: ["Boa! Você achou a peça solta.", "Hmm, você aprende rápido."], xeque: ["Xeque. Como você sai dessa?", "Olha o rei!"], venceu: ["Xeque-mate. Miau. Vamos de novo? 😼", "Treino é assim: perde, aprende, volta."], derrota: ["O QUÊ?! VOCÊ TRAPACEO— quer dizer, MIAU! Parabéns! 👏", "Você venceu seu treinador! 🙀👏"] } };
+    falas: { inicio: ["Miau! Hoje eu sou seu treinador.", "Eu me tornei Mittens, o destruidor de reis.", "Vamos treinar. Eu aplaudo quando você acertar. 🐾", "Você tem sorte. Grandes mestres pagariam pra treinar comigo."],
+      gabar: ["Eu me tornei Mittens, o destruidor de reis.", "Eu me tornei Mittens, o destruidor de reis. 😼", "Eu existo neste tabuleiro através de todos os tempos e realidades.", "Grandes mestres já choraram nessa cadeira.", "Estou jogando com uma pata só, viu?", "Já venci campeões antes do meu cochilo da tarde.", "Treinar você é fácil. Treinar campeões do mundo, isso sim dá trabalho.", "Miau! Eu gosto de xadrez. E xadrez gosta de mim."], captura: ["Peguei. Presta atenção nas peças soltas.", "Miau. Essa peça estava sem defesa."], perdeu: ["Boa! Você achou a peça solta.", "Hmm, você aprende rápido."], xeque: ["Xeque. Como você sai dessa?", "Olha o rei!"], venceu: ["Xeque-mate. Eu me tornei Mittens, o destruidor de reis. 😼", "Xeque-mate. Miau. Vamos de novo? 😼", "Treino é assim: perde, aprende, volta. Eu nunca perco, mas você pode aprender."], derrota: ["O QUÊ?! VOCÊ TRAPACEO— quer dizer, MIAU! Parabéns! 👏", "Você venceu seu treinador! 🙀👏"] } };
   window.abrirXadrezTreino = function (id, nv) {
     if (document.getElementById("xb-ov")) return;
     var base = ADV.concat(DESAFIANTES).find(function (a) { return a.id === id; });
@@ -25343,6 +25344,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
         var e = jogo.estado(); desenhar();
         if (e) { fimDeJogo(e); return; }
         if (jogo.emXeque()) falar("xeque", true); else if (cap) falar("captura");
+        else if (adv.falas.gabar && Math.random() < .3) falar("gabar", true);
       }, espera);
     };
     if (worker) { worker.onmessage = function (ev) { feito(ev.data); }; worker.onerror = function () { worker = null; feito(M.pensar(dados.fen, dados.hist, 800, 0, "", dados.maxProf, dados.erro)); }; worker.postMessage(dados); }
