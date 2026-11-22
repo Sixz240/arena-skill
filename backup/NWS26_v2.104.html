@@ -24793,7 +24793,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   var css = document.createElement("style");
   css.textContent = [
     "#xz-ov{position:fixed;inset:0;z-index:100002;background:radial-gradient(ellipse at top,#2a2045 0,#0c0b16 70%);color:#f3eefc;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;overflow:auto;padding:10px 10px 24px}",
-    "#xz-ov *{box-sizing:border-box}",
+    "#xz-ov *{box-sizing:border-box}","#xz-ov>*{flex-shrink:0}",
     ".xz-top{width:min(560px,100%);display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}",
     ".xz-top h2{margin:0;font-size:1.05rem;letter-spacing:.06em;color:#ffd23f}",
     ".xz-btn{border:1px solid #5b4a8a;background:#241c3d;color:#fff;border-radius:10px;padding:.5rem .8rem;font-weight:800;font-size:.85rem;cursor:pointer;width:auto;margin:0}",
@@ -24804,7 +24804,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
     "@keyframes xzbal{50%{transform:rotate(-6deg) scale(1.04)}}",
     ".xz-fala{flex:1;min-width:0}.xz-fala b{color:#ffd23f}.xz-fala div{font-size:.92rem;line-height:1.3;margin-top:2px}",
     ".xz-fala small{color:#b9a9e6;font-size:.72rem}",
-    ".xz-tab{width:min(560px,100%,calc(100vh - 290px));aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);overflow:hidden;border:6px solid #3d2b1f;border-radius:8px;box-shadow:0 12px 30px #0009;user-select:none;-webkit-user-select:none;touch-action:manipulation;min-width:280px}",
+    ".xz-tab{flex-shrink:0;width:min(560px,100%,calc(100vh - 290px));aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);overflow:hidden;border:6px solid #3d2b1f;border-radius:8px;box-shadow:0 12px 30px #0009;user-select:none;-webkit-user-select:none;touch-action:manipulation;min-width:280px}",
     ".xz-c{position:relative;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:min(9.2vw,52px);line-height:1;cursor:pointer}",
     ".xz-c.cl{background:#f0d9b5}.xz-c.es{background:#b58863}",
     ".xz-c.ult.cl{background:#f6eb72}.xz-c.ult.es{background:#dcc34b}",
@@ -25054,7 +25054,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   var css = document.createElement("style");
   css.textContent = [
     "#xb-ov{position:fixed;inset:0;z-index:100002;background:radial-gradient(ellipse at top,#0f3d2a 0,#07120d 70%);color:#eef8f1;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;overflow:auto;padding:10px 10px 24px}",
-    "#xb-ov *{box-sizing:border-box}",
+    "#xb-ov *{box-sizing:border-box}","#xb-ov>*{flex-shrink:0}",
     ".xb-top{width:min(560px,100%);display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}",
     ".xb-top h2{margin:0;font-size:1rem;letter-spacing:.05em;color:#ffd23f;text-align:center}",
     ".xb-btn{border:1px solid #2f6b4d;background:#123224;color:#fff;border-radius:10px;padding:.5rem .8rem;font-weight:800;font-size:.85rem;cursor:pointer;width:auto;margin:0}",
@@ -25071,7 +25071,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
     ".xb-adv-bar img{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:top;flex:none;border:3px solid var(--c)}",
     ".xb-adv-bar.pensa img{animation:xbbal 1s ease-in-out infinite}@keyframes xbbal{50%{transform:scale(1.06)}}",
     ".xb-fala{flex:1;min-width:0}.xb-fala b{color:#ffd23f}.xb-fala small{color:#a8d5bb;font-size:.72rem}.xb-fala div{font-size:.92rem;margin-top:2px}",
-    ".xb-tab{width:min(560px,100%,calc(100vh - 290px));min-width:280px;aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);overflow:hidden;border:6px solid #1d3b2c;border-radius:8px;box-shadow:0 12px 30px #0009;user-select:none;-webkit-user-select:none;touch-action:manipulation}",
+    ".xb-tab{flex-shrink:0;width:min(560px,100%,calc(100vh - 290px));min-width:280px;aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);overflow:hidden;border:6px solid #1d3b2c;border-radius:8px;box-shadow:0 12px 30px #0009;user-select:none;-webkit-user-select:none;touch-action:manipulation}",
     ".xb-c{position:relative;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer}",
     ".xb-c.cl{background:#e8f0d0}.xb-c.es{background:#5c9468}",
     ".xb-c.ult.cl{background:#f6eb72}.xb-c.ult.es{background:#c9c24b}",
@@ -25281,6 +25281,317 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
   setTimeout(botao, 1800); setTimeout(botao, 3800);
+})();
+
+</script>
+<script>
+// ===== Modo Xadrez Online com amigos (NWS 26) • Firebase Realtime Database =====
+(function () {
+  var MOTOR_SRC = "// ===== Motor de xadrez do Mittens (0x88, alfa-beta, aprofundamento iterativo, quiesc\u00eancia, tabela de transposi\u00e7\u00e3o) =====\nvar Motor = (function () {\n  var P = 1, N = 2, B = 3, R = 4, Q = 5, K = 6, PRETO = 8;\n  var VAL = [0, 100, 320, 330, 500, 900, 20000];\n  var DN = [33, 31, 18, 14, -33, -31, -18, -14], DB = [15, 17, -15, -17], DR = [16, -16, 1, -1], DK = [15, 16, 17, 1, -1, -15, -16, -17];\n  // tabelas de posi\u00e7\u00e3o (do ponto de vista das brancas, a8 primeiro)\n  var PST = {};\n  PST[P] = [0, 0, 0, 0, 0, 0, 0, 0, 50, 50, 50, 50, 50, 50, 50, 50, 10, 10, 20, 30, 30, 20, 10, 10, 5, 5, 10, 27, 27, 10, 5, 5, 0, 0, 0, 25, 25, 0, 0, 0, 5, -5, -10, 0, 0, -10, -5, 5, 5, 10, 10, -25, -25, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0];\n  PST[N] = [-50, -40, -30, -30, -30, -30, -40, -50, -40, -20, 0, 0, 0, 0, -20, -40, -30, 0, 10, 15, 15, 10, 0, -30, -30, 5, 15, 20, 20, 15, 5, -30, -30, 0, 15, 20, 20, 15, 0, -30, -30, 5, 10, 15, 15, 10, 5, -30, -40, -20, 0, 5, 5, 0, -20, -40, -50, -40, -30, -30, -30, -30, -40, -50];\n  PST[B] = [-20, -10, -10, -10, -10, -10, -10, -20, -10, 0, 0, 0, 0, 0, 0, -10, -10, 0, 5, 10, 10, 5, 0, -10, -10, 5, 5, 10, 10, 5, 5, -10, -10, 0, 10, 10, 10, 10, 0, -10, -10, 10, 10, 10, 10, 10, 10, -10, -10, 5, 0, 0, 0, 0, 5, -10, -20, -10, -40, -10, -10, -40, -10, -20];\n  PST[R] = [0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 10, 10, 10, 10, 10, 5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, 0, 0, 0, 5, 5, 0, 0, 0];\n  PST[Q] = [-20, -10, -10, -5, -5, -10, -10, -20, -10, 0, 0, 0, 0, 0, 0, -10, -10, 0, 5, 5, 5, 5, 0, -10, -5, 0, 5, 5, 5, 5, 0, -5, 0, 0, 5, 5, 5, 5, 0, -5, -10, 5, 5, 5, 5, 5, 0, -10, -10, 0, 5, 0, 0, 0, 0, -10, -20, -10, -10, -5, -5, -10, -10, -20];\n  var KMEIO = [-30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -20, -30, -30, -40, -40, -30, -30, -20, -10, -20, -20, -20, -20, -20, -20, -10, 20, 20, 0, 0, 0, 0, 20, 20, 20, 30, 10, 0, 0, 10, 30, 20];\n  var KFIM = [-50, -40, -30, -20, -20, -30, -40, -50, -30, -20, -10, 0, 0, -10, -20, -30, -30, -10, 20, 30, 30, 20, -10, -30, -30, -10, 30, 40, 40, 30, -10, -30, -30, -10, 30, 40, 40, 30, -10, -30, -30, -10, 20, 30, 30, 20, -10, -30, -30, -30, 0, 0, 0, 0, -30, -30, -50, -30, -30, -30, -30, -30, -30, -50];\n  function idx64(sq, preto) { var f = sq & 7, r = sq >> 4; return preto ? r * 8 + f : (7 - r) * 8 + f; }\n\n  // zobrist (dois n\u00fameros de 31 bits)\n  var Z1 = [], Z2 = [], ZS1, ZS2, ZC1 = [], ZC2 = [], ZE1 = [], ZE2 = [];\n  var semente = 1234567;\n  function rnd31() { semente = (semente * 1103515245 + 12345) & 0x7fffffff; return semente; }\n  for (var i = 0; i < 16 * 128; i++) { Z1.push(rnd31()); Z2.push(rnd31()); }\n  ZS1 = rnd31(); ZS2 = rnd31();\n  for (i = 0; i < 16; i++) { ZC1.push(rnd31()); ZC2.push(rnd31()); }\n  for (i = 0; i < 128; i++) { ZE1.push(rnd31()); ZE2.push(rnd31()); }\n\n  function Jogo() {\n    this.b = new Array(128); this.lado = 0; this.roque = 15; this.ep = -1; this.meio = 0; this.lance = 1;\n    this.reis = [4, 116]; this.h1 = 0; this.h2 = 0; this.pilha = []; this.hist = [];\n    this.inicial();\n  }\n  Jogo.prototype.inicial = function () { this.carregarFEN(\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\"); };\n  Jogo.prototype.carregarFEN = function (fen) {\n    var p = fen.split(\" \"), linhas = p[0].split(\"/\"), m = { p: P, n: N, b: B, r: R, q: Q, k: K };\n    for (var i = 0; i < 128; i++) this.b[i] = 0;\n    for (var r = 0; r < 8; r++) {\n      var f = 0, l = linhas[r];\n      for (var c = 0; c < l.length; c++) {\n        var ch = l[c];\n        if (ch >= \"1\" && ch <= \"8\") { f += +ch; continue; }\n        var t = m[ch.toLowerCase()], cor = ch === ch.toLowerCase() ? PRETO : 0, sq = (7 - r) * 16 + f;\n        this.b[sq] = t | cor; if (t === K) this.reis[cor ? 1 : 0] = sq; f++;\n      }\n    }\n    this.lado = p[1] === \"b\" ? PRETO : 0;\n    this.roque = 0; var rq = p[2] || \"-\";\n    if (rq.indexOf(\"K\") >= 0) this.roque |= 1; if (rq.indexOf(\"Q\") >= 0) this.roque |= 2; if (rq.indexOf(\"k\") >= 0) this.roque |= 4; if (rq.indexOf(\"q\") >= 0) this.roque |= 8;\n    this.ep = p[3] && p[3] !== \"-\" ? (p[3].charCodeAt(0) - 97) + (p[3].charCodeAt(1) - 49) * 16 : -1;\n    this.meio = +(p[4] || 0); this.lance = +(p[5] || 1);\n    this.pilha = []; this.hist = []; this.calcHash();\n  };\n  Jogo.prototype.fen = function () {\n    var s = \"\", l = [\"\", \"p\", \"n\", \"b\", \"r\", \"q\", \"k\"];\n    for (var r = 7; r >= 0; r--) {\n      var v = 0;\n      for (var f = 0; f < 8; f++) { var x = this.b[r * 16 + f]; if (!x) { v++; continue; } if (v) { s += v; v = 0; } var c = l[x & 7]; s += x & PRETO ? c : c.toUpperCase(); }\n      if (v) s += v; if (r) s += \"/\";\n    }\n    var rq = (this.roque & 1 ? \"K\" : \"\") + (this.roque & 2 ? \"Q\" : \"\") + (this.roque & 4 ? \"k\" : \"\") + (this.roque & 8 ? \"q\" : \"\");\n    return s + \" \" + (this.lado ? \"b\" : \"w\") + \" \" + (rq || \"-\") + \" \" + (this.ep >= 0 ? nomeCasa(this.ep) : \"-\") + \" \" + this.meio + \" \" + this.lance;\n  };\n  Jogo.prototype.calcHash = function () {\n    var a = 0, b = 0;\n    for (var i = 0; i < 128; i++) if (!(i & 0x88) && this.b[i]) { a ^= Z1[this.b[i] * 128 + i]; b ^= Z2[this.b[i] * 128 + i]; }\n    if (this.lado) { a ^= ZS1; b ^= ZS2; }\n    a ^= ZC1[this.roque]; b ^= ZC2[this.roque];\n    if (this.ep >= 0) { a ^= ZE1[this.ep]; b ^= ZE2[this.ep]; }\n    this.h1 = a; this.h2 = b;\n  };\n  Jogo.prototype.atacada = function (sq, cor) { // cor = cor de quem ataca (0 ou 8)\n    var b = this.b, i, t, d, x;\n    var pd = cor ? 1 : -1; // pe\u00f5es pretos atacam para baixo\n    t = sq + pd * 15; if (!(t & 0x88) && b[t] === (P | cor)) return true;\n    t = sq + pd * 17; if (!(t & 0x88) && b[t] === (P | cor)) return true;\n    for (i = 0; i < 8; i++) { t = sq + DN[i]; if (!(t & 0x88) && b[t] === (N | cor)) return true; }\n    for (i = 0; i < 8; i++) { t = sq + DK[i]; if (!(t & 0x88) && b[t] === (K | cor)) return true; }\n    for (i = 0; i < 4; i++) { d = DB[i]; t = sq + d; while (!(t & 0x88)) { x = b[t]; if (x) { if (x === (B | cor) || x === (Q | cor)) return true; break; } t += d; } }\n    for (i = 0; i < 4; i++) { d = DR[i]; t = sq + d; while (!(t & 0x88)) { x = b[t]; if (x) { if (x === (R | cor) || x === (Q | cor)) return true; break; } t += d; } }\n    return false;\n  };\n  Jogo.prototype.emXeque = function (cor) { if (cor === undefined) cor = this.lado; return this.atacada(this.reis[cor ? 1 : 0], cor ^ PRETO); };\n  // lance: f | t<<7 | promo<<14 | flag<<17  (flag: 1 captura, 2 ep, 4 roque, 8 duplo)\n  function mv(f, t, pr, fl) { return f | (t << 7) | (pr << 14) | (fl << 17); }\n  Jogo.prototype.gerar = function (soCapturas) {\n    var b = this.b, lado = this.lado, inim = lado ^ PRETO, ls = [], sq, x, t, d, i, k, y;\n    var dir = lado ? -16 : 16, ini = lado ? 6 : 1, ult = lado ? 0 : 7;\n    for (sq = 0; sq < 128; sq++) {\n      if (sq & 0x88) { sq += 7; continue; }\n      x = b[sq]; if (!x || (x & PRETO) !== lado) continue;\n      var tp = x & 7;\n      if (tp === P) {\n        t = sq + dir;\n        if (!soCapturas && !(t & 0x88) && !b[t]) {\n          if ((t >> 4) === ult) { ls.push(mv(sq, t, Q, 0), mv(sq, t, N, 0), mv(sq, t, R, 0), mv(sq, t, B, 0)); }\n          else { ls.push(mv(sq, t, 0, 0)); if ((sq >> 4) === ini && !b[t + dir]) ls.push(mv(sq, t + dir, 0, 8)); }\n        } else if (soCapturas && !(t & 0x88) && !b[t] && (t >> 4) === ult) ls.push(mv(sq, t, Q, 0));\n        for (k = -1; k <= 1; k += 2) {\n          t = sq + dir + k; if (t & 0x88) continue;\n          y = b[t];\n          if (y && (y & PRETO) === inim) { if ((t >> 4) === ult) { ls.push(mv(sq, t, Q, 1)); if (!soCapturas) ls.push(mv(sq, t, N, 1), mv(sq, t, R, 1), mv(sq, t, B, 1)); } else ls.push(mv(sq, t, 0, 1)); }\n          else if (t === this.ep) ls.push(mv(sq, t, 0, 3));\n        }\n      } else if (tp === N || tp === K) {\n        var D = tp === N ? DN : DK;\n        for (i = 0; i < 8; i++) { t = sq + D[i]; if (t & 0x88) continue; y = b[t]; if (!y) { if (!soCapturas) ls.push(mv(sq, t, 0, 0)); } else if ((y & PRETO) === inim) ls.push(mv(sq, t, 0, 1)); }\n        if (tp === K && !soCapturas) {\n          if (lado === 0 && sq === 4) {\n            if ((this.roque & 1) && !b[5] && !b[6] && b[7] === R && !this.atacada(4, inim) && !this.atacada(5, inim) && !this.atacada(6, inim)) ls.push(mv(4, 6, 0, 4));\n            if ((this.roque & 2) && !b[3] && !b[2] && !b[1] && b[0] === R && !this.atacada(4, inim) && !this.atacada(3, inim) && !this.atacada(2, inim)) ls.push(mv(4, 2, 0, 4));\n          } else if (lado && sq === 116) {\n            if ((this.roque & 4) && !b[117] && !b[118] && b[119] === (R | PRETO) && !this.atacada(116, 0) && !this.atacada(117, 0) && !this.atacada(118, 0)) ls.push(mv(116, 118, 0, 4));\n            if ((this.roque & 8) && !b[115] && !b[114] && !b[113] && b[112] === (R | PRETO) && !this.atacada(116, 0) && !this.atacada(115, 0) && !this.atacada(114, 0)) ls.push(mv(116, 114, 0, 4));\n          }\n        }\n      } else {\n        var DD = tp === B ? DB : tp === R ? DR : DK;\n        for (i = 0; i < DD.length; i++) {\n          d = DD[i]; t = sq + d;\n          while (!(t & 0x88)) { y = b[t]; if (!y) { if (!soCapturas) ls.push(mv(sq, t, 0, 0)); } else { if ((y & PRETO) === inim) ls.push(mv(sq, t, 0, 1)); break; } t += d; }\n        }\n      }\n    }\n    return ls;\n  };\n  var MASC_ROQUE = new Array(128); for (i = 0; i < 128; i++) MASC_ROQUE[i] = 15;\n  MASC_ROQUE[0] = 13; MASC_ROQUE[4] = 12; MASC_ROQUE[7] = 14; MASC_ROQUE[112] = 7; MASC_ROQUE[116] = 3; MASC_ROQUE[119] = 11;\n  Jogo.prototype.fazer = function (m) {\n    var f = m & 127, t = (m >> 7) & 127, pr = (m >> 14) & 7, fl = m >> 17, b = this.b, x = b[f], lado = this.lado;\n    var cap = (fl & 2) ? (P | (lado ^ PRETO)) : b[t], capSq = (fl & 2) ? t + (lado ? 16 : -16) : t;\n    this.pilha.push([m, cap, this.roque, this.ep, this.meio, this.h1, this.h2]);\n    this.hist.push(this.h1);\n    var h1 = this.h1, h2 = this.h2;\n    h1 ^= ZC1[this.roque]; h2 ^= ZC2[this.roque]; if (this.ep >= 0) { h1 ^= ZE1[this.ep]; h2 ^= ZE2[this.ep]; }\n    if (cap) { h1 ^= Z1[cap * 128 + capSq]; h2 ^= Z2[cap * 128 + capSq]; b[capSq] = 0; }\n    h1 ^= Z1[x * 128 + f]; h2 ^= Z2[x * 128 + f];\n    b[f] = 0;\n    var nx = pr ? (pr | lado) : x; b[t] = nx;\n    h1 ^= Z1[nx * 128 + t]; h2 ^= Z2[nx * 128 + t];\n    if ((x & 7) === K) {\n      this.reis[lado ? 1 : 0] = t;\n      if (fl & 4) { var rf, rt; if (t === f + 2) { rf = f + 3; rt = f + 1; } else { rf = f - 4; rt = f - 1; } var rr = b[rf]; b[rf] = 0; b[rt] = rr; h1 ^= Z1[rr * 128 + rf] ^ Z1[rr * 128 + rt]; h2 ^= Z2[rr * 128 + rf] ^ Z2[rr * 128 + rt]; }\n    }\n    this.roque &= MASC_ROQUE[f] & MASC_ROQUE[t];\n    this.ep = (fl & 8) ? (f + t) >> 1 : -1;\n    this.meio = (cap || (x & 7) === P) ? 0 : this.meio + 1;\n    if (lado) this.lance++;\n    this.lado ^= PRETO;\n    h1 ^= ZC1[this.roque]; h2 ^= ZC2[this.roque]; if (this.ep >= 0) { h1 ^= ZE1[this.ep]; h2 ^= ZE2[this.ep]; }\n    h1 ^= ZS1; h2 ^= ZS2;\n    this.h1 = h1; this.h2 = h2;\n    if (this.emXeque(lado)) { this.desfazer(); return false; }\n    return true;\n  };\n  Jogo.prototype.desfazer = function () {\n    var u = this.pilha.pop(); if (!u) return; this.hist.pop();\n    var m = u[0], f = m & 127, t = (m >> 7) & 127, pr = (m >> 14) & 7, fl = m >> 17, b = this.b;\n    this.lado ^= PRETO; var lado = this.lado;\n    var x = b[t]; if (pr) x = P | lado;\n    b[f] = x; b[t] = 0;\n    if (u[1]) { var capSq = (fl & 2) ? t + (lado ? 16 : -16) : t; b[capSq] = u[1]; }\n    if ((x & 7) === K) {\n      this.reis[lado ? 1 : 0] = f;\n      if (fl & 4) { var rf, rt; if (t === f + 2) { rf = f + 3; rt = f + 1; } else { rf = f - 4; rt = f - 1; } b[rf] = b[rt]; b[rt] = 0; }\n    }\n    this.roque = u[2]; this.ep = u[3]; this.meio = u[4]; this.h1 = u[5]; this.h2 = u[6];\n    if (lado) this.lance--;\n  };\n  Jogo.prototype.legais = function () { var ls = this.gerar(false), ok = []; for (var i = 0; i < ls.length; i++) if (this.fazer(ls[i])) { ok.push(ls[i]); this.desfazer(); } return ok; };\n  Jogo.prototype.repetida = function (vezes) {\n    var n = 0, lim = Math.max(0, this.hist.length - this.meio);\n    for (var i = this.hist.length - 2; i >= lim; i -= 2) if (this.hist[i] === this.h1) { n++; if (n >= vezes) return true; }\n    return false;\n  };\n  Jogo.prototype.materialInsuficiente = function () {\n    var menores = 0;\n    for (var i = 0; i < 128; i++) { if (i & 0x88) continue; var x = this.b[i] & 7; if (!x || x === K) continue; if (x === N || x === B) { menores++; continue; } return false; }\n    return menores <= 1;\n  };\n  Jogo.prototype.estado = function () {\n    var ls = this.legais();\n    if (!ls.length) return this.emXeque() ? \"mate\" : \"afogado\";\n    if (this.meio >= 100) return \"50lances\";\n    if (this.repetida(2)) return \"repeticao\";\n    if (this.materialInsuficiente()) return \"material\";\n    return \"\";\n  };\n  // ---------- avalia\u00e7\u00e3o ----------\n  Jogo.prototype.avaliar = function () {\n    var b = this.b, mg = 0, mat = 0, sq, x, tp, preto, s, bispos = [0, 0], peoesCol = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];\n    for (sq = 0; sq < 128; sq++) { if (sq & 0x88) { sq += 7; continue; } x = b[sq]; if (!x) continue; tp = x & 7; if (tp !== K && tp !== P) mat += VAL[tp]; }\n    var fim = mat <= 2600;\n    for (sq = 0; sq < 128; sq++) {\n      if (sq & 0x88) { sq += 7; continue; }\n      x = b[sq]; if (!x) continue;\n      tp = x & 7; preto = x & PRETO; s = VAL[tp];\n      var i64 = idx64(sq, preto);\n      s += tp === K ? (fim ? KFIM[i64] : KMEIO[i64]) : PST[tp][i64];\n      if (tp === B) bispos[preto ? 1 : 0]++;\n      if (tp === P) peoesCol[preto ? 1 : 0][sq & 7]++;\n      mg += preto ? -s : s;\n    }\n    if (bispos[0] >= 2) mg += 30; if (bispos[1] >= 2) mg -= 30;\n    for (var c = 0; c < 2; c++) for (var f = 0; f < 8; f++) {\n      var n = peoesCol[c][f]; if (!n) continue;\n      var pen = 0; if (n > 1) pen += 12 * (n - 1);\n      if (!(f > 0 && peoesCol[c][f - 1]) && !(f < 7 && peoesCol[c][f + 1])) pen += 10;\n      // pe\u00e3o passado (simples)\n      if (!peoesCol[1 - c][f] && !(f > 0 && peoesCol[1 - c][f - 1]) && !(f < 7 && peoesCol[1 - c][f + 1])) pen -= fim ? 35 : 15;\n      mg += c ? pen : -pen;\n    }\n    // no final, empurra o rei inimigo para a borda quando estamos ganhando\n    if (fim) {\n      var rb = this.reis[0], rp = this.reis[1];\n      var dist = Math.abs((rb & 7) - (rp & 7)) + Math.abs((rb >> 4) - (rp >> 4));\n      var borda = function (k) { var f = k & 7, r = k >> 4; return Math.max(3 - f, f - 4) + Math.max(3 - r, r - 4); };\n      if (mg > 200) mg += borda(rp) * 10 + (14 - dist) * 4; else if (mg < -200) mg -= borda(rb) * 10 + (14 - dist) * 4;\n    }\n    return this.lado ? -mg : mg;\n  };\n  // ---------- busca ----------\n  var MATE = 100000;\n  function Busca(jogo) { this.j = jogo; this.tt = new Map(); this.killers = []; this.hist = new Int32Array(16 * 128); this.nos = 0; this.fim = 0; this.parou = false; }\n  Busca.prototype.ordenar = function (ls, ttm, ply) {\n    var b = this.j.b, k = this.killers[ply] || [], sc = new Array(ls.length);\n    for (var i = 0; i < ls.length; i++) {\n      var m = ls[i], fl = m >> 17, t = (m >> 7) & 127, f = m & 127, s = 0;\n      if (m === ttm) s = 10000000;\n      else if (fl & 1) s = 1000000 + VAL[(fl & 2) ? P : (b[t] & 7)] * 10 - VAL[b[f] & 7] / 10;\n      else if ((m >> 14) & 7) s = 900000;\n      else if (m === k[0]) s = 800000; else if (m === k[1]) s = 700000;\n      else s = this.hist[b[f] * 128 + t];\n      sc[i] = s;\n    }\n    var ord = ls.map(function (m, i) { return i; }).sort(function (a, c) { return sc[c] - sc[a]; });\n    return ord.map(function (i) { return ls[i]; });\n  };\n  Busca.prototype.quies = function (alfa, beta, ply) {\n    if ((++this.nos & 2047) === 0 && Date.now() > this.fim) this.parou = true;\n    if (this.parou) return 0;\n    var est = this.j.avaliar();\n    if (est >= beta) return beta;\n    if (est > alfa) alfa = est;\n    var ls = this.ordenar(this.j.gerar(true), 0, 63);\n    for (var i = 0; i < ls.length; i++) {\n      var m = ls[i];\n      if (!((m >> 14) & 7) && est + VAL[this.j.b[(m >> 7) & 127] & 7] + 200 < alfa && !((m >> 17) & 2)) continue; // poda delta\n      if (!this.j.fazer(m)) continue;\n      var v = -this.quies(-beta, -alfa, ply + 1);\n      this.j.desfazer();\n      if (this.parou) return 0;\n      if (v >= beta) return beta;\n      if (v > alfa) alfa = v;\n    }\n    return alfa;\n  };\n  Busca.prototype.temPecas = function () { var b = this.j.b, lado = this.j.lado; for (var i = 0; i < 128; i++) { if (i & 0x88) continue; var x = b[i]; if (x && (x & PRETO) === lado && (x & 7) !== P && (x & 7) !== K) return true; } return false; };\n  Busca.prototype.ab = function (prof, alfa, beta, ply, nulo) {\n    if ((++this.nos & 2047) === 0 && Date.now() > this.fim) this.parou = true;\n    if (this.parou) return 0;\n    var j = this.j;\n    if (ply > 0 && (j.meio >= 100 || j.repetida(1))) return 0;\n    var xeque = j.emXeque();\n    if (xeque) prof++;\n    if (prof <= 0) return this.quies(alfa, beta, ply);\n    var e = this.tt.get(j.h1), ttm = 0;\n    if (e && e.h2 === j.h2) {\n      ttm = e.m;\n      if (ply > 0 && e.p >= prof) {\n        var v0 = e.v; if (v0 > MATE - 500) v0 -= ply; else if (v0 < -MATE + 500) v0 += ply;\n        if (e.t === 0) return v0; if (e.t === 1 && v0 >= beta) return v0; if (e.t === 2 && v0 <= alfa) return v0;\n      }\n    }\n    // poda do lance nulo\n    if (nulo && !xeque && prof >= 3 && ply > 0 && this.temPecas() && j.avaliar() >= beta) {\n      var epAnt = j.ep; j.lado ^= PRETO; j.h1 ^= ZS1; j.h2 ^= ZS2; if (epAnt >= 0) { j.h1 ^= ZE1[epAnt]; j.h2 ^= ZE2[epAnt]; } j.ep = -1; j.hist.push(0);\n      var vn = -this.ab(prof - 3, -beta, -beta + 1, ply + 1, false);\n      j.hist.pop(); j.ep = epAnt; if (epAnt >= 0) { j.h1 ^= ZE1[epAnt]; j.h2 ^= ZE2[epAnt]; } j.lado ^= PRETO; j.h1 ^= ZS1; j.h2 ^= ZS2;\n      if (this.parou) return 0;\n      if (vn >= beta) return beta;\n    }\n    var ls = this.ordenar(j.gerar(false), ttm, ply), melhor = -MATE * 2, mm = 0, legais = 0, a0 = alfa;\n    for (var i = 0; i < ls.length; i++) {\n      var m = ls[i];\n      if (!j.fazer(m)) continue;\n      legais++;\n      var quieto = !((m >> 17) & 1) && !((m >> 14) & 7), v;\n      if (legais === 1) v = -this.ab(prof - 1, -beta, -alfa, ply + 1, true);\n      else {\n        var red = (prof >= 3 && legais > 4 && quieto && !xeque && !j.emXeque()) ? (legais > 10 ? 2 : 1) : 0;\n        v = -this.ab(prof - 1 - red, -alfa - 1, -alfa, ply + 1, true);\n        if (v > alfa && (red || v < beta)) v = -this.ab(prof - 1, -beta, -alfa, ply + 1, true);\n      }\n      j.desfazer();\n      if (this.parou) return 0;\n      if (v > melhor) { melhor = v; mm = m; }\n      if (v > alfa) {\n        alfa = v;\n        if (v >= beta) {\n          if (quieto) { var kl = this.killers[ply] || (this.killers[ply] = [0, 0]); if (kl[0] !== m) { kl[1] = kl[0]; kl[0] = m; } this.hist[j.b[m & 127] * 128 + ((m >> 7) & 127)] += prof * prof; }\n          break;\n        }\n      }\n    }\n    if (!legais) return xeque ? -MATE + ply : 0;\n    var vs = melhor; if (vs > MATE - 500) vs += ply; else if (vs < -MATE + 500) vs -= ply;\n    if (this.tt.size > 600000) this.tt.clear();\n    this.tt.set(j.h1, { h2: j.h2, p: prof, v: vs, m: mm, t: melhor >= beta ? 1 : melhor <= a0 ? 2 : 0 });\n    return melhor;\n  };\n  // pensa por \"ms\" milissegundos e devolve {lance, valor, prof}\n  function pensar(fen, hist, ms, variedade, estilo, maxProf, erro) {\n    var j = new Jogo(); j.carregarFEN(fen); j.hist = (hist || []).slice();\n    var bs = new Busca(j); bs.fim = Date.now() + ms;\n    var raiz = j.legais(); if (!raiz.length) return { lance: 0 };\n    if (raiz.length === 1) return { lance: raiz[0], valor: 0, prof: 0 };\n    var melhor = raiz[0], valor = 0, prof = 0, notas = [];\n    for (var d = 1; d <= (maxProf || 30); d++) {\n      var alfa = -MATE * 2, beta = MATE * 2, bm = 0, bv = -MATE * 2, sc = [];\n      var ls = bs.ordenar(raiz, melhor, 0);\n      for (var i = 0; i < ls.length; i++) {\n        j.fazer(ls[i]);\n        var v = i === 0 ? -bs.ab(d - 1, -beta, -alfa, 1, true) : -bs.ab(d - 1, -alfa - 1, -alfa, 1, true);\n        if (!bs.parou && i > 0 && v > alfa) v = -bs.ab(d - 1, -beta, -alfa, 1, true);\n        j.desfazer();\n        if (bs.parou) break;\n        sc.push([ls[i], v]);\n        if (v > bv) { bv = v; bm = ls[i]; }\n        if (v > alfa) alfa = v;\n      }\n      if (bs.parou && !bm) break;\n      if (bm) { melhor = bm; valor = bv; prof = d; notas = sc; }\n      if (bs.parou || Math.abs(valor) > MATE - 500) break;\n      if (Date.now() > bs.fim - ms * .45) break; // n\u00e3o come\u00e7a uma profundidade que n\u00e3o vai terminar\n    }\n    // variedade na abertura: escolhe entre lances quase iguais\n    if (variedade && notas.length > 1) {\n      var bons = notas.filter(function (x) { return x[1] >= valor - variedade; });\n      if (bons.length > 1) melhor = bons[Math.floor(Math.random() * bons.length)][0];\n    }\n    // advers\u00e1rio mais fraco: \u00e0s vezes escolhe um lance pior (mas nunca um que entregue mate)\n    if (erro && notas.length > 1 && Math.random() < erro) {\n      var ruins = notas.filter(function (x) { return x[1] > -MATE + 500 && x[1] >= valor - 350 && x[0] !== melhor; });\n      if (ruins.length) melhor = ruins[Math.floor(Math.random() * ruins.length)][0];\n    }\n    // estilo Mittens: ganhando muito, n\u00e3o tem pressa \u2014 junta damas e s\u00f3 depois d\u00e1 o mate\n    var enrolou = false;\n    if (estilo === \"mittens\" && valor > 700 && notas.length > 1 && j.meio < 60 && j.lance < 90) {\n      var lado = j.lado, damas = 0;\n      for (var s0 = 0; s0 < 128; s0++) if (!(s0 & 0x88) && j.b[s0] === (Q | lado)) damas++;\n      if (damas < 3) {\n        var melhorNota = -1e9, escolha = 0;\n        for (var c = 0; c < notas.length; c++) {\n          var mm = notas[c][0], v = notas[c][1];\n          if (v < 600) continue;\n          if (!j.fazer(mm)) continue;\n          var progresso = 0, est = j.estado();\n          for (var s1 = 0; s1 < 128; s1++) { if (s1 & 0x88) continue; var x = j.b[s1]; if (x === (P | lado)) progresso += (lado ? 7 - (s1 >> 4) : (s1 >> 4)) * 12; else if (x === (Q | lado)) progresso += 260; }\n          j.desfazer();\n          if (est === \"mate\" || est === \"afogado\" || est === \"repeticao\") continue;\n          var nota = progresso + Math.min(v, 2500) * .08 + Math.random() * 6;\n          if (nota > melhorNota) { melhorNota = nota; escolha = mm; }\n        }\n        if (escolha && escolha !== melhor) { melhor = escolha; enrolou = true; }\n      }\n    }\n    return { lance: melhor, valor: valor, prof: prof, nos: bs.nos, enrolou: enrolou };\n  }\n  function nomeCasa(sq) { return String.fromCharCode(97 + (sq & 7)) + ((sq >> 4) + 1); }\n  // nota\u00e7\u00e3o (SAN simplificada)\n  function san(j, m) {\n    var f = m & 127, t = (m >> 7) & 127, pr = (m >> 14) & 7, fl = m >> 17, tp = j.b[f] & 7, s;\n    if (fl & 4) s = (t & 7) === 6 ? \"O-O\" : \"O-O-O\";\n    else {\n      var letras = [\"\", \"\", \"C\", \"B\", \"T\", \"D\", \"R\"];\n      s = tp === P ? ((fl & 1) ? String.fromCharCode(97 + (f & 7)) : \"\") : letras[tp];\n      if (tp !== P) {\n        var amb = j.legais().filter(function (o) { return o !== m && ((o >> 7) & 127) === t && (j.b[o & 127] & 7) === tp; });\n        if (amb.length) { var mesmaCol = amb.some(function (o) { return ((o & 127) & 7) === (f & 7); }); s += mesmaCol ? ((f >> 4) + 1) : String.fromCharCode(97 + (f & 7)); }\n      }\n      if (fl & 1) s += \"x\";\n      s += nomeCasa(t);\n      if (pr) s += \"=\" + [\"\", \"\", \"C\", \"B\", \"T\", \"D\"][pr];\n    }\n    if (j.fazer(m)) { var e = j.estado(); s += e === \"mate\" ? \"#\" : j.emXeque() ? \"+\" : \"\"; j.desfazer(); }\n    return s;\n  }\n  return { Jogo: Jogo, pensar: pensar, san: san, nomeCasa: nomeCasa, P: P, N: N, B: B, R: R, Q: Q, K: K, PRETO: PRETO, VAL: VAL, MATE: MATE };\n})();\nif (typeof self !== \"undefined\" && typeof document === \"undefined\") {\n  self.onmessage = function (e) { var d = e.data; var r = Motor.pensar(d.fen, d.hist, d.ms, d.variedade, d.estilo, d.maxProf, d.erro); self.postMessage(r); };\n}\nif (typeof module !== \"undefined\") module.exports = Motor;\n";
+  var M = (new Function(MOTOR_SRC + "; return Motor;"))();
+  var RAIZ = "xadrezOnline/salas";
+  var SIMB = { 1: "♟", 2: "♞", 3: "♝", 4: "♜", 5: "♛", 6: "♚" };
+  var CLUBE_PECA = { 6: "Flamengo", 5: "Palmeiras", 3: "Cruzeiro", 4: "Fluminense", 2: "Bahia", 1: "Santos" };
+  var FRASES = ["Boa jogada! 👏", "Ihh 😬", "Kkkk 😂", "Pensa rápido! ⏳", "Essa doeu 😵", "GG! 🤝", "Vou virar! 🔥", "Xeque-mate vem aí 😈"];
+  function $id(i) { return document.getElementById(i); }
+  function getDB() { try { if (typeof db !== "undefined" && db && db.ref) return db; } catch (e) {} try { return firebase.database(); } catch (e) { return null; } }
+  function meuId() { var k = "nws-xo-id", v = null; try { v = localStorage.getItem(k); } catch (e) {} if (!v) { v = "p" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4); try { localStorage.setItem(k, v); } catch (e) {} } return v; }
+  function meuNick() { try { return localStorage.getItem("nws-xo-nick") || ""; } catch (e) { return ""; } }
+  function salvarNick(n) { try { localStorage.setItem("nws-xo-nick", n); } catch (e) {} }
+  function estiloPref() { try { return localStorage.getItem("nws-xo-estilo") || "classico"; } catch (e) { return "classico"; } }
+  function escudo(n) { var im = window._escudosBR && window._escudosBR[n]; return im && im.src ? im.src : ""; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function gerarCodigo() { var a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", s = ""; for (var i = 0; i < 5; i++) s += a[Math.floor(Math.random() * a.length)]; return s; }
+  var TS = function () { try { return firebase.database.ServerValue.TIMESTAMP; } catch (e) { return Date.now(); } };
+
+  var css = document.createElement("style");
+  css.textContent = [
+    "#xo-ov{position:fixed;inset:0;z-index:100002;background:radial-gradient(ellipse at top,#173a63 0,#070c16 70%);color:#eef4ff;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;overflow:auto;padding:10px 10px 24px}",
+    "#xo-ov *{box-sizing:border-box}","#xo-ov>*{flex-shrink:0}",
+    ".xo-top{width:min(560px,100%);display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}",
+    ".xo-top h2{margin:0;font-size:1rem;letter-spacing:.05em;color:#ffd23f;text-align:center}",
+    ".xo-btn{border:1px solid #34588a;background:#142a47;color:#fff;border-radius:10px;padding:.55rem .85rem;font-weight:800;font-size:.85rem;cursor:pointer;width:auto;margin:0}",
+    ".xo-btn.ouro{background:#ffd23f;color:#1a1300;border-color:#ffd23f}.xo-btn:disabled{opacity:.5}",
+    ".xo-card{width:min(560px,100%);background:#0f2038;border:1px solid #2b4a75;border-radius:14px;padding:12px;margin-bottom:10px}",
+    ".xo-card h3{margin:0 0 8px;font-size:.95rem;color:#ffd23f}",
+    ".xo-in{width:100%;padding:.65rem .8rem;border-radius:10px;border:1px solid #34588a;background:#091527;color:#fff;font:inherit;font-size:16px;margin:0 0 8px}",
+    ".xo-lin{display:flex;gap:8px;flex-wrap:wrap;align-items:center}",
+    ".xo-seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.xo-seg button{flex:1}.xo-seg button.on{background:#ffd23f;color:#1a1300;border-color:#ffd23f}",
+    ".xo-sala{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px;border-radius:10px;background:#091527;margin-bottom:6px;font-size:.88rem}",
+    ".xo-codigo{font-size:2.2rem;font-weight:900;letter-spacing:.25em;color:#ffd23f;text-align:center;margin:6px 0}",
+    ".xo-sub{color:#a9bfe0;font-size:.82rem;line-height:1.4}",
+    ".xo-jog{width:min(560px,100%);display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:#0f2038;margin:4px 0;font-size:.9rem}",
+    ".xo-jog .on{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;background:#666}.xo-jog .on.sim{background:#2ecc71}",
+    ".xo-jog.vez{outline:2px solid #ffd23f}",
+    ".xo-tab{flex-shrink:0;width:min(560px,100%,calc(100vh - 300px));min-width:280px;aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);overflow:hidden;border:6px solid #1c2e48;border-radius:8px;box-shadow:0 12px 30px #0009;user-select:none;-webkit-user-select:none;touch-action:manipulation}",
+    ".xo-c{position:relative;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:min(9.2vw,52px);line-height:1}",
+    ".xo-c.cl{background:#dee3e6}.xo-c.es{background:#8ca2ad}",
+    ".xo-c.ult.cl{background:#f6eb72}.xo-c.ult.es{background:#c9c24b}",
+    ".xo-c.sel{box-shadow:inset 0 0 0 4px #4fa3ff}.xo-c.xq{background:radial-gradient(circle,#ff3b3b 0,#ff3b3b88 40%,transparent 75%)!important}",
+    ".xo-c .pt{position:absolute;width:28%;height:28%;border-radius:50%;background:#0006;z-index:3}.xo-c .ac{position:absolute;inset:5%;border-radius:50%;border:5px solid #0006;z-index:3}",
+    ".xo-c .pc{position:relative;z-index:1;font-family:'Segoe UI Symbol','DejaVu Sans','Noto Sans Symbols2',serif}",
+    ".xo-c .pc.b{color:#fff;-webkit-text-stroke:1.5px #222;text-shadow:0 2px 2px #0007}.xo-c .pc.p{color:#1c1c1c;text-shadow:0 1px 0 #fff6,0 2px 2px #0006}",
+    ".xo-e{position:relative;width:86%;height:86%;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1}",
+    ".xo-e.b{background:radial-gradient(circle at 35% 30%,#fff,#d9d9d9);border:2px solid #fff;box-shadow:0 2px 4px #0007}.xo-e.p{background:radial-gradient(circle at 35% 30%,#555,#111);border:2px solid #000;box-shadow:0 2px 4px #0009}",
+    ".xo-e img{width:78%;height:78%;object-fit:contain}.xo-e .sb{position:absolute;right:-2px;bottom:-3px;font-size:min(3.6vw,18px);background:#ffd23f;color:#000;border-radius:50%;width:1.25em;height:1.25em;display:flex;align-items:center;justify-content:center;font-family:'Segoe UI Symbol','DejaVu Sans',serif}",
+    ".xo-info{width:min(560px,100%);text-align:center;font-weight:800;margin:6px 0;color:#ffd23f;min-height:1.3em}",
+    ".xo-acoes{width:min(560px,100%);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:6px}",
+    ".xo-chat{width:min(560px,100%);margin-top:8px;background:#0f2038;border-radius:12px;padding:8px}",
+    ".xo-msgs{max-height:120px;overflow:auto;font-size:.85rem;line-height:1.4;margin-bottom:6px}",
+    ".xo-frases{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}.xo-frases button{font-size:.75rem;padding:.3rem .5rem}",
+    ".xo-lances{width:min(560px,100%);margin-top:8px;font-size:.8rem;color:#a9bfe0;background:#0b182b;border-radius:10px;padding:6px 10px;max-height:64px;overflow:auto}",
+    ".xo-modal{position:fixed;inset:0;z-index:100003;background:#000b;display:flex;align-items:center;justify-content:center;padding:16px}",
+    ".xo-caixa{background:#0f2038;border:1px solid #34588a;border-radius:16px;padding:18px;width:min(380px,100%);text-align:center}.xo-caixa h3{margin:4px 0 8px;color:#ffd23f}.xo-caixa p{color:#a9bfe0}",
+    ".xo-promo{display:flex;gap:8px;justify-content:center;margin-bottom:10px}.xo-promo button{font-size:2rem;width:58px;height:58px;border-radius:12px;background:#dee3e6;border:1px solid #34588a;cursor:pointer;margin:0;padding:0}"
+  ].join("\n");
+  document.head.appendChild(css);
+
+  var ov = null, ref = null, sala = null, codigo = "", eu = null, minhaCor = 0, jogo = null, selec = -1, alvos = [], estilo = estiloPref(), fimMostrado = "", ouvintes = [];
+  function limparOuvintes() { ouvintes.forEach(function (f) { try { f(); } catch (e) {} }); ouvintes = []; }
+  window.abrirXadrezOnline = function () {
+    if ($id("xo-ov")) return;
+    ov = document.createElement("div"); ov.id = "xo-ov"; document.body.appendChild(ov);
+    eu = meuId();
+    if (!getDB()) { ov.innerHTML = '<div class="xo-card"><h3>Sem conexão</h3><p class="xo-sub">O Firebase não carregou. Confira a internet e abra o jogo de novo.</p><button class="xo-btn" id="xo-f">Voltar</button></div>'; $id("xo-f").onclick = fechar; return; }
+    lobby();
+  };
+  function fechar() { sairDaSala(); if (ov) ov.remove(); ov = null; }
+  function sairDaSala() {
+    limparOuvintes();
+    if (ref && sala) { try { ref.child("jogadores/" + eu + "/online").set(false); } catch (e) {} }
+    ref = null; sala = null; codigo = ""; fimMostrado = "";
+  }
+  // ---------- LOBBY ----------
+  function lobby() {
+    sairDaSala();
+    var corEsc = "aleatorio", pub = true;
+    ov.innerHTML = '<div class="xo-top"><button class="xo-btn" id="xo-sair">← Menu</button><h2>🌐 XADREZ ONLINE COM AMIGOS</h2><span style="width:60px"></span></div>' +
+      '<div class="xo-card"><h3>Seu apelido</h3><input class="xo-in" id="xo-nick" maxlength="16" placeholder="Seu nome no jogo" value="' + esc(meuNick()) + '">' +
+      '<h3>Visual das peças</h3><div class="xo-seg" id="xo-estilo"><button class="xo-btn" data-v="classico">♞ Clássico</button><button class="xo-btn" data-v="br">🛡️ Escudos do Brasileirão</button></div></div>' +
+      '<div class="xo-card"><h3>Criar sala</h3><div class="xo-seg" id="xo-cor"><button class="xo-btn" data-v="0">⚪ Brancas</button><button class="xo-btn" data-v="8">⚫ Pretas</button><button class="xo-btn" data-v="aleatorio">🎲 Sortear</button></div>' +
+      '<div class="xo-seg" id="xo-pub"><button class="xo-btn" data-v="1">🌍 Aparecer na lista</button><button class="xo-btn" data-v="0">🔒 Só com código</button></div>' +
+      '<button class="xo-btn ouro" id="xo-criar" style="width:100%">Criar sala e chamar amigo</button></div>' +
+      '<div class="xo-card"><h3>Entrar com código</h3><div class="xo-lin"><input class="xo-in" id="xo-cod" maxlength="5" placeholder="Ex: K7P2M" style="flex:1;text-transform:uppercase;margin:0"><button class="xo-btn ouro" id="xo-entrar">Entrar</button></div></div>' +
+      '<div class="xo-card"><h3>Salas abertas</h3><div id="xo-lista" class="xo-sub">Procurando salas…</div></div>';
+    $id("xo-sair").onclick = fechar;
+    var marcar = function (box, v) { box.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-v") === String(v)); }); };
+    var be = $id("xo-estilo"), bc = $id("xo-cor"), bp = $id("xo-pub");
+    marcar(be, estilo); marcar(bc, corEsc); marcar(bp, 1);
+    be.onclick = function (e) { var v = e.target.getAttribute("data-v"); if (!v) return; estilo = v; try { localStorage.setItem("nws-xo-estilo", v); } catch (er) {} marcar(be, v); };
+    bc.onclick = function (e) { var v = e.target.getAttribute("data-v"); if (!v) return; corEsc = v; marcar(bc, v); };
+    bp.onclick = function (e) { var v = e.target.getAttribute("data-v"); if (!v) return; pub = v === "1"; marcar(bp, v); };
+    $id("xo-criar").onclick = function () { var n = pegarNick(); if (!n) return; criarSala(n, corEsc, pub); };
+    $id("xo-entrar").onclick = function () { var n = pegarNick(); if (!n) return; var c = ($id("xo-cod").value || "").trim().toUpperCase(); if (c.length !== 5) { aviso("O código tem 5 letras/números."); return; } entrarSala(c, n); };
+    listarSalas();
+  }
+  function pegarNick() { var n = ($id("xo-nick").value || "").trim().slice(0, 16); if (n.length < 2) { aviso("Escreva um apelido com pelo menos 2 letras."); $id("xo-nick").focus(); return ""; } salvarNick(n); return n; }
+  function aviso(t, botoes) {
+    var m = document.createElement("div"); m.className = "xo-modal";
+    m.innerHTML = '<div class="xo-caixa"><p style="color:#fff;font-size:.95rem">' + t + '</p><div class="xo-lin" style="justify-content:center"></div></div>';
+    (botoes || [{ t: "OK", ouro: true }]).forEach(function (b) { var e = document.createElement("button"); e.className = "xo-btn" + (b.ouro ? " ouro" : ""); e.textContent = b.t; e.onclick = function () { m.remove(); b.f && b.f(); }; m.querySelector(".xo-lin").appendChild(e); });
+    ov.appendChild(m); return m;
+  }
+  function listarSalas() {
+    var q = getDB().ref(RAIZ).orderByChild("criado").limitToLast(40);
+    var cb = q.on("value", function (s) {
+      var box = $id("xo-lista"); if (!box) return;
+      var v = s.val() || {}, agora = Date.now(), itens = [];
+      Object.keys(v).forEach(function (k) { var r = v[k]; if (!r || r.status !== "esperando" || !r.publica) return; if (agora - (r.criado || 0) > 2 * 3600e3) return; itens.push({ k: k, r: r }); });
+      itens.sort(function (a, b) { return (b.r.criado || 0) - (a.r.criado || 0); });
+      box.innerHTML = itens.length ? "" : "Nenhuma sala aberta agora. Crie uma e mande o código pro seu amigo!";
+      itens.slice(0, 10).forEach(function (it) {
+        var d = document.createElement("div"); d.className = "xo-sala";
+        d.innerHTML = "<span>♟️ <b>" + esc(it.r.donoNick || "Jogador") + "</b> está esperando <small style=\"color:#a9bfe0\">(" + it.k + ")</small></span>";
+        var b = document.createElement("button"); b.className = "xo-btn ouro"; b.textContent = "Jogar"; b.onclick = function () { var n = pegarNick(); if (n) entrarSala(it.k, n); };
+        d.appendChild(b); box.appendChild(d);
+      });
+    });
+    ouvintes.push(function () { q.off("value", cb); });
+  }
+  function limparVelhas() {
+    try {
+      getDB().ref(RAIZ).orderByChild("criado").endAt(Date.now() - 24 * 3600e3).limitToFirst(15).once("value").then(function (s) { s.forEach(function (c) { c.ref.remove(); }); }).catch(function () {});
+    } catch (e) {}
+  }
+  function criarSala(nick, corEsc, pub) {
+    var cor = corEsc === "aleatorio" ? (Math.random() < .5 ? 0 : 8) : +corEsc, c = gerarCodigo(), r = getDB().ref(RAIZ + "/" + c);
+    var jog = {}; jog[eu] = { nick: nick, cor: cor, online: true };
+    r.transaction(function (atual) {
+      if (atual) return; // código já existe
+      return { criado: Date.now(), status: "esperando", publica: !!pub, dono: eu, donoNick: nick, jogadores: jog, lances: "", vez: 0, resultado: "", revanche: {} };
+    }).then(function (res) {
+      if (!res.committed) { criarSala(nick, corEsc, pub); return; }
+      limparVelhas(); abrirSala(c);
+    }).catch(function (e) { aviso("Não deu pra criar a sala: " + esc(e && e.message || e)); });
+  }
+  function entrarSala(c, nick) {
+    var r = getDB().ref(RAIZ + "/" + c), motivo = "";
+    r.transaction(function (atual) {
+      if (!atual) { motivo = "Sala não encontrada. Confira o código."; return; }
+      atual.jogadores = atual.jogadores || {};
+      if (atual.jogadores[eu]) { atual.jogadores[eu].online = true; atual.jogadores[eu].nick = nick; return atual; } // voltando pra sala
+      var ids = Object.keys(atual.jogadores);
+      if (ids.length >= 2) { motivo = "Essa sala já está cheia."; return; }
+      var corDono = ids.length ? atual.jogadores[ids[0]].cor : 8;
+      atual.jogadores[eu] = { nick: nick, cor: corDono ? 0 : 8, online: true };
+      atual.status = "jogando"; atual.inicio = Date.now();
+      return atual;
+    }).then(function (res) {
+      if (!res.committed) { aviso(motivo || "Não deu pra entrar na sala."); return; }
+      abrirSala(c);
+    }).catch(function (e) { aviso("Erro ao entrar: " + esc(e && e.message || e)); });
+  }
+  // ---------- SALA ----------
+  function abrirSala(c) {
+    limparOuvintes();
+    codigo = c; ref = getDB().ref(RAIZ + "/" + c); fimMostrado = "";
+    try { ref.child("jogadores/" + eu + "/online").onDisconnect().set(false); } catch (e) {}
+    ref.child("jogadores/" + eu + "/online").set(true);
+    ov.innerHTML = '<div class="xo-top"><button class="xo-btn" id="xo-voltar">← Sair da sala</button><h2>🌐 SALA ' + c + '</h2><button class="xo-btn" id="xo-vis" title="Trocar visual">' + (estilo === "br" ? "♞" : "🛡️") + "</button></div>" +
+      '<div id="xo-espera"></div><div class="xo-jog" id="xo-j-cima"></div><div class="xo-tab" id="xo-tab"></div><div class="xo-jog" id="xo-j-baixo"></div>' +
+      '<div class="xo-info" id="xo-info"></div>' +
+      '<div class="xo-acoes"><button class="xo-btn" id="xo-empate">🤝 Propor empate</button><button class="xo-btn" id="xo-desistir">🏳️ Desistir</button><button class="xo-btn ouro" id="xo-revanche" hidden>🔁 Revanche</button></div>' +
+      '<div class="xo-lances" id="xo-lances"></div>' +
+      '<div class="xo-chat"><div class="xo-msgs" id="xo-msgs"></div><div class="xo-frases" id="xo-frases"></div><form class="xo-lin" id="xo-chat-f"><input class="xo-in" id="xo-chat-in" maxlength="80" placeholder="Mensagem pro amigo…" style="flex:1;margin:0"><button class="xo-btn ouro">➤</button></form></div>';
+    $id("xo-voltar").onclick = function () { aviso("Sair da sala?", [{ t: "Sair", ouro: true, f: lobby }, { t: "Ficar" }]); };
+    $id("xo-vis").onclick = function () { estilo = estilo === "br" ? "classico" : "br"; try { localStorage.setItem("nws-xo-estilo", estilo); } catch (e) {} $id("xo-vis").textContent = estilo === "br" ? "♞" : "🛡️"; desenhar(); };
+    $id("xo-desistir").onclick = function () { if (!emJogo()) return; aviso("Desistir da partida?", [{ t: "Desistir", ouro: true, f: function () { ref.update({ status: "fim", resultado: (minhaCor ? "brancas" : "pretas") + ":desistencia" }); } }, { t: "Continuar" }]); };
+    $id("xo-empate").onclick = function () { if (!emJogo()) return; if (sala.empate && sala.empate !== eu) ref.update({ status: "fim", resultado: "empate:acordo", empate: null }); else { ref.update({ empate: eu }); enviarMsg("🤝 propôs empate"); } };
+    $id("xo-revanche").onclick = pedirRevanche;
+    var fr = $id("xo-frases"); FRASES.forEach(function (f) { var b = document.createElement("button"); b.className = "xo-btn"; b.textContent = f; b.onclick = function () { enviarMsg(f); }; fr.appendChild(b); });
+    $id("xo-chat-f").onsubmit = function (e) { e.preventDefault(); var v = $id("xo-chat-in").value.trim(); if (v) enviarMsg(v.slice(0, 80)); $id("xo-chat-in").value = ""; };
+    var cb = ref.on("value", function (s) { var v = s.val(); if (!v) { aviso("A sala foi apagada.", [{ t: "Voltar", ouro: true, f: lobby }]); return; } atualizarSala(v); });
+    ouvintes.push(function () { ref.off("value", cb); });
+    var qm = ref.child("chat").limitToLast(25);
+    var cm = qm.on("value", function (s) { var box = $id("xo-msgs"); if (!box) return; var v = s.val() || {}; box.innerHTML = Object.keys(v).sort().map(function (k) { var m = v[k]; var cor = m.c ? "#9fb4d6" : "#fff"; return '<div><b style="color:' + (m.id === eu ? "#ffd23f" : "#7fd1ff") + '">' + esc(m.n) + ":</b> <span style=\"color:" + cor + '">' + esc(m.t) + "</span></div>"; }).join(""); box.scrollTop = box.scrollHeight; });
+    ouvintes.push(function () { qm.off("value", cm); });
+  }
+  function enviarMsg(t) { if (!ref || !sala) return; var j = sala.jogadores && sala.jogadores[eu]; ref.child("chat").push({ id: eu, n: (j && j.nick) || meuNick() || "Jogador", t: t, em: TS() }); }
+  function emJogo() { return sala && sala.status === "jogando"; }
+  function reconstruir(lances) {
+    var j = new M.Jogo(), ls = lances ? lances.split(",").filter(Boolean).map(Number) : [], san = [], ok = true;
+    for (var i = 0; i < ls.length; i++) {
+      var leg = j.legais(); if (leg.indexOf(ls[i]) < 0) { ok = false; break; }
+      san.push(M.san(j, ls[i])); j.fazer(ls[i]);
+    }
+    j._san = san; j._ult = ls.length ? [ls[ls.length - 1] & 127, (ls[ls.length - 1] >> 7) & 127] : null; j._ok = ok; j._n = ls.length;
+    return j;
+  }
+  function atualizarSala(v) {
+    var antes = sala; sala = v;
+    var me = v.jogadores && v.jogadores[eu];
+    if (!me) { aviso("Você não está nessa sala.", [{ t: "Voltar", ouro: true, f: lobby }]); return; }
+    minhaCor = me.cor;
+    if (!jogo || !antes || antes.lances !== v.lances) { jogo = reconstruir(v.lances || ""); selec = -1; alvos = []; if (antes && antes.lances !== v.lances) som(); }
+    // fim por xeque-mate/empate detectado por qualquer um dos dois
+    if (v.status === "jogando") {
+      var e = jogo.estado();
+      if (e) { var res = e === "mate" ? (jogo.lado ? "brancas" : "pretas") + ":mate" : "empate:" + e; ref.child("status").transaction(function (st) { return st === "jogando" ? "fim" : st; }).then(function (r) { if (r.committed && r.snapshot.val() === "fim") ref.child("resultado").transaction(function (x) { return x || res; }); }); }
+    }
+    // revanche: quando os dois pedirem, reinicia trocando as cores
+    if (v.status === "fim" && v.revanche && Object.keys(v.revanche).length >= 2 && v.dono === eu) {
+      ref.transaction(function (a) {
+        if (!a || a.status !== "fim" || !a.revanche || Object.keys(a.revanche).length < 2) return;
+        Object.keys(a.jogadores).forEach(function (k) { a.jogadores[k].cor = a.jogadores[k].cor ? 0 : 8; });
+        a.lances = ""; a.status = "jogando"; a.resultado = ""; a.revanche = {}; a.empate = null; a.inicio = Date.now();
+        return a;
+      });
+    }
+    desenhar();
+    if (v.status === "fim" && v.resultado && fimMostrado !== v.resultado + (v.lances || "")) { fimMostrado = v.resultado + (v.lances || ""); mostrarFim(v.resultado); }
+  }
+  function nomes() {
+    var o = { 0: null, 8: null };
+    Object.keys(sala.jogadores || {}).forEach(function (k) { var j = sala.jogadores[k]; o[j.cor] = { id: k, nick: j.nick, online: j.online !== false }; });
+    return o;
+  }
+  function pecaHTML(x) {
+    if (estilo === "br") { var cl = CLUBE_PECA[x & 7], src = escudo(cl); if (src) return '<span class="xo-e ' + (x & 8 ? "p" : "b") + '"><img src="' + src + '" alt=""><span class="sb">' + SIMB[x & 7] + "︎</span></span>"; }
+    return '<span class="pc ' + (x & 8 ? "p" : "b") + '">' + SIMB[x & 7] + "︎</span>";
+  }
+  function desenhar() {
+    if (!ov || !sala || !jogo) return;
+    var ns = nomes(), esperando = sala.status === "esperando";
+    $id("xo-espera").innerHTML = esperando ? '<div class="xo-card" style="text-align:center"><h3>Esperando seu amigo…</h3><div class="xo-sub">Mande este código pra ele entrar em <b>🌐 Xadrez Online</b>:</div><div class="xo-codigo">' + codigo + '</div><button class="xo-btn ouro" id="xo-copiar">📋 Copiar convite</button></div>' : "";
+    if (esperando) $id("xo-copiar").onclick = function () { var t = "Bora jogar xadrez no NWS 26! Entra em 🌐 Xadrez Online e usa o código " + codigo; try { navigator.clipboard.writeText(t); this.textContent = "✅ Copiado!"; } catch (e) { prompt("Copie o convite:", t); } };
+    var adv = ns[minhaCor ^ 8], euJ = ns[minhaCor];
+    var linha = function (j, cor) { var vez = sala.status === "jogando" && jogo.lado === cor; return '<span><span class="on' + (j && j.online ? " sim" : "") + '"></span>' + (cor ? "⚫ " : "⚪ ") + "<b>" + esc(j ? j.nick : "esperando…") + "</b>" + (j && j.id === eu ? " (você)" : "") + "</span><span>" + (vez ? "⏳ jogando" : "") + "</span>"; };
+    $id("xo-j-cima").innerHTML = linha(adv, minhaCor ^ 8); $id("xo-j-cima").classList.toggle("vez", sala.status === "jogando" && jogo.lado !== minhaCor);
+    $id("xo-j-baixo").innerHTML = linha(euJ, minhaCor); $id("xo-j-baixo").classList.toggle("vez", sala.status === "jogando" && jogo.lado === minhaCor);
+    var xqRei = jogo.emXeque() ? jogo.reis[jogo.lado ? 1 : 0] : -1, html = "", ordem = [];
+    for (var r = 7; r >= 0; r--) for (var f = 0; f < 8; f++) ordem.push(r * 16 + f);
+    if (minhaCor) ordem.reverse();
+    ordem.forEach(function (sq) {
+      var x = jogo.b[sq], cls = "xo-c " + (((sq & 7) + (sq >> 4)) % 2 ? "cl" : "es");
+      if (jogo._ult && (sq === jogo._ult[0] || sq === jogo._ult[1])) cls += " ult";
+      if (sq === selec) cls += " sel"; if (sq === xqRei) cls += " xq";
+      var alvo = alvos.some(function (m) { return ((m >> 7) & 127) === sq; });
+      html += '<div class="' + cls + '" data-sq="' + sq + '">' + (alvo ? (x ? '<span class="ac"></span>' : '<span class="pt"></span>') : "") + (x ? pecaHTML(x) : "") + "</div>";
+    });
+    $id("xo-tab").innerHTML = html;
+    $id("xo-tab").querySelectorAll(".xo-c").forEach(function (c) { c.onclick = function () { clicar(+c.getAttribute("data-sq")); }; });
+    var info = esperando ? "Sala criada • esperando o segundo jogador" : sala.status === "fim" ? "Partida encerrada" : (jogo.lado === minhaCor ? "Sua vez" : "Vez de " + (adv ? adv.nick : "seu amigo")) + (jogo.emXeque() ? " • XEQUE!" : "");
+    if (sala.status === "jogando" && adv && !adv.online) info += " • ⚠️ " + adv.nick + " saiu (pode voltar com o código)";
+    if (sala.status === "jogando" && sala.empate && sala.empate !== eu) info += " • 🤝 Empate proposto! Toque em Propor empate para aceitar";
+    $id("xo-info").textContent = info;
+    var l = ""; for (var k = 0; k < jogo._san.length; k += 2) l += "<b>" + (k / 2 + 1) + ".</b> " + jogo._san[k] + " " + (jogo._san[k + 1] || "") + "  ";
+    var le = $id("xo-lances"); le.innerHTML = l || "Os lances aparecem aqui."; le.scrollTop = le.scrollHeight;
+    $id("xo-revanche").hidden = sala.status !== "fim";
+    $id("xo-revanche").textContent = sala.revanche && sala.revanche[eu] ? "⏳ Esperando o amigo…" : (sala.revanche && Object.keys(sala.revanche).length ? "🔁 Aceitar revanche" : "🔁 Revanche");
+    $id("xo-empate").disabled = $id("xo-desistir").disabled = sala.status !== "jogando";
+  }
+  function clicar(sq) {
+    if (!emJogo() || jogo.lado !== minhaCor) return;
+    var esc2 = alvos.filter(function (m) { return ((m >> 7) & 127) === sq; });
+    if (esc2.length) {
+      if (esc2.length > 1) {
+        var mm = aviso("Promover peão para:", [{ t: "Cancelar" }]);
+        var box = document.createElement("div"); box.className = "xo-promo";
+        [5, 4, 3, 2].forEach(function (p) { var b = document.createElement("button"); b.innerHTML = estilo === "br" && escudo(CLUBE_PECA[p]) ? '<img src="' + escudo(CLUBE_PECA[p]) + '" style="width:80%;height:80%;object-fit:contain">' : SIMB[p] + "︎"; b.onclick = function () { mm.remove(); enviarLance(esc2.find(function (m) { return ((m >> 14) & 7) === p; })); }; box.appendChild(b); });
+        mm.querySelector(".xo-caixa").insertBefore(box, mm.querySelector(".xo-lin"));
+        return;
+      }
+      enviarLance(esc2[0]); return;
+    }
+    var x = jogo.b[sq];
+    if (x && (x & 8) === minhaCor) { selec = sq; alvos = jogo.legais().filter(function (m) { return (m & 127) === sq; }); } else { selec = -1; alvos = []; }
+    desenhar();
+  }
+  function enviarLance(m) {
+    var n = jogo._n, cor = minhaCor;
+    selec = -1; alvos = [];
+    // mostra na hora (otimista) e grava com transação: só entra se ainda for a vez e ninguém jogou antes
+    jogo.fazer(m); jogo._san.push("…"); jogo._ult = [m & 127, (m >> 7) & 127]; jogo._n++; desenhar(); som();
+    ref.transaction(function (a) {
+      if (!a || a.status !== "jogando") return;
+      var ls = a.lances ? a.lances.split(",").filter(Boolean) : [];
+      if (ls.length !== n) return; // alguém já jogou
+      var lado = ls.length % 2 ? 8 : 0; if (lado !== cor) return;
+      ls.push(String(m)); a.lances = ls.join(","); a.empate = null; a.ultimoEm = Date.now();
+      return a;
+    }).then(function (r) { if (!r.committed) { jogo = reconstruir(sala.lances || ""); desenhar(); } }).catch(function () { jogo = reconstruir(sala.lances || ""); desenhar(); aviso("Falha ao enviar o lance. Confira a internet."); });
+  }
+  function pedirRevanche() { if (!ref || !sala || sala.status !== "fim") return; ref.child("revanche/" + eu).set(true); }
+  function mostrarFim(res) {
+    var p = res.split(":"), quem = p[0], como = p[1], txt, tit;
+    var corVenc = quem === "brancas" ? 0 : quem === "pretas" ? 8 : -1;
+    var ns = nomes();
+    if (corVenc < 0) { tit = "🤝 Empate"; txt = { acordo: "Os dois aceitaram o empate.", afogado: "Rei afogado.", "50lances": "Regra dos 50 lances.", repeticao: "Repetição de posição.", material: "Material insuficiente." }[como] || "Empate."; }
+    else { var venc = ns[corVenc]; tit = corVenc === minhaCor ? "🏆 VOCÊ VENCEU!" : "😵 Você perdeu"; txt = (venc ? esc(venc.nick) : "") + (como === "mate" ? " deu xeque-mate!" : " venceu por desistência."); }
+    aviso("<b style=\"font-size:1.2rem;color:#ffd23f\">" + tit + "</b><br>" + txt, [{ t: "🔁 Revanche", ouro: true, f: pedirRevanche }, { t: "Ver tabuleiro" }, { t: "Sair da sala", f: lobby }]);
+  }
+  var ac = null;
+  function som() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); var o = ac.createOscillator(), g = ac.createGain(); o.type = "triangle"; o.frequency.value = 300; g.gain.setValueAtTime(.16, ac.currentTime); g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + .12); o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + .13); } catch (e) {} }
+  function botao() {
+    if ($id("btn-xadrez-online")) return;
+    var ref0 = $id("btn-xadrez-br") || $id("btn-xadrez-mittens"); if (!ref0 || !ref0.parentNode) return;
+    var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-xadrez-online"; b.style.borderColor = "#4fa3ff";
+    b.innerHTML = "<h3>🌐 Xadrez Online com Amigos</h3><p>Crie uma sala, mande o código e jogue xadrez com seu amigo pela internet</p>";
+    b.addEventListener("click", function (ev) { ev.preventDefault(); ev.stopPropagation(); window.abrirXadrezOnline(); });
+    ref0.insertAdjacentElement("afterend", b);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
+  setTimeout(botao, 2000); setTimeout(botao, 4000);
 })();
 
 </script>
