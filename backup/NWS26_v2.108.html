@@ -21808,11 +21808,21 @@ function boneco(t,kit,nome,num,goleiro){
   const g=new THREE.Group(), M=(c,r)=>new THREE.MeshStandardMaterial({color:c,roughness:r==null?.7:r});
   const corpo=new THREE.Group(); corpo.position.y=.98; g.add(corpo);
   const corCam=goleiro?kit.gol:kit.cor, lado=M(corCam), mangaM=M(goleiro?kit.gol:(kit.manga||kit.cor));
-  const frente=new THREE.MeshStandardMaterial({map:texCamisa(t,kit,curto(nome),num,false,goleiro),roughness:.7}), costas=new THREE.MeshStandardMaterial({map:texCamisa(t,kit,curto(nome),num,true,goleiro),roughness:.7});
-  // tronco (mais largo em cima)
-  const tronco=new THREE.Mesh(new THREE.BoxGeometry(.5,.6,.26),[lado,lado,lado,lado,costas,frente]); tronco.position.y=.33; tronco.castShadow=true; corpo.add(tronco);
-  const ombro=new THREE.Mesh(new THREE.CapsuleGeometry(.13,.3,4,10),lado); ombro.rotation.z=Math.PI/2; ombro.position.y=.58; ombro.scale.set(1,1,.95); corpo.add(ombro);
-  const calcao=new THREE.Mesh(new THREE.BoxGeometry(.48,.24,.28),M(goleiro?"#1f1f1f":kit.calcao)); calcao.position.y=-.03; calcao.castShadow=true; corpo.add(calcao);
+  // tronco anatômico: cintura fina, peito largo, costas; a camisa dá a volta (frente e costas com nome/número)
+  const texF=texCamisa(t,kit,curto(nome),num,false,goleiro), texC=texCamisa(t,kit,curto(nome),num,true,goleiro);
+  const texT=canvasTex(1024,320,(x)=>{ x.fillStyle=corCam; x.fillRect(0,0,1024,320); x.drawImage(texC.image,-180,0,360,320); x.drawImage(texC.image,1024-180,0,360,320); x.drawImage(texF.image,332,0,360,320);
+    x.fillStyle="rgba(0,0,0,.10)"; x.fillRect(0,300,1024,20); x.fillStyle="rgba(255,255,255,.06)"; x.fillRect(470,0,84,320); });
+  const camM=new THREE.MeshStandardMaterial({map:texT,roughness:.75});
+  const perfil=[[.17,0],[.185,.06],[.18,.16],[.195,.28],[.225,.4],[.245,.5],[.24,.56],[.2,.62],[.11,.66],[.07,.67]].map(v=>new THREE.Vector2(v[0],v[1]));
+  const tronco=new THREE.Mesh(new THREE.LatheGeometry(perfil,28),camM); tronco.scale.set(1.08,1,.62); tronco.position.y=0; tronco.castShadow=true; corpo.add(tronco);
+  // ombros (deltoides) e trapézio
+  [-1,1].forEach(sd=>{ const dl=new THREE.Mesh(new THREE.SphereGeometry(.092,16,12),lado); dl.scale.set(1,.9,.95); dl.position.set(sd*.25,.555,0); dl.castShadow=true; corpo.add(dl); });
+  const trap=new THREE.Mesh(new THREE.SphereGeometry(.12,16,10,0,Math.PI*2,0,Math.PI*.5),lado); trap.scale.set(1.5,.55,.9); trap.position.y=.6; corpo.add(trap);
+  const gola=new THREE.Mesh(new THREE.TorusGeometry(.075,.016,8,20),M(goleiro?"#111":(kit.cor2||kit.num||"#222"))); gola.rotation.x=Math.PI/2; gola.position.y=.665; corpo.add(gola);
+  // calção com barras e pernas do calção
+  const corCal=goleiro?"#1f1f1f":kit.calcao;
+  const calcao=new THREE.Mesh(new THREE.CylinderGeometry(.19,.205,.14,24),M(corCal,.8)); calcao.scale.z=.7; calcao.position.y=-.02; calcao.castShadow=true; corpo.add(calcao);
+  [-1,1].forEach(sd=>{ const pc=new THREE.Mesh(new THREE.CylinderGeometry(.105,.115,.2,16),M(corCal,.8)); pc.position.set(sd*.1,-.13,0); pc.castShadow=true; corpo.add(pc); });
   const pesc=new THREE.Mesh(cil(.065,.12),M(pele)); pesc.position.y=.7; corpo.add(pesc);
   // cabeça e rosto
   const cab3=new THREE.Group(); cab3.position.y=.86; corpo.add(cab3);
@@ -21836,15 +21846,24 @@ function boneco(t,kit,nome,num,goleiro){
   else capa(1,.5);
   if(ap.barba){ const b=new THREE.Mesh(new THREE.SphereGeometry(.13,18,12,0,Math.PI*2,Math.PI*.55,Math.PI*.45),M(cabC==="#e2d4a6"?"#6b4a2a":cabC,.95)); b.scale.set(.95,1.05,1.02); b.position.set(0,-.01,-.005);
     b.material.transparent=true; b.material.opacity=ap.barba===2?.95:.5; cab3.add(b); }
-  const braco=s=>{ const p=new THREE.Group(); p.position.set(s*.31,.56,0); corpo.add(p);
-    const manga=new THREE.Mesh(new THREE.CapsuleGeometry(.068,.16,4,10),goleiro?M(kit.gol):mangaM); manga.position.y=-.1; p.add(manga);
-    const ante=new THREE.Mesh(new THREE.CapsuleGeometry(.052,.24,4,10),goleiro?M(kit.gol):M(pele)); ante.position.y=-.37; p.add(ante);
-    const mao=new THREE.Mesh(new THREE.SphereGeometry(goleiro?.085:.055,12,10),M(goleiro?"#f5f5f5":pele)); mao.position.y=-.56; mao.scale.set(1,1.2,.8); p.add(mao);
-    manga.castShadow=ante.castShadow=true; p.userData.mao=mao; return p; };
-  const perna=s=>{ const p=new THREE.Group(); p.position.set(s*.12,-.13,0); corpo.add(p);
-    const coxa=new THREE.Mesh(new THREE.CapsuleGeometry(.082,.26,4,10),M(pele)); coxa.position.y=-.2; p.add(coxa);
-    const meia=new THREE.Mesh(new THREE.CapsuleGeometry(.07,.3,4,10),M(goleiro?"#1f1f1f":kit.meia)); meia.position.y=-.56; p.add(meia);
-    const chut=new THREE.Mesh(new THREE.BoxGeometry(.12,.08,.28),M(hashN(nome)%2?"#111":"#f2f2f2",.4)); chut.position.set(0,-.79,-.06); p.add(chut);
+  const braco=s=>{ const p=new THREE.Group(); p.position.set(s*.29,.55,0); corpo.add(p);
+    const peleM=M(pele,.6);
+    const manga=new THREE.Mesh(new THREE.CylinderGeometry(.078,.07,.2,14),goleiro?M(kit.gol):mangaM); manga.position.y=-.08; p.add(manga);
+    const ante=new THREE.Mesh(new THREE.CylinderGeometry(.052,.04,.26,12),goleiro?M(kit.gol):peleM); ante.position.y=-.38; p.add(ante);
+    const mao=new THREE.Mesh(new THREE.SphereGeometry(goleiro?.08:.048,12,10),M(goleiro?"#f5f5f5":pele,.6)); mao.position.y=-.55; mao.scale.set(.85,1.25,.62); p.add(mao);
+    const bic=new THREE.Mesh(new THREE.CylinderGeometry(.06,.052,.16,12),goleiro?M(kit.gol):peleM); bic.position.y=-.2; p.add(bic);
+    const cot=new THREE.Mesh(new THREE.SphereGeometry(.052,12,10),goleiro?M(kit.gol):peleM); cot.position.y=-.27; p.add(cot);
+    const pol=new THREE.Mesh(new THREE.CapsuleGeometry(.014,.03,3,6),M(goleiro?"#f5f5f5":pele,.6)); pol.position.set(0,-.53,-.035); pol.rotation.x=.6; p.add(pol);
+    manga.castShadow=ante.castShadow=bic.castShadow=true; p.userData.mao=mao; return p; };
+  const perna=s=>{ const p=new THREE.Group(); p.position.set(s*.1,-.13,0); corpo.add(p);
+    const peleM=M(pele,.6), meiaM=M(goleiro?"#1f1f1f":kit.meia,.8);
+    const coxa=new THREE.Mesh(new THREE.CylinderGeometry(.098,.068,.36,14),peleM); coxa.position.y=-.2; p.add(coxa);
+    const pf=[[.046,0],[.05,.06],[.066,.16],[.074,.24],[.07,.3],[.06,.36]].map(v=>new THREE.Vector2(v[0],v[1]));
+    const meia=new THREE.Mesh(new THREE.LatheGeometry(pf,14),meiaM); meia.position.y=-.76; p.add(meia);
+    const corC=hashN(nome)%3===0?"#f2f2f2":hashN(nome)%3===1?"#111":(kit.cor2||"#ffd23f");
+    const chut=new THREE.Mesh(new THREE.CapsuleGeometry(.05,.16,4,10),M(corC,.35)); chut.rotation.x=Math.PI/2; chut.scale.set(1.15,1,.75); chut.position.set(0,-.79,-.05); p.add(chut);
+    const joe=new THREE.Mesh(new THREE.SphereGeometry(.07,12,10),peleM); joe.position.y=-.39; joe.scale.set(1,.9,1); p.add(joe);
+    const sola=new THREE.Mesh(new THREE.BoxGeometry(.1,.025,.25),M("#222",.6)); sola.position.set(0,-.83,-.05); p.add(sola);
     coxa.castShadow=meia.castShadow=chut.castShadow=true; return p; };
   const R={g,corpo,cab3,bE:braco(-1),bD:braco(1),pE:perna(-1),pD:perna(1),goleiro};
   if(!goleiro&&/neymar/i.test(nome)){ // Neymar: barba cheia, topo loiro, chuteira rosa e braços tatuados
