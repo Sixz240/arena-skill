@@ -21953,7 +21953,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var mCam = new T.MeshStandardMaterial({ map: texCamisa(kit, num, curto(nome), gk, time), roughness: .7 });
     var mManga = Mt(corCam), mPele = Mt(pele, .55), mCal = Mt(gk ? "#1f1f1f" : kit.calcao || "#222"), mMeia = Mt(gk ? "#1f1f1f" : kit.meia || "#fff"), mChut = Mt(["#111", "#f2f2f2", "#ff4fa3", "#ffd23f", "#2ecc71"][h % 5], .35);
     var y0 = ALTURA - .02;
-    var add = function (body, malha) { body.collisionFilterGroup = 4; body.collisionFilterMask = 1; body.material = MAT.corpo; body.linearDamping = .05; body.angularDamping = .3; world.addBody(body); scene.add(malha); P.partes.push({ b: body, g: malha }); body.__dono = P; return body; };
+    var add = function (body, malha) { body.collisionFilterGroup = gk ? 16 : 4; body.collisionFilterMask = gk ? 1 | 8 : 1; body.material = MAT.corpo; body.linearDamping = .05; body.angularDamping = .3; world.addBody(body); scene.add(malha); P.partes.push({ b: body, g: malha }); body.__dono = P; return body; };
     var bola = function (r, m) { var s = new T.Mesh(new T.SphereGeometry(r, 14, 10), m); s.castShadow = true; return s; };
     var caps = function (r, l, m) { var s = new T.Mesh(new T.CapsuleGeometry(r, l, 4, 12), m); s.castShadow = true; return s; };
     // tronco + cabeça
@@ -22008,7 +22008,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       add(an, ga);
       var c3 = new C.HingeConstraint(tronco, br, { pivotA: v3(s * .215, DIM.troncoH - .08, 0), axisA: v3(1, 0, 0), pivotB: v3(0, DIM.braco, 0), axisB: v3(1, 0, 0), collideConnected: false });
       var c4 = new C.HingeConstraint(br, an, { pivotA: v3(0, -DIM.braco, 0), axisA: v3(1, 0, 0), pivotB: v3(0, DIM.ante, 0), axisB: v3(1, 0, 0), collideConnected: false });
-      world.addConstraint(c3); world.addConstraint(c4);
+      world.addConstraint(c3); world.addConstraint(c4); P.q.push(c3, c4);
       P.bracos.push(br); P.antes.push(an);
     });
     P.massa = 8 + 2 * (2 + 1.6) + 2 * (.9 + .7);
@@ -22031,6 +22031,13 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     pai.quaternion.conjugate(qTmp); qTmp.mult(filho.quaternion, qTmp2);
     return 2 * Math.atan2(qTmp2.x, qTmp2.w);
   }
+  function motor(c, pai, filho, alvo, ganho, fmax) { // junta motorizada: segue a pose, mas o corpo continua físico
+    var a = anguloRel(pai, filho); if (a > Math.PI) a -= 2 * Math.PI; if (a < -Math.PI) a += 2 * Math.PI;
+    if (!c.__m) { c.enableMotor(); c.__m = 1; }
+    c.setMotorSpeed(-clamp((alvo - a) * ganho, -22, 22));
+    c.motorEquation.maxForce = fmax; c.motorEquation.minForce = -fmax;
+  }
+  function soltarJuntas(P, f) { P.q.forEach(function (c) { if (!c.__m) { c.enableMotor(); c.__m = 1; } c.setMotorSpeed(0); c.motorEquation.maxForce = f; c.motorEquation.minForce = -f; }); }
   function torqueJunta(pai, filho, alvo, kp, kd) {
     var a = anguloRel(pai, filho); if (a > Math.PI) a -= 2 * Math.PI; if (a < -Math.PI) a += 2 * Math.PI;
     var eixo = pai.quaternion.vmult(v3(1, 0, 0));
@@ -22040,7 +22047,23 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
   }
   function controlar(P, dt) {
     var tb = P.tronco;
-    if (P.ko > 0) { P.ko -= dt; P.carr = Math.max(0, P.carr - dt); return; }
+    // mergulho / pulo do goleiro: o corpo é lançado e os braços esticam pra bola
+    if (P.mergulho > 0) {
+      P.mergulho -= dt;
+      var r = P.mergLado ? -P.mergLado * Math.cos(P.face) * 1.25 : 0;
+      var al = new C.Quaternion(), qr = new C.Quaternion(); al.setFromAxisAngle(v3(0, 1, 0), P.face); qr.setFromAxisAngle(v3(0, 0, 1), r); al = al.mult(qr);
+      tb.quaternion.conjugate(qTmp); al.mult(qTmp, qTmp2);
+      if (qTmp2.w < 0) { qTmp2.x = -qTmp2.x; qTmp2.y = -qTmp2.y; qTmp2.z = -qTmp2.z; qTmp2.w = -qTmp2.w; }
+      var an = 2 * Math.acos(clamp(qTmp2.w, -1, 1)), sn = Math.sqrt(1 - qTmp2.w * qTmp2.w) || 1;
+      tb.torque.vadd(v3(qTmp2.x / sn * an * 220, qTmp2.y / sn * an * 120, qTmp2.z / sn * an * 220), tb.torque); tb.torque.vsub(tb.angularVelocity.scale(18), tb.torque);
+      for (var g = 0; g < 2; g++) {
+        motor(P.q[4 * g], tb, P.coxas[g], g ? -.25 : .1, 12, 60); motor(P.q[4 * g + 1], P.coxas[g], P.canelas[g], .15, 12, 40);
+        motor(P.q[4 * g + 2], tb, P.bracos[g], -2.9, 16, 25); motor(P.q[4 * g + 3], P.bracos[g], P.antes[g], -.1, 14, 15);
+      }
+      if (P.mergulho <= 0) P.ko = P.mergLado ? .7 : 0;
+      return;
+    }
+    if (P.ko > 0) { P.ko -= dt; P.carr = Math.max(0, P.carr - dt); soltarJuntas(P, P.carr > 0 ? 25 : 4); return; }
     P.carr = Math.max(0, P.carr - dt);
     // sustentação (mola até a altura de pé) + compensa a gravidade
     var alvoY = ALTURA - .03, err = alvoY - tb.position.y;
@@ -22048,38 +22071,49 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     // movimento: força para chegar na velocidade desejada
     var ax = (P.vdes.x - tb.velocity.x) * 9, az = (P.vdes.z - tb.velocity.z) * 9;
     tb.force.x += clamp(ax * P.massa, -900, 900); tb.force.z += clamp(az * P.massa, -900, 900);
-    // ficar de pé e virar para onde quer ir (PD no tronco)
-    var alvo = new C.Quaternion(); alvo.setFromAxisAngle(v3(0, 1, 0), P.face);
+    var vel = Math.sqrt(tb.velocity.x * tb.velocity.x + tb.velocity.z * tb.velocity.z);
+    // ficar de pé, virar para onde quer ir e inclinar pra frente na corrida (PD no tronco)
+    var inc = clamp(vel / 7, 0, 1) * .2 + (P.kick > 0 && P.kickT > .14 ? .12 : 0);
+    var alvo = new C.Quaternion(), qi = new C.Quaternion(); alvo.setFromAxisAngle(v3(0, 1, 0), P.face); qi.setFromAxisAngle(v3(1, 0, 0), inc); alvo = alvo.mult(qi);
     tb.quaternion.conjugate(qTmp); alvo.mult(qTmp, qTmp2);
     if (qTmp2.w < 0) { qTmp2.x = -qTmp2.x; qTmp2.y = -qTmp2.y; qTmp2.z = -qTmp2.z; qTmp2.w = -qTmp2.w; }
     var ang = 2 * Math.acos(clamp(qTmp2.w, -1, 1)), s = Math.sqrt(1 - qTmp2.w * qTmp2.w) || 1;
     var kp = 260, kd = 22;
     vTmp.set(qTmp2.x / s * ang * kp, qTmp2.y / s * ang * kp * .6, qTmp2.z / s * ang * kp);
     tb.torque.vadd(vTmp, tb.torque); tb.torque.vsub(tb.angularVelocity.scale(kd), tb.torque);
-    // pernas: passadas pela física (alvos de ângulo que mudam com a velocidade)
-    var vel = Math.sqrt(tb.velocity.x * tb.velocity.x + tb.velocity.z * tb.velocity.z);
-    P.fase += dt * (5 + vel * 2.2);
-    var amp = clamp(vel / 7, 0, .85);
+    // ciclo de corrida (pose alvo) seguido pelos motores das juntas
+    P.fase += dt * (4 + vel * 1.9);
+    var amp = clamp(vel / 6.5, 0, 1);
+    var kt = P.kickT, pe = 1;
     for (var i = 0; i < 2; i++) {
-      var ph = P.fase + i * Math.PI, alvoCoxa = -Math.sin(ph) * amp - .08, alvoJoelho = Math.max(0, Math.cos(ph)) * amp * 1.2 + .1;
-      if (P.kick > 0 && i === 1) { alvoCoxa = P.kickT < .12 ? .9 : -1.5; alvoJoelho = P.kickT < .12 ? 1.2 : 0; }
-      if (P.carr > 0) { alvoCoxa = -1.2; alvoJoelho = 0; }
-      torqueJunta(tb, P.coxas[i], alvoCoxa, P.kick > 0 && i === 1 ? 24 : 16, .9);
-      torqueJunta(P.coxas[i], P.canelas[i], alvoJoelho, 12, .7);
-      // braços controlados: balançam ao contrário da perna do mesmo lado, cotovelo dobrado
-      var alvoOmbro = Math.sin(ph) * amp * .9, alvoCot = -.55 - amp * .35;
-      if (P.carr > 0) { alvoOmbro = -2.4; alvoCot = 0; }
-      if (P.kick > 0) { alvoOmbro = i === 0 ? -.9 : .6; alvoCot = -.3; }
-      if (P.gk && P.braco2) { alvoOmbro = -.5; alvoCot = -1.2; }
-      torqueJunta(tb, P.bracos[i], alvoOmbro, 3.5, .2);
-      torqueJunta(P.bracos[i], P.antes[i], alvoCot, 2.5, .15);
+      var ph = P.fase + i * Math.PI, sw = Math.sin(ph);
+      var alvoCoxa = -sw * amp * 1.05 - .05 * amp, alvoJoelho = .12 + amp * (Math.max(0, Math.cos(ph)) * 1.5 + .25);
+      var alvoOmbro = sw * amp * 1.1, alvoCot = -.35 - amp * 1.1;
+      if (amp < .08) { alvoCoxa = -.05; alvoJoelho = .12; alvoOmbro = 0; alvoCot = -.25; } // parado: em guarda
+      if (P.kick > 0) { // chute: prepara (perna pra trás), bate e acompanha
+        if (i === pe) { if (kt < .14) { alvoCoxa = .85; alvoJoelho = 1.7; } else if (kt < .28) { alvoCoxa = -1.55; alvoJoelho = .05; } else { alvoCoxa = -1.1; alvoJoelho = .3; } }
+        else { alvoCoxa = .15; alvoJoelho = .35; }
+        alvoOmbro = i === pe ? .8 : -1.1; alvoCot = -.4;
+      }
+      if (P.carr > 0) { alvoCoxa = -1.3; alvoJoelho = .1; alvoOmbro = -.6; alvoCot = -.2; }
+      if (P.gk && amp < .4 && P.kick <= 0) { alvoOmbro = -.7; alvoCot = -1.1; alvoJoelho = .45; alvoCoxa = -.25; } // goleiro agachado de braço aberto
+      var forteK = P.kick > 0 && i === pe;
+      motor(P.q[4 * i], tb, P.coxas[i], alvoCoxa, forteK ? 24 : 14, forteK ? 160 : 90);
+      motor(P.q[4 * i + 1], P.coxas[i], P.canelas[i], alvoJoelho, forteK ? 22 : 14, 60);
+      motor(P.q[4 * i + 2], tb, P.bracos[i], alvoOmbro, 12, 18);
+      motor(P.q[4 * i + 3], P.bracos[i], P.antes[i], alvoCot, 12, 10);
     }
-    if (P.kick > 0) { P.kickT += dt; P.kick -= dt; }
+    if (P.kick > 0) {
+      P.kickT += dt; P.kick -= dt;
+      if (P.chuteP && P.kickT >= .17) { var cp = P.chuteP; P.chuteP = null; baterBola(P, cp.f, cp.alvo, cp.alto); } // a bola sai quando o pé chega nela
+    }
   }
   // ---------------- domínio de bola: a bola gruda no pé de quem está conduzindo ----------------
   function dominar(P, dt) {
-    if (P.ko > 0 || P.kick > 0 || P.carr > 0 || P.gk) return;
+    if (P.ko > 0 || P.kick > 0 || P.carr > 0 || P.gk || P.mergulho > 0) return;
+    if (P.semDom > 0) { P.semDom -= dt; return; }
     var b = J.bola.b, tb = P.tronco;
+    var rvx = b.velocity.x - tb.velocity.x, rvz = b.velocity.z - tb.velocity.z; if (rvx * rvx + rvz * rvz > 81) return; // bola forte não gruda
     if (b.position.y > .7) return;
     var fx = Math.sin(P.face), fz = Math.cos(P.face);
     var dx = b.position.x - tb.position.x, dz = b.position.z - tb.position.z, dist = Math.hypot(dx, dz);
@@ -22098,14 +22132,14 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     P.partes.forEach(function (p) {
       var v = p.b.velocity, sp = v.length(), max = p.b === P.tronco && P.carr > 0 ? 10 : 12;
       if (sp > max) v.scale(max / sp, v);
-      if (v.y > 6) v.y = 6;
+      if (v.y > (P.mergulho > 0 ? 7 : 6)) v.y = P.mergulho > 0 ? 7 : 6;
       var w = p.b.angularVelocity, ws = w.length(); if (ws > 20) w.scale(20 / ws, w);
     });
-    var t = P.tronco.position; if (t.y > 2.6) { P.tronco.velocity.y = Math.min(P.tronco.velocity.y, 0); }
+    var t = P.tronco.position; if (t.y > (P.mergulho > 0 ? 3.2 : 2.6)) { P.tronco.velocity.y = Math.min(P.tronco.velocity.y, 0); }
   }
   // ---------------- bola ----------------
   function criarBola() {
-    var b = new C.Body({ mass: .45, material: MAT.bola }); b.collisionFilterGroup = 8; b.collisionFilterMask = 1 | 2; b.addShape(new C.Sphere(.22)); b.linearDamping = .25; b.angularDamping = .3; b.position.set(0, .4, 0); world.addBody(b);
+    var b = new C.Body({ mass: .45, material: MAT.bola }); b.collisionFilterGroup = 8; b.collisionFilterMask = 1 | 2 | 16; b.addShape(new C.Sphere(.22)); b.linearDamping = .25; b.angularDamping = .3; b.position.set(0, .4, 0); world.addBody(b);
     var tex = canvasTex(256, 128, function (x) { x.fillStyle = "#fff"; x.fillRect(0, 0, 256, 128); x.fillStyle = "#111"; for (var i = 0; i < 10; i++) { x.beginPath(); var cx = (i * 53) % 256, cy = (i * 37) % 128; for (var k = 0; k < 5; k++) { var a = k / 5 * Math.PI * 2; x.lineTo(cx + Math.cos(a) * 13, cy + Math.sin(a) * 13); } x.fill(); } });
     var m = new T.Mesh(new T.SphereGeometry(.22, 20, 16), new T.MeshStandardMaterial({ map: tex, roughness: .4 })); m.castShadow = true; scene.add(m);
     return { b: b, m: m };
@@ -22174,19 +22208,19 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
   // ---------------- chute / passe / carrinho ----------------
   function pe(P) { var c = P.canelas[1]; return c.position.vadd(c.quaternion.vmult(v3(0, -DIM.canela, .1))); }
   function chutar(P, forca, alvo, alto) {
-    if (P.ko > 0 || P.kick > 0) return;
-    P.kick = .34; P.kickT = 0;
+    if (P.ko > 0 || P.kick > 0 || P.mergulho > 0) return;
+    P.kick = .48; P.kickT = 0; P.chuteP = { f: forca, alvo: alvo, alto: alto };
+  }
+  function baterBola(P, forca, alvo, alto) {
+    if (!J) return;
     var b = J.bola.b, tb = P.tronco;
     var dist = b.position.vsub(tb.position); dist.y = 0;
     var frente = v3(Math.sin(P.face), 0, Math.cos(P.face));
-    if (dist.length() < (P.humano ? 1.6 : 1.35) && dist.dot(frente) > -.35) {
-      setTimeout(function () {
-        if (!J) return;
-        var dir = alvo ? alvo.vsub(b.position) : frente.clone(); dir.y = 0; var d = dir.length() || 1; dir.scale(1 / d, dir);
-        var v = forca; b.velocity.set(dir.x * v, alto ? v * .3 + 1.5 : 1.2 + v * .06, dir.z * v);
-        b.angularVelocity.set(rnd() * 6 - 3, rnd() * 6 - 3, rnd() * 6 - 3);
-        J.ult = P.lado; J.ultToque = P;
-      }, 110);
+    if (dist.length() < (P.humano ? 1.7 : 1.4) && dist.dot(frente) > -.35 && b.position.y < 1.3) {
+      var dir = alvo ? alvo.vsub(b.position) : frente.clone(); dir.y = 0; var d = dir.length() || 1; dir.scale(1 / d, dir);
+      var v = forca; b.velocity.set(dir.x * v, alto ? v * .3 + 1.5 : 1.2 + v * .06, dir.z * v);
+      b.angularVelocity.set(rnd() * 6 - 3, rnd() * 6 - 3, rnd() * 6 - 3);
+      J.ult = P.lado; J.ultToque = P; P.semDom = .45;
     }
   }
   function carrinho(P) {
@@ -22196,6 +22230,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     P.tronco.velocity.set(fr.x * 7, .5, fr.z * 7);
     P.tronco.angularVelocity.set(Math.cos(P.face) * -6, 0, Math.sin(P.face) * 6);
     var b = J.bola.b, d = b.position.vsub(P.tronco.position); d.y = 0;
+    setTimeout(function () { if (!J) return; J.jog.forEach(function (Q) { if (Q === P || Q.lado === P.lado || Q.gk || Q.ko > 0) return; var e = Q.tronco.position.vsub(P.tronco.position); e.y = 0; if (e.length() < 1.3) { Q.ko = 1.1; Q.tronco.velocity.y += 1.5; } }); }, 200);
     if (d.length() < 2 && d.dot(fr) > 0) setTimeout(function () { if (J) { b.velocity.set(fr.x * 9 + rnd() * 4 - 2, 1.5, fr.z * 9 + rnd() * 4 - 2); } }, 150);
   }
   // ---------------- IA ----------------
@@ -22211,8 +22246,13 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       if (vindo && P.ko <= 0 && P.cool <= 0) {
         var t = Math.abs((b.position.z - (golMeu + s * .6)) / (b.velocity.z || 1)), px = b.position.x + b.velocity.x * t;
         if (Math.abs(px - tb.position.x) > .6 && Math.abs(px) < J.GW / 2 + .8) { // mergulho de verdade: o corpo é jogado para o lado
-          var lado = px > tb.position.x ? 1 : -1;
-          P.ko = 1.1; P.cool = 2; tb.velocity.set(lado * 7, 3.5, 0); tb.angularVelocity.set(0, 0, -lado * s * 7);
+          var lado = px > tb.position.x ? 1 : -1, dx = Math.abs(px - tb.position.x);
+          P.mergulho = .6; P.mergLado = lado; P.cool = 1.8; tb.velocity.set(lado * clamp(dx * 2.4, 4, 8.5), 4.2, -s * 1.2);
+          return;
+        }
+        var py = b.position.y + b.velocity.y * t - 10 * t * t;
+        if (py > 1.75 && t < .6) { // bola alta no meio: pula com os braços pra cima
+          P.mergulho = .55; P.mergLado = 0; P.cool = 1.5; tb.velocity.set((px - tb.position.x) * 2, 6.5, 0);
           return;
         }
       }
@@ -22282,15 +22322,15 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
   function soltarCarga() {
     if (!J || !J.carregando) return; J.carregando = false; $("#ff-forca").style.display = "none";
     var P = J.eu; if (!P) return;
-    var f = 10 + J.carga * 24, alto = J.carga > .55;
+    var f = 13 + J.carga * 22, alto = J.carga > .55;
     var yaw = CFG.cam === "tv" ? P.face : camYaw;
     var b = J.bola.b.position, mira = v3(b.x + Math.sin(yaw) * 30, 0, b.z + Math.cos(yaw) * 30);
-    if (ONLINE && !ONLINE.host) { ONLINE.acao = { t: "chute", f: f, yaw: yaw, alto: alto, n: (ONLINE.acaoN = (ONLINE.acaoN || 0) + 1) }; P.kick = .34; P.kickT = 0; return; }
+    if (ONLINE && !ONLINE.host) { ONLINE.acao = { t: "chute", f: f, yaw: yaw, alto: alto, n: (ONLINE.acaoN = (ONLINE.acaoN || 0) + 1) }; P.kick = .48; P.kickT = 0; return; }
     chutar(P, f, mira, alto);
   }
   function passe() {
     if (!J || !J.eu) return; var P = J.eu;
-    if (ONLINE && !ONLINE.host) { ONLINE.acao = { t: "passe", n: (ONLINE.acaoN = (ONLINE.acaoN || 0) + 1) }; P.kick = .34; P.kickT = 0; return; }
+    if (ONLINE && !ONLINE.host) { ONLINE.acao = { t: "passe", n: (ONLINE.acaoN = (ONLINE.acaoN || 0) + 1) }; P.kick = .48; P.kickT = 0; return; }
     var fr = v3(Math.sin(P.face), 0, Math.cos(P.face));
     var comp = J.jog.filter(function (q) { return q.lado === P.lado && q !== P && !q.gk; }).sort(function (a, c) {
       var da = a.tronco.position.vsub(P.tronco.position), dc = c.tronco.position.vsub(P.tronco.position);
@@ -22322,7 +22362,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
   function controleHumano(dt) {
     var P = J.eu; if (!P) return;
     var e = lerEntrada(); aplicarEntrada(P, e);
-    if (J.carregando) { J.carga = Math.min(1, J.carga + dt * 1.1); $("#ff-forca i").style.width = (J.carga * 100) + "%"; }
+    if (J.carregando) { J.carga = Math.min(1, J.carga + dt * 1.5); $("#ff-forca i").style.width = (J.carga * 100) + "%"; }
     if (ONLINE && !ONLINE.host) ONLINE.entrada = { x: +e.x.toFixed(2), z: +e.z.toFixed(2), l: +e.l.toFixed(2) };
   }
   // ---------------- HUD / gols / fim ----------------
@@ -22496,7 +22536,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var o = ONLINE, b = J.bola.b;
     o.ref.child("estado").set({ tm: r2(J.tempo), g: J.gols, pz: J.pausa > 0 ? 1 : 0, av: J.avisoN || 0, avt: J.avisoTxt || "", fim: J.fim ? 1 : 0,
       b: [r2(b.position.x), r2(b.position.y), r2(b.position.z), r2(b.velocity.x), r2(b.velocity.y), r2(b.velocity.z)],
-      j: J.jog.map(function (P) { var t = P.tronco.position; return [r2(t.x), r2(t.y), r2(t.z), r2(P.face), P.ko > 0 ? 1 : 0, P.kick > 0 ? 1 : 0, P.carr > 0 ? 1 : 0]; }) });
+      j: J.jog.map(function (P) { var t = P.tronco.position; return [r2(t.x), r2(t.y), r2(t.z), r2(P.face), P.ko > 0 ? 1 : 0, P.kick > 0 ? 1 : 0, P.carr > 0 ? 1 : 0, P.mergulho > 0 ? (P.mergLado || 2) : 0]; }) });
   }
   function redeTick(dt) {
     var o = ONLINE; o.tEnvio -= dt;
@@ -22524,7 +22564,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       var dx = d[0] - t.x, dz = d[2] - t.z, dist = Math.hypot(dx, dz);
       if (dist > 4) { resetar(P, d[0], d[2]); return; }
       if (P !== J.eu || dist > 1.2) { P.vdes.set(clamp(dx * 4, -8, 8), 0, clamp(dz * 4, -8, 8)); if (P !== J.eu) P.face = d[3]; }
-      if (d[4] && P.ko <= 0) P.ko = .6; if (d[5] && P.kick <= 0) { P.kick = .34; P.kickT = 0; } if (d[6] && P.carr <= 0) { P.carr = .5; P.ko = .5; }
+      if (d[4] && P.ko <= 0) P.ko = .6; if (d[5] && P.kick <= 0) { P.kick = .48; P.kickT = 0; } if (d[7] && !(P.mergulho > 0)) { P.mergulho = .6; P.mergLado = d[7] === 2 ? 0 : d[7]; } if (d[6] && P.carr <= 0) { P.carr = .5; P.ko = .5; }
     });
     var b = J.bola.b, eb = es.b, dB = Math.hypot(eb[0] - b.position.x, eb[1] - b.position.y, eb[2] - b.position.z);
     if (dB > 1.5) { b.position.set(eb[0], eb[1], eb[2]); b.velocity.set(eb[3], eb[4], eb[5]); }
