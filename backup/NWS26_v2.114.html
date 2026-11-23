@@ -21897,12 +21897,13 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     [-1, 1].forEach(function (s) { for (var i = 0; i < 4; i++) { var a = new T.Mesh(new T.BoxGeometry(2, .8, L + 10), new T.MeshStandardMaterial({ color: i % 2 ? "#2b3a55" : "#33466a" })); a.position.set(s * (W / 2 + 4 + i * 2), .4 + i * .8, 0); scene.add(a); } });
     // física: chão, paredes (com abertura do gol) e gols
     world = new C.World(); world.gravity.set(0, -20, 0); world.broadphase = new C.SAPBroadphase(world); world.solver.iterations = 12; world.allowSleep = false;
+    var _add = world.addBody.bind(world); world.addBody = function (b) { if (b.collisionFilterGroup === 1) b.collisionFilterMask = -1; return _add(b); }; // estáticos colidem com tudo
     MAT.chao = new C.Material("chao"); MAT.bola = new C.Material("bola"); MAT.corpo = new C.Material("corpo"); MAT.parede = new C.Material("parede");
     world.addContactMaterial(new C.ContactMaterial(MAT.chao, MAT.bola, { friction: .35, restitution: .55 }));
     world.addContactMaterial(new C.ContactMaterial(MAT.chao, MAT.corpo, { friction: .8, restitution: .05 }));
-    world.addContactMaterial(new C.ContactMaterial(MAT.corpo, MAT.bola, { friction: .4, restitution: .35 }));
+    world.addContactMaterial(new C.ContactMaterial(MAT.corpo, MAT.bola, { friction: .7, restitution: .04 }));
     world.addContactMaterial(new C.ContactMaterial(MAT.parede, MAT.bola, { friction: .1, restitution: .7 }));
-    world.addContactMaterial(new C.ContactMaterial(MAT.corpo, MAT.corpo, { friction: .3, restitution: .1 }));
+    world.addContactMaterial(new C.ContactMaterial(MAT.corpo, MAT.corpo, { friction: .1, restitution: 0 }));
     var chao = new C.Body({ mass: 0, material: MAT.chao }); chao.addShape(new C.Plane()); chao.quaternion.setFromAxisAngle(new C.Vec3(1, 0, 0), -Math.PI / 2); world.addBody(chao);
     fixos = [];
     var HW = 1.2;
@@ -21952,7 +21953,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var mCam = new T.MeshStandardMaterial({ map: texCamisa(kit, num, curto(nome), gk, time), roughness: .7 });
     var mManga = Mt(corCam), mPele = Mt(pele, .55), mCal = Mt(gk ? "#1f1f1f" : kit.calcao || "#222"), mMeia = Mt(gk ? "#1f1f1f" : kit.meia || "#fff"), mChut = Mt(["#111", "#f2f2f2", "#ff4fa3", "#ffd23f", "#2ecc71"][h % 5], .35);
     var y0 = ALTURA - .02;
-    var add = function (body, malha) { body.material = MAT.corpo; body.linearDamping = .05; body.angularDamping = .3; world.addBody(body); scene.add(malha); P.partes.push({ b: body, g: malha }); body.__dono = P; return body; };
+    var add = function (body, malha) { body.collisionFilterGroup = 4; body.collisionFilterMask = 1; body.material = MAT.corpo; body.linearDamping = .05; body.angularDamping = .3; world.addBody(body); scene.add(malha); P.partes.push({ b: body, g: malha }); body.__dono = P; return body; };
     var bola = function (r, m) { var s = new T.Mesh(new T.SphereGeometry(r, 14, 10), m); s.castShadow = true; return s; };
     var caps = function (r, l, m) { var s = new T.Mesh(new T.CapsuleGeometry(r, l, 4, 12), m); s.castShadow = true; return s; };
     // tronco + cabeça
@@ -21978,6 +21979,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var boca = new T.Mesh(new T.TorusGeometry(.03, .008, 6, 12, Math.PI), Mt("#6b2b24")); boca.position.set(0, -.07, .18); boca.rotation.z = Math.PI; cab3.add(boca);
     [-1, 1].forEach(function (s) { var omb = bola(.065, mManga); omb.position.set(s * .19, DIM.troncoH - .05, 0); gT.add(omb); });
     P.cab3 = cab3;
+    tronco.collisionFilterGroup = 2; tronco.collisionFilterMask = 1 | 2 | 8;
     tronco.material = MAT.corpo; tronco.linearDamping = .05; tronco.angularDamping = .5; world.addBody(tronco); scene.add(gT); P.partes.push({ b: tronco, g: gT }); P.tronco = tronco; tronco.__dono = P;
     // pernas
     P.coxas = []; P.canelas = []; P.q = [];
@@ -22019,8 +22021,8 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var outro = ev.body.__dono;
     if (!outro || outro === P) return;
     var rv = P.tronco.velocity.vsub(outro.tronco.velocity).length();
-    if (outro.carr > 0 && P.ko <= 0) { P.ko = 1.4 + rnd() * .4; if (J.dono === P) J.dono = null; }
-    else if (rv > 7.5 && P.ko <= 0 && rnd() < .6) { P.ko = .9 + rnd() * .5; }
+    if (outro.carr > 0 && P.ko <= 0 && !P.gk) { P.ko = 1.1; }
+    else if (rv > 9 && P.ko <= 0 && rnd() < .35) { P.ko = .7; }
   }
   function removerJogador(P) { P.partes.forEach(function (p) { world.removeBody(p.b); scene.remove(p.g); }); }
   // ---------------- controle de equilíbrio (sem animação: tudo por força e torque) ----------------
@@ -22074,9 +22076,36 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     }
     if (P.kick > 0) { P.kickT += dt; P.kick -= dt; }
   }
+  // ---------------- domínio de bola: a bola gruda no pé de quem está conduzindo ----------------
+  function dominar(P, dt) {
+    if (P.ko > 0 || P.kick > 0 || P.carr > 0 || P.gk) return;
+    var b = J.bola.b, tb = P.tronco;
+    if (b.position.y > .7) return;
+    var fx = Math.sin(P.face), fz = Math.cos(P.face);
+    var dx = b.position.x - tb.position.x, dz = b.position.z - tb.position.z, dist = Math.hypot(dx, dz);
+    var raio = P.humano ? 1.25 : 1.0;
+    if (dist > raio || (dx * fx + dz * fz) < -.3) return;
+    var forca = P.humano ? 14 : 8;
+    if (!P.humano && P.lado === MEU_LADO && J.eu && J.eu.tronco.position.distanceTo(b.position) < 1.4) return; // não rouba do seu jogador
+    var alvoX = tb.position.x + fx * .7, alvoZ = tb.position.z + fz * .7;
+    var vx = tb.velocity.x + (alvoX - b.position.x) * 9, vz = tb.velocity.z + (alvoZ - b.position.z) * 9;
+    var k = Math.min(1, dt * forca);
+    b.velocity.x += (vx - b.velocity.x) * k; b.velocity.z += (vz - b.velocity.z) * k;
+    if (b.velocity.y > 1) b.velocity.y *= .7;
+    J.ultToque = P;
+  }
+  function limitar(P) {
+    P.partes.forEach(function (p) {
+      var v = p.b.velocity, sp = v.length(), max = p.b === P.tronco && P.carr > 0 ? 10 : 12;
+      if (sp > max) v.scale(max / sp, v);
+      if (v.y > 6) v.y = 6;
+      var w = p.b.angularVelocity, ws = w.length(); if (ws > 20) w.scale(20 / ws, w);
+    });
+    var t = P.tronco.position; if (t.y > 2.6) { P.tronco.velocity.y = Math.min(P.tronco.velocity.y, 0); }
+  }
   // ---------------- bola ----------------
   function criarBola() {
-    var b = new C.Body({ mass: .45, material: MAT.bola }); b.addShape(new C.Sphere(.22)); b.linearDamping = .25; b.angularDamping = .3; b.position.set(0, .4, 0); world.addBody(b);
+    var b = new C.Body({ mass: .45, material: MAT.bola }); b.collisionFilterGroup = 8; b.collisionFilterMask = 1 | 2; b.addShape(new C.Sphere(.22)); b.linearDamping = .25; b.angularDamping = .3; b.position.set(0, .4, 0); world.addBody(b);
     var tex = canvasTex(256, 128, function (x) { x.fillStyle = "#fff"; x.fillRect(0, 0, 256, 128); x.fillStyle = "#111"; for (var i = 0; i < 10; i++) { x.beginPath(); var cx = (i * 53) % 256, cy = (i * 37) % 128; for (var k = 0; k < 5; k++) { var a = k / 5 * Math.PI * 2; x.lineTo(cx + Math.cos(a) * 13, cy + Math.sin(a) * 13); } x.fill(); } });
     var m = new T.Mesh(new T.SphereGeometry(.22, 20, 16), new T.MeshStandardMaterial({ map: tex, roughness: .4 })); m.castShadow = true; scene.add(m);
     return { b: b, m: m };
@@ -22164,7 +22193,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     if (P.ko > 0 || P.carr > 0) return;
     P.carr = .7; P.ko = .75;
     var fr = v3(Math.sin(P.face), 0, Math.cos(P.face));
-    P.tronco.velocity.set(fr.x * 8, 2, fr.z * 8);
+    P.tronco.velocity.set(fr.x * 7, .5, fr.z * 7);
     P.tronco.angularVelocity.set(Math.cos(P.face) * -6, 0, Math.sin(P.face) * 6);
     var b = J.bola.b, d = b.position.vsub(P.tronco.position); d.y = 0;
     if (d.length() < 2 && d.dot(fr) > 0) setTimeout(function () { if (J) { b.velocity.set(fr.x * 9 + rnd() * 4 - 2, 1.5, fr.z * 9 + rnd() * 4 - 2); } }, 150);
@@ -22350,14 +22379,16 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       var n = 0;
       while (acum >= PASSO && n < 3) {
         J.jog.forEach(function (P) { controlar(P, PASSO); });
+        if (!conv || J.eu) J.jog.forEach(function (P) { if (!conv || P === J.eu) dominar(P, PASSO); });
         world.step(PASSO); acum -= PASSO; n++;
+        J.jog.forEach(limitar);
       }
       if (n === 3) acum = 0;
       if (J.pausa <= 0 && !conv) checarGol();
       // bola presa fora? volta pro meio
       var bp = J.bola.b.position; if (bp.y < -2 || Math.abs(bp.x) > J.W) { bp.set(0, 1, 0); J.bola.b.velocity.setZero(); }
       // se alguém ficar deitado muito tempo, levanta
-      J.jog.forEach(function (P) { if (P.tronco.position.y < .5 && P.ko <= 0) { P.tempoChao = (P.tempoChao || 0) + dt; if (P.tempoChao > 3) { P.tronco.velocity.y = 6; P.tempoChao = 0; } } else P.tempoChao = 0; });
+      J.jog.forEach(function (P) { if (P.tronco.position.y < .5 && P.ko <= 0) { P.tempoChao = (P.tempoChao || 0) + dt; if (P.tempoChao > 3) { P.ko = 0; P.tempoChao = 0; } } else P.tempoChao = 0; });
       if (Math.floor(J.tempo * 4) !== J._ultHud) { J._ultHud = Math.floor(J.tempo * 4); hud(); }
     }
     // sincroniza o visual com a física
