@@ -27999,7 +27999,7 @@ THREE.SkeletonUtils={clone:clone};
         if (!o.isMesh) return;
         o.castShadow = true; o.frustumCulled = false;
         var nm = o.material.name;
-        if (nm === "Wolf3D_Headwear") { o.visible = false; return; }
+        if (nm === "Wolf3D_Headwear" || nm === "Wolf3D_Outfit_Top" || nm === "Wolf3D_Outfit_Bottom") { o.visible = false; return; }
         if (nm === "Wolf3D_Beard") { o.visible = h % 3 !== 0; }
         var m = o.material.clone();
         if (nm === "Wolf3D_Outfit_Top") m.color.set(corCam);
@@ -28014,6 +28014,23 @@ THREE.SkeletonUtils={clone:clone};
         var cab = new T.Mesh(new T.SphereGeometry(.1, 18, 12, 0, Math.PI * 2, 0, Math.PI * .52), new T.MeshStandardMaterial({ color: corCab, roughness: .9 }));
         cab.position.set(0, .115, -.012); cab.scale.set(.98, 1.05, 1.12); cab.rotation.x = -.18; cab.castShadow = true; ossos.Head.add(cab);
       }
+      // ===== uniforme de verdade preso no esqueleto: camisa com nome e número, calção, meião =====
+      var pele = ["#b47a5c", "#a46c50", "#8c5a40", "#6c4430", "#4c3022"][h % PELES.length]; // tom parecido com o rosto do modelo
+      var Mt = function (c, r) { return new T.MeshStandardMaterial({ color: c, roughness: r == null ? .7 : r }); };
+      var texCam = null; R.corpo.traverse(function (o) { if (!texCam && o.isMesh && o.geometry && o.geometry.type === "LatheGeometry" && o.material && o.material.map) texCam = o.material.map; });
+      var mCam = texCam ? new T.MeshStandardMaterial({ map: texCam, roughness: .75 }) : Mt(corCam);
+      var mManga = Mt(goleiro ? kit.gol : (kit.manga || kit.cor)), mCal = Mt(goleiro ? "#1f1f1f" : (kit.calcao || "#222"), .8), mMeia = Mt(goleiro ? "#1f1f1f" : (kit.meia || "#fff"), .8), mPele = Mt(pele, .6);
+      var peca = function (bone, geo, mat, y, rx) { if (!bone) return null; var m = new T.Mesh(geo, mat); m.position.y = y || 0; if (rx) m.rotation.x = rx; m.castShadow = true; bone.add(m); return m; };
+      var cil = function (r0, r1, h2, seg) { return new T.CylinderGeometry(r1, r0, h2, seg || 14); }; // r0 em cima (origem do osso), r1 embaixo
+      // tronco (camisa)
+      var perfil = [[.155, 0], [.168, .06], [.163, .15], [.178, .26], [.205, .36], [.22, .44], [.215, .49], [.17, .54], [.09, .575], [.06, .58]].map(function (v) { return new T.Vector2(v[0], v[1]); });
+      var tr = peca(ossos.Spine, new T.LatheGeometry(perfil, 28), mCam, -.17); if (tr) { tr.rotation.y = Math.PI; tr.scale.set(1.05, 1, .66); }
+      [ossos.LeftArm, ossos.RightArm].forEach(function (b) { peca(b, new T.SphereGeometry(.072, 14, 10), mManga, .02); peca(b, cil(.066, .058, .16), mManga, .08); peca(b, cil(.05, .044, .14), mPele, .21); peca(b, new T.SphereGeometry(.043, 10, 8), mPele, .285); });
+      [ossos.LeftForeArm, ossos.RightForeArm].forEach(function (b) { peca(b, cil(.043, .032, .25), mPele, .125); });
+      // calção e pernas
+      peca(ossos.Hips, cil(.17, .18, .16, 22), mCal, -.04).scale.z = .72;
+      [ossos.LeftUpLeg, ossos.RightUpLeg].forEach(function (b) { peca(b, cil(.098, .09, .2), mCal, .1); peca(b, cil(.082, .062, .26), mPele, .32); peca(b, new T.SphereGeometry(.06, 12, 10), mPele, .455); });
+      [ossos.LeftLeg, ossos.RightLeg].forEach(function (b) { var pf = [[.058, 0], [.064, .08], [.062, .2], [.05, .32], [.04, .43]].map(function (v) { return new T.Vector2(v[0], v[1]); }); peca(b, new T.LatheGeometry(pf, 14), mMeia, 0); });
       obj.rotation.y = Math.PI; // os modos olham para -z
       R.corpo.traverse(function (o) { if (o.isMesh) o.visible = false; });
       R.g.add(obj);
