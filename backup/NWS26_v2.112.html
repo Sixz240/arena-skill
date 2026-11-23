@@ -21705,18 +21705,55 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
   if (window.__ffOk) return; window.__ffOk = true;
   var T = window.THREE, C = window.CANNON;
   if (!T || !C) return;
-  var TIMES = ["Flamengo", "Palmeiras", "Cruzeiro", "Bahia", "Fluminense", "Botafogo", "São Paulo", "Corinthians", "Santos", "Grêmio", "Internacional", "Atlético-MG", "Vasco da Gama", "Athletico Paranaense", "Bragantino", "Vitória", "Coritiba", "Mirassol", "Remo", "Chapecoense"];
+  var LIGAS = [
+    { id: "br", nome: "🇧🇷 Brasileirão", times: ["Flamengo", "Palmeiras", "Cruzeiro", "Bahia", "Fluminense", "Botafogo", "São Paulo", "Corinthians", "Santos", "Grêmio", "Internacional", "Atlético-MG", "Vasco da Gama", "Athletico Paranaense", "Bragantino", "Vitória", "Coritiba", "Mirassol", "Remo", "Chapecoense"] },
+    { id: "laliga", nome: "🇪🇸 La Liga", times: ["Barcelona", "Real Madrid", "Atlético de Madrid", "Real Betis", "Villarreal", "Sevilla", "Athletic Bilbao", "Real Sociedad", "Valencia", "Celta de Vigo", "Getafe", "Rayo Vallecano", "Osasuna", "Espanyol", "Alavés", "Deportivo La Coruña", "Racing de Santander", "Levante", "Elche", "Málaga"] },
+    { id: "premier", nome: "🏴 Premier League", times: ["Arsenal", "Manchester City", "Liverpool", "Chelsea", "Tottenham", "Manchester United", "Newcastle", "Aston Villa", "Brighton", "Crystal Palace", "Nottingham Forest", "Brentford", "Bournemouth", "Fulham", "Everton", "Sunderland", "Leeds United", "Coventry City", "Hull City", "Ipswich Town"] },
+    { id: "ligue1", nome: "🇫🇷 Ligue 1", times: ["PSG", "Mônaco", "Olympique de Marseille", "LOSC", "Lyon", "Lens", "Nice", "Rennes", "RC Strasbourg", "Stade Brestois", "Toulouse", "Paris FC", "Auxerre", "Lorient", "Le Havre AC", "Angers", "Troyes", "Le Mans FC"] },
+    { id: "seriea", nome: "🇮🇹 Serie A Enilive", times: ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta", "Roma", "Como", "Lazio", "Bologna", "Fiorentina", "Torino", "Udinese", "Genoa", "Sassuolo", "Parma", "Cagliari", "Lecce", "Monza", "Venezia", "Frosinone"] },
+    { id: "eredivisie", nome: "🇳🇱 Eredivisie", times: ["PSV", "Feyenoord", "Ajax", "AZ", "Twente", "Utrecht", "NEC", "Go Ahead Eagles", "Heerenveen", "Sparta Rotterdam", "Groningen", "Fortuna Sittard", "Zwolle", "Excelsior", "Telstar", "Cambuur", "Den Haag", "Willem II"] }
+  ];
+  var ALIAS_KIT = { "Athletico Paranaense": "Athletico-PR", "Vasco da Gama": "Vasco" };
+  // uniformes dos times que não têm kit no jogo (cor, segunda cor, padrão: v=listras verticais, h=horizontais, faixa, d=diagonal)
+  var KITS_EXTRA = {
+    "PSG": { cor: "#0b2a5b", cor2: "#d4002a", padrao: "faixa", calcao: "#0b2a5b", meia: "#0b2a5b", num: "#ffffff" }, "Mônaco": { cor: "#ffffff", cor2: "#d4002a", padrao: "d", calcao: "#ffffff", meia: "#ffffff", num: "#d4002a" },
+    "Olympique de Marseille": { cor: "#ffffff", cor2: "#2fa6dc", calcao: "#ffffff", meia: "#ffffff", num: "#2fa6dc" }, "LOSC": { cor: "#d4002a", cor2: "#0b2a5b", calcao: "#0b2a5b", meia: "#d4002a", num: "#ffffff" },
+    "Lyon": { cor: "#ffffff", cor2: "#1d3d8f", calcao: "#ffffff", meia: "#ffffff", num: "#1d3d8f" }, "Lens": { cor: "#ffd200", cor2: "#d4002a", padrao: "v", calcao: "#111111", meia: "#ffd200", num: "#111111" },
+    "Nice": { cor: "#d4002a", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#111111", num: "#ffffff" }, "Rennes": { cor: "#d4002a", cor2: "#111111", calcao: "#111111", meia: "#111111", num: "#ffffff" },
+    "RC Strasbourg": { cor: "#1e5bd6", calcao: "#ffffff", meia: "#1e5bd6", num: "#ffffff" }, "Stade Brestois": { cor: "#d4002a", calcao: "#ffffff", meia: "#d4002a", num: "#ffffff" }, "Toulouse": { cor: "#5b2a86", calcao: "#5b2a86", meia: "#5b2a86", num: "#ffffff" },
+    "Paris FC": { cor: "#0b1e4d", calcao: "#0b1e4d", meia: "#0b1e4d", num: "#ffffff" }, "Auxerre": { cor: "#ffffff", cor2: "#1d4fd0", calcao: "#ffffff", meia: "#ffffff", num: "#1d4fd0" }, "Lorient": { cor: "#ff7a00", cor2: "#111111", calcao: "#111111", meia: "#ff7a00", num: "#111111" },
+    "Le Havre AC": { cor: "#7fb2e5", cor2: "#0b1e4d", padrao: "faixa", calcao: "#0b1e4d", meia: "#7fb2e5", num: "#0b1e4d" }, "Angers": { cor: "#111111", cor2: "#ffffff", padrao: "v", calcao: "#111111", meia: "#111111", num: "#ffffff" }, "Troyes": { cor: "#1e5bd6", calcao: "#ffffff", meia: "#1e5bd6", num: "#ffffff" }, "Le Mans FC": { cor: "#d4002a", cor2: "#ffd200", calcao: "#d4002a", meia: "#d4002a", num: "#ffd200" },
+    "Inter de Milão": { cor: "#0047ab", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#111111", num: "#ffd23f" }, "Napoli": { cor: "#1b8fd6", calcao: "#ffffff", meia: "#1b8fd6", num: "#ffffff" },
+    "Juventus": { cor: "#ffffff", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#ffffff", num: "#111111" }, "Milan": { cor: "#d4002a", cor2: "#111111", padrao: "v", calcao: "#ffffff", meia: "#111111", num: "#ffffff" },
+    "Atalanta": { cor: "#1b3f8f", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#111111", num: "#ffffff" }, "Roma": { cor: "#8a1538", cor2: "#f2a900", calcao: "#8a1538", meia: "#111111", num: "#f2a900" },
+    "Como": { cor: "#1b4fa8", calcao: "#1b4fa8", meia: "#1b4fa8", num: "#ffffff" }, "Lazio": { cor: "#87ceeb", calcao: "#ffffff", meia: "#87ceeb", num: "#ffffff" }, "Bologna": { cor: "#a2142b", cor2: "#0b1e4d", padrao: "v", calcao: "#ffffff", meia: "#0b1e4d", num: "#ffffff" },
+    "Fiorentina": { cor: "#5b2a86", calcao: "#ffffff", meia: "#5b2a86", num: "#ffffff" }, "Torino": { cor: "#7a1a1a", calcao: "#ffffff", meia: "#7a1a1a", num: "#ffffff" }, "Udinese": { cor: "#ffffff", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#ffffff", num: "#111111" },
+    "Genoa": { cor: "#a2142b", cor2: "#0b1e4d", padrao: "faixa", calcao: "#ffffff", meia: "#0b1e4d", num: "#ffffff" }, "Sassuolo": { cor: "#11a04a", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#11a04a", num: "#ffffff" }, "Parma": { cor: "#ffffff", cor2: "#ffd200", calcao: "#ffffff", meia: "#ffffff", num: "#0b1e4d" },
+    "Cagliari": { cor: "#a2142b", cor2: "#0b1e4d", padrao: "faixa", calcao: "#0b1e4d", meia: "#0b1e4d", num: "#ffffff" }, "Lecce": { cor: "#ffd200", cor2: "#d4002a", padrao: "v", calcao: "#0b1e4d", meia: "#ffd200", num: "#0b1e4d" }, "Monza": { cor: "#d4002a", cor2: "#ffffff", calcao: "#ffffff", meia: "#d4002a", num: "#ffffff" },
+    "Venezia": { cor: "#111111", cor2: "#ff7a00", calcao: "#111111", meia: "#111111", num: "#ff7a00" }, "Frosinone": { cor: "#ffd200", cor2: "#1e5bd6", calcao: "#1e5bd6", meia: "#ffd200", num: "#1e5bd6" },
+    "PSV": { cor: "#d4002a", cor2: "#ffffff", padrao: "v", calcao: "#111111", meia: "#d4002a", num: "#ffffff" }, "Feyenoord": { cor: "#d4002a", cor2: "#ffffff", padrao: "faixa", calcao: "#111111", meia: "#111111", num: "#111111" },
+    "Ajax": { cor: "#ffffff", cor2: "#d4002a", padrao: "faixa", calcao: "#ffffff", meia: "#ffffff", num: "#111111" }, "AZ": { cor: "#d4002a", calcao: "#d4002a", meia: "#d4002a", num: "#ffffff" }, "Twente": { cor: "#d4002a", calcao: "#ffffff", meia: "#d4002a", num: "#ffffff" },
+    "Utrecht": { cor: "#ffffff", cor2: "#d4002a", calcao: "#d4002a", meia: "#ffffff", num: "#d4002a" }, "NEC": { cor: "#d4002a", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#d4002a", num: "#ffffff" }, "Go Ahead Eagles": { cor: "#d4002a", cor2: "#ffd200", padrao: "faixa", calcao: "#d4002a", meia: "#d4002a", num: "#ffd200" },
+    "Heerenveen": { cor: "#1e5bd6", cor2: "#ffffff", padrao: "v", calcao: "#ffffff", meia: "#1e5bd6", num: "#ffffff" }, "Sparta Rotterdam": { cor: "#d4002a", cor2: "#ffffff", padrao: "v", calcao: "#111111", meia: "#111111", num: "#ffffff" }, "Groningen": { cor: "#ffffff", cor2: "#11a04a", padrao: "faixa", calcao: "#11a04a", meia: "#ffffff", num: "#11a04a" },
+    "Fortuna Sittard": { cor: "#ffd200", cor2: "#11a04a", calcao: "#11a04a", meia: "#ffd200", num: "#11a04a" }, "Zwolle": { cor: "#1e5bd6", cor2: "#11a04a", calcao: "#ffffff", meia: "#1e5bd6", num: "#ffffff" }, "Excelsior": { cor: "#d4002a", cor2: "#111111", padrao: "v", calcao: "#111111", meia: "#111111", num: "#ffffff" },
+    "Telstar": { cor: "#ffffff", cor2: "#d4002a", calcao: "#ffffff", meia: "#ffffff", num: "#d4002a" }, "Cambuur": { cor: "#ffd200", cor2: "#1e5bd6", padrao: "faixa", calcao: "#1e5bd6", meia: "#ffd200", num: "#1e5bd6" }, "Den Haag": { cor: "#ffd200", cor2: "#11a04a", calcao: "#11a04a", meia: "#ffd200", num: "#11a04a" }, "Willem II": { cor: "#d4002a", cor2: "#ffffff", padrao: "v", calcao: "#1e5bd6", meia: "#1e5bd6", num: "#ffffff" }
+  };
   var FUNC = { ZAG: "Zagueiro", MEI: "Meio-campo", ATA: "Atacante" };
   var PADRAO = { 2: ["ATA"], 3: ["ZAG", "ATA"], 4: ["ZAG", "MEI", "ATA"], 5: ["ZAG", "ZAG", "MEI", "ATA"], 6: ["ZAG", "ZAG", "MEI", "ATA", "ATA"] };
   var PELES = ["#f1cdb0", "#dcaa84", "#b98058", "#8a5636", "#573420"], CABELOS = ["#141010", "#4a3020", "#c9a35a", "#9a4a22", "#141010", "#2b1a10"];
   var rnd = Math.random, clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
   function $(s, r) { return (r || document).querySelector(s); }
-  function kitDe(t) { try { if (window.P3D_LIB && window.P3D_LIB.kitDe) return window.P3D_LIB.kitDe(t); } catch (e) {} return { cor: "#ffffff", cor2: "#222222", calcao: "#222222", meia: "#ffffff", num: "#111111", gol: "#2b2b2b" }; }
+  function kitDe(t) {
+    var base = { cor: "#ffffff", cor2: "#222222", calcao: "#222222", meia: "#ffffff", num: "#111111", gol: "#2b2b2b" };
+    var k = (window.P3D_KITS || {})[ALIAS_KIT[t] || t] || KITS_EXTRA[t];
+    return Object.assign(base, k || {});
+  }
+  function ligaDe(t) { for (var i = 0; i < LIGAS.length; i++) if (LIGAS[i].times.indexOf(t) >= 0) return LIGAS[i].id; return "br"; }
   function escudo(t) { var im = window._escudosBR && window._escudosBR[t]; return im && im.src ? im : null; }
   function hashN(s) { var h = 0; s = String(s); for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
   function nomesDe(t) {
     var out = [];
-    try { var e = (typeof plantelBR !== "undefined" && plantelBR[t]) || null; if (e) ["GOL", "ZAG", "LAT", "MEI", "ATA"].forEach(function (k) { (e[k] || []).forEach(function (x) { var n = x && (x.n || x.nome); if (n) out.push({ n: String(n), p: k }); }); }); } catch (_) {}
+    try { var e = (typeof plantelBR !== "undefined" && (plantelBR[t] || plantelBR[ALIAS_KIT[t]])) || (typeof plantelLiga !== "undefined" && plantelLiga[t]) || (typeof plantelUCL !== "undefined" && plantelUCL[t]) || null; if (e) ["GOL", "ZAG", "LAT", "MEI", "ATA"].forEach(function (k) { (e[k] || []).forEach(function (x) { var n = x && (x.n || x.nome); if (n) out.push({ n: String(n), p: k }); }); }); } catch (_) {}
     return out;
   }
   function curto(n) { n = String(n).replace(/\s*\(.*\)\s*/, "").trim(); var p = n.split(/\s+/); return (p.length > 1 ? p[p.length - 1] : p[0]).toUpperCase(); }
@@ -21739,6 +21776,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     ".ff-times{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}",
     ".ff-time{background:#0d2618;border:2px solid #24553a;border-radius:10px;padding:5px 2px;cursor:pointer;color:#fff;font:inherit;font-size:.62rem;display:flex;flex-direction:column;align-items:center;gap:2px;margin:0;width:auto}",
     ".ff-time img{width:34px;height:34px;object-fit:contain}.ff-time.on{border-color:#ffd23f;background:#2b2a12}.ff-time.adv{border-color:#ff5a5a;background:#2b1212}",
+    ".ff-ligas button{font-size:.72rem;padding:.4rem .6rem}",
     ".ff-func{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0d2618;border-radius:10px;padding:6px 8px;margin-bottom:6px;font-size:.85rem}",
     ".ff-func .ff-seg button{padding:.35rem .55rem;font-size:.75rem}",
     "#ff-jogo{position:absolute;inset:0;display:none}#ff-jogo.on{display:block}",
@@ -21776,16 +21814,19 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       '<div class="ff-logo">⚽ FUTEBOL FÍSICA<span>SEM ANIMAÇÃO • SÓ FÍSICA</span></div>' +
       '<div class="ff-h">1. FORMATO</div><div class="ff-seg" id="ff-n">' + [2, 3, 4, 5, 6].map(function (n) { return '<button class="ff-btn' + (CFG.n === n ? " on" : "") + '" data-n="' + n + '">' + n + " x " + n + "</button>"; }).join("") + "</div>" +
       '<div style="color:#bfe6cc;font-size:.78rem;margin-top:4px">1 goleiro + ' + (CFG.n - 1) + " jogador" + (CFG.n > 2 ? "es" : "") + " de linha em cada time</div>" +
-      '<div class="ff-h">2. SEU TIME</div><div class="ff-times" id="ff-meu"></div>' +
-      '<div class="ff-h">3. ADVERSÁRIO</div><div class="ff-times" id="ff-adv"></div>' +
+      '<div class="ff-h">2. SEU TIME</div><div class="ff-seg ff-ligas" id="ff-lmeu"></div><div class="ff-times" id="ff-meu" style="margin-top:6px"></div>' +
+      '<div class="ff-h">3. ADVERSÁRIO</div><div class="ff-seg ff-ligas" id="ff-ladv"></div><div class="ff-times" id="ff-adv" style="margin-top:6px"></div>' +
       '<div class="ff-h">4. FUNÇÃO DE CADA JOGADOR</div><div id="ff-funcs"></div>' +
       '<div style="display:flex;gap:8px;margin-top:6px"><button class="ff-btn" id="ff-aleat">🎲 Aleatório</button><button class="ff-btn" id="ff-padrao">↺ Padrão</button></div>' +
       '<button class="ff-btn ouro" id="ff-jogar" style="width:100%;margin-top:16px;padding:.9rem;font-size:1rem">⚽ JOGAR</button>' +
       '<p style="color:#bfe6cc;font-size:.75rem;text-align:center;margin-top:10px">Os jogadores são bonecos com física de verdade: caem, tropeçam e chutam com a perna. Cada lance é diferente!</p></div>';
     m.innerHTML = h;
+    CFG.lmeu = CFG.lmeu || ligaDe(CFG.meu); CFG.ladv = CFG.ladv || ligaDe(CFG.adv);
+    var abas = function (id, chave) { var box = $("#" + id); box.innerHTML = LIGAS.map(function (L) { return '<button class="ff-btn' + (CFG[chave] === L.id ? " on" : "") + '" data-l="' + L.id + '">' + L.nome + "</button>"; }).join(""); box.onclick = function (ev) { var b = ev.target.closest("[data-l]"); if (!b) return; CFG[chave] = b.getAttribute("data-l"); salvarCfg(); telaMenu(); }; };
+    abas("ff-lmeu", "lmeu"); abas("ff-ladv", "ladv");
     var grade = function (id, sel, outro, cls) {
-      var box = $("#" + id);
-      box.innerHTML = TIMES.map(function (t) { var e = escudo(t); return '<button class="ff-time' + (t === sel ? " " + cls : "") + '" data-t="' + t + '">' + (e ? '<img src="' + e.src + '">' : "⚽") + t.replace("Athletico Paranaense", "Athletico").replace("Vasco da Gama", "Vasco") + "</button>"; }).join("");
+      var box = $("#" + id), lista = (LIGAS.find(function (L) { return L.id === CFG[id === "ff-meu" ? "lmeu" : "ladv"]; }) || LIGAS[0]).times;
+      box.innerHTML = lista.map(function (t) { var e = escudo(t); return '<button class="ff-time' + (t === sel ? " " + cls : "") + '" data-t="' + t + '">' + (e ? '<img src="' + e.src + '">' : "⚽") + t.replace("Athletico Paranaense", "Athletico").replace("Vasco da Gama", "Vasco").replace("Olympique de Marseille", "Marseille").replace("Atlético de Madrid", "Atlético") + "</button>"; }).join("");
       box.onclick = function (ev) { var b = ev.target.closest(".ff-time"); if (!b) return; var t = b.getAttribute("data-t"); if (t === outro) return; if (id === "ff-meu") CFG.meu = t; else CFG.adv = t; salvarCfg(); telaMenu(); };
     };
     grade("ff-meu", CFG.meu, CFG.adv, "on"); grade("ff-adv", CFG.adv, CFG.meu, "adv");
@@ -21868,80 +21909,97 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       var pl = new T.Mesh(new T.BoxGeometry(W, .9, .2), new T.MeshStandardMaterial({ color: s > 0 ? "#1f3c88" : "#8a1f1f" })); pl.position.set(0, .45, z + s * 2.4); scene.add(pl);
     });
   }
-  // ---------------- textura da camisa (escudo + número) ----------------
-  function texCamisa(kit, num, nome, costas, gk) {
-    var tex = canvasTex(256, 256, function (x) {
-      var base = gk ? kit.gol : kit.cor; x.fillStyle = base; x.fillRect(0, 0, 256, 256);
-      if (!gk) { var pd = kit.padrao; if (pd === "v" || pd === "v3") { x.fillStyle = kit.cor2 || "#222"; for (var i = 0; i < 5; i++) x.fillRect(14 + i * 52, 0, 26, 256); } if (pd === "h" || pd === "h3") { x.fillStyle = kit.cor2 || "#222"; for (var k = 0; k < 6; k++) x.fillRect(0, k * 46 + 14, 256, 22); } }
-      x.textAlign = "center"; x.textBaseline = "middle"; x.fillStyle = gk ? "#ffffff" : (kit.num || "#111");
-      x.strokeStyle = "rgba(0,0,0,.35)"; x.lineWidth = 6;
-      if (costas) { x.font = "bold 30px sans-serif"; x.strokeText(nome, 128, 52); x.fillText(nome, 128, 52); x.font = "bold 130px sans-serif"; x.strokeText(num, 128, 160); x.fillText(num, 128, 160); }
-      else { x.font = "bold 70px sans-serif"; x.strokeText(num, 128, 170); x.fillText(num, 128, 170); }
+  // ---------------- textura da camisa: dá a volta no corpo (frente com escudo e número, costas com nome e número) ----------------
+  function texCamisa(kit, num, nome, gk, time) {
+    var tex = canvasTex(512, 256, function (x) {
+      var base = gk ? kit.gol : kit.cor; x.fillStyle = base; x.fillRect(0, 0, 512, 256);
+      if (!gk) {
+        var pd = kit.padrao, c2 = kit.cor2 || "#222";
+        if (pd === "v" || pd === "v3") { x.fillStyle = c2; for (var i = 0; i < 10; i++) x.fillRect(10 + i * 51, 0, 24, 256); if (pd === "v3" && kit.cor3) { x.fillStyle = kit.cor3; for (var i2 = 0; i2 < 10; i2++) x.fillRect(34 + i2 * 51, 0, 8, 256); } }
+        if (pd === "h" || pd === "h3") { x.fillStyle = c2; for (var k = 0; k < 6; k++) x.fillRect(0, k * 46 + 14, 512, 22); }
+        if (pd === "d") { x.fillStyle = c2; x.beginPath(); x.moveTo(140, 0); x.lineTo(220, 0); x.lineTo(380, 256); x.lineTo(300, 256); x.fill(); }
+        if (pd === "faixa") { x.fillStyle = c2; x.fillRect(206, 0, 100, 256); }
+      }
+      x.textAlign = "center"; x.textBaseline = "middle"; x.fillStyle = gk ? "#ffffff" : (kit.num || "#111"); x.strokeStyle = "rgba(0,0,0,.35)"; x.lineWidth = 5;
+      // frente em x=128 (número pequeno) e costas em x=384 (nome e número grande)
+      x.font = "bold 54px sans-serif"; x.strokeText(num, 128, 150); x.fillText(num, 128, 150);
+      x.font = "bold 24px sans-serif"; x.strokeText(nome, 384, 50, 200); x.fillText(nome, 384, 50, 200); x.font = "bold 96px sans-serif"; x.strokeText(num, 384, 142); x.fillText(num, 384, 142);
     });
-    if (!costas && tex.image) { var im = escudo(J && J.escTime); }
+    var im = escudo(time);
+    if (im) { var pintar = function () { try { tex.image.getContext("2d").drawImage(im, 150, 52, 46, 46); tex.needsUpdate = true; } catch (e) {} }; if (im.complete && im.naturalWidth) pintar(); else im.addEventListener("load", pintar, { once: true }); }
     return tex;
   }
-  function pintarEscudo(tex, time) {
-    var im = escudo(time); if (!im) return;
-    var pintar = function () { try { var x = tex.image.getContext("2d"); x.drawImage(im, 150, 30, 70, 70); tex.needsUpdate = true; } catch (e) {} };
-    if (im.complete && im.naturalWidth) pintar(); else im.addEventListener("load", pintar, { once: true });
-  }
-  // ---------------- jogador (boneco de pano ativo) ----------------
-  var GRUPO = 1;
+  // ---------------- jogador: boneco articulado (alto, magro, com juntas), tudo com física ----------------
   function v3(x, y, z) { return new C.Vec3(x, y, z); }
   function malhaBox(hx, hy, hz, mat) { var m = new T.Mesh(new T.BoxGeometry(hx * 2, hy * 2, hz * 2), mat); m.castShadow = true; return m; }
+  var DIM = { troncoH: .27, troncoW: .16, troncoD: .1, cab: .2, coxa: .23, canela: .22, braco: .15, ante: .15 };
+  var ALTURA = .28 + DIM.canela * 2 + DIM.coxa * 2 + DIM.troncoH; // centro do tronco em pé
   function criarJogador(time, kit, lado, num, nome, gk, func, x, z) {
     var P = { time: time, lado: lado, gk: gk, func: func, num: num, nome: nome, partes: [], ko: 0, kick: 0, kickT: 0, carr: 0, fase: rnd() * 6, face: lado ? Math.PI : 0, vdes: new C.Vec3(), mergulho: 0, cool: 0 };
-    var h = hashN(nome + time), pele = PELES[h % PELES.length], cab = CABELOS[h % CABELOS.length];
-    var Mt = function (c, r) { return new T.MeshStandardMaterial({ color: c, roughness: r == null ? .7 : r }); };
+    var h = hashN(nome + time), pele = PELES[h % PELES.length], cabC = CABELOS[h % CABELOS.length];
+    var Mt = function (c, r) { return new T.MeshStandardMaterial({ color: c, roughness: r == null ? .65 : r }); };
     var corCam = gk ? kit.gol : kit.cor;
-    var mFrente = new T.MeshStandardMaterial({ map: texCamisa(kit, num, curto(nome), false, gk), roughness: .7 }), mCostas = new T.MeshStandardMaterial({ map: texCamisa(kit, num, curto(nome), true, gk), roughness: .7 });
-    pintarEscudo(mFrente.map, time);
-    var mLado = Mt(corCam), mPele = Mt(pele, .6), mCal = Mt(gk ? "#1f1f1f" : kit.calcao || "#222"), mMeia = Mt(gk ? "#1f1f1f" : kit.meia || "#fff"), mChut = Mt(h % 2 ? "#111" : "#f2f2f2", .4);
-    GRUPO = GRUPO << 1; if (GRUPO > 0x4000) GRUPO = 2;
-    var add = function (body, malha) { body.material = MAT.corpo; body.linearDamping = .05; body.angularDamping = .3; world.addBody(body); var g = new T.Group(); g.add(malha); scene.add(g); P.partes.push({ b: body, g: g }); return body; };
-    var y0 = 1.12, sx = lado ? -1 : 1;
-    // tronco + cabeça (um corpo só)
-    var tronco = new C.Body({ mass: 8 }); tronco.addShape(new C.Box(v3(.19, .26, .12))); tronco.addShape(new C.Sphere(.23), v3(0, .5, 0));
+    var mCam = new T.MeshStandardMaterial({ map: texCamisa(kit, num, curto(nome), gk, time), roughness: .7 });
+    var mManga = Mt(corCam), mPele = Mt(pele, .55), mCal = Mt(gk ? "#1f1f1f" : kit.calcao || "#222"), mMeia = Mt(gk ? "#1f1f1f" : kit.meia || "#fff"), mChut = Mt(["#111", "#f2f2f2", "#ff4fa3", "#ffd23f", "#2ecc71"][h % 5], .35);
+    var y0 = ALTURA - .02;
+    var add = function (body, malha) { body.material = MAT.corpo; body.linearDamping = .05; body.angularDamping = .3; world.addBody(body); scene.add(malha); P.partes.push({ b: body, g: malha }); body.__dono = P; return body; };
+    var bola = function (r, m) { var s = new T.Mesh(new T.SphereGeometry(r, 14, 10), m); s.castShadow = true; return s; };
+    var caps = function (r, l, m) { var s = new T.Mesh(new T.CapsuleGeometry(r, l, 4, 12), m); s.castShadow = true; return s; };
+    // tronco + cabeça
+    var tronco = new C.Body({ mass: 8 }); tronco.addShape(new C.Box(v3(DIM.troncoW, DIM.troncoH, DIM.troncoD))); tronco.addShape(new C.Sphere(DIM.cab), v3(0, DIM.troncoH + DIM.cab + .06, 0));
     tronco.position.set(x, y0, z);
     var gT = new T.Group();
-    var mt = new T.Mesh(new T.BoxGeometry(.38, .52, .24), [mLado, mLado, mLado, mLado, mFrente, mCostas]); mt.castShadow = true; gT.add(mt);
-    var cal = malhaBox(.2, .09, .13, mCal); cal.position.y = -.25; gT.add(cal);
-    var cabeca = new T.Mesh(new T.SphereGeometry(.23, 20, 16), mPele); cabeca.position.y = .5; cabeca.castShadow = true; gT.add(cabeca);
-    var cabelo = new T.Mesh(new T.SphereGeometry(.24, 20, 12, 0, Math.PI * 2, 0, Math.PI * .5), Mt(cab, .9)); cabelo.position.set(0, .52, -.02); cabelo.rotation.x = -.25; gT.add(cabelo);
-    [-1, 1].forEach(function (s) { var o = new T.Mesh(new T.SphereGeometry(.035, 10, 8), Mt("#ffffff", .3)); o.position.set(s * .08, .53, .2); gT.add(o); var pu = new T.Mesh(new T.SphereGeometry(.02, 8, 6), Mt("#111", .3)); pu.position.set(s * .08, .53, .225); gT.add(pu); });
-    var boca = malhaBox(.04, .008, .01, Mt("#6b2b24")); boca.position.set(0, .41, .215); gT.add(boca);
-    var nariz = new T.Mesh(new T.SphereGeometry(.03, 8, 6), mPele); nariz.position.set(0, .47, .23); gT.add(nariz);
-    tronco.material = MAT.corpo; tronco.linearDamping = .05; tronco.angularDamping = .5; world.addBody(tronco); scene.add(gT); P.partes.push({ b: tronco, g: gT }); P.tronco = tronco;
-    // pernas: coxa + canela (com pé)
-    P.coxas = []; P.canelas = [];
+    var perfilC = [[.0, -.25], [.12, -.25], [.15, -.22], [.152, -.12], [.15, -.02], [.162, .08], [.172, .16], [.17, .21], [.15, .25], [.1, .275], [.05, .285]].map(function (v) { return new T.Vector2(v[0], v[1]); }); var camisa = new T.Mesh(new T.LatheGeometry(perfilC, 28), mCam); camisa.scale.set(1.08, 1, .68); camisa.position.y = .0; camisa.rotation.y = -Math.PI / 2; camisa.castShadow = true; gT.add(camisa);
+    var calcao = new T.Mesh(new T.CylinderGeometry(.155, .165, .17, 20), mCal); calcao.scale.z = .7; calcao.position.y = -.2; calcao.castShadow = true; gT.add(calcao);
+    var pesc = new T.Mesh(new T.CylinderGeometry(.045, .05, .1, 10), mPele); pesc.position.y = DIM.troncoH + .03; gT.add(pesc);
+    var gola = new T.Mesh(new T.TorusGeometry(.05, .012, 6, 16), Mt(gk ? "#111" : (kit.cor2 || kit.num || "#222"))); gola.rotation.x = Math.PI / 2; gola.position.y = DIM.troncoH + .0; gT.add(gola);
+    var cab3 = new T.Group(); cab3.position.y = DIM.troncoH + DIM.cab + .06; gT.add(cab3);
+    var cabeca = bola(DIM.cab, mPele); cabeca.scale.set(.95, 1.1, .95); cab3.add(cabeca);
+    var est = h % 4, cm = Mt(cabC, .9);
+    var topo = new T.Mesh(new T.SphereGeometry(DIM.cab * 1.04, 20, 12, 0, Math.PI * 2, 0, Math.PI * (est === 2 ? .38 : .5)), cm); topo.scale.set(.97, 1.12, .99); topo.rotation.x = -.28; topo.position.set(0, .015, -.01); cab3.add(topo);
+    if (est === 1) for (var e = 0; e < 7; e++) { var sp = new T.Mesh(new T.ConeGeometry(.04, .12, 6), cm); var a = (e / 6 - .5) * 1.6; sp.position.set(Math.sin(a) * .13, .2, -.02 + Math.cos(a) * .03); sp.rotation.z = -a * .6; sp.rotation.x = -.4; cab3.add(sp); }
+    if (est === 3) { var ab = new T.Mesh(new T.SphereGeometry(.24, 16, 12), cm); ab.position.set(0, .07, -.03); ab.scale.set(1, .9, 1); cab3.add(ab); cab3.remove(topo); }
     [-1, 1].forEach(function (s) {
-      var coxa = new C.Body({ mass: 2 }); coxa.addShape(new C.Box(v3(.065, .2, .065))); coxa.position.set(x + s * .11, y0 - .46, z);
-      var mc = new T.Group(); var ms = malhaBox(.07, .07, .07, mCal); ms.position.y = .14; mc.add(ms); var mp = new T.Mesh(new T.CapsuleGeometry(.058, .26, 4, 10), mPele); mp.castShadow = true; mp.position.y = -.04; mc.add(mp);
-      add(coxa, mc);
-      var canela = new C.Body({ mass: 1.6 }); canela.addShape(new C.Box(v3(.055, .19, .055))); canela.addShape(new C.Box(v3(.065, .045, .12)), v3(0, -.2, .05)); canela.position.set(x + s * .11, y0 - .86, z);
-      var mn = new T.Group(); var mm = new T.Mesh(new T.CapsuleGeometry(.05, .27, 4, 10), mMeia); mm.castShadow = true; mn.add(mm); var mpe = malhaBox(.065, .045, .12, mChut); mpe.position.set(0, -.2, .05); mn.add(mpe);
-      add(canela, mn);
-      var q1 = new C.HingeConstraint(tronco, coxa, { pivotA: v3(s * .11, -.27, 0), axisA: v3(1, 0, 0), pivotB: v3(0, .2, 0), axisB: v3(1, 0, 0), collideConnected: false });
-      var q2 = new C.HingeConstraint(coxa, canela, { pivotA: v3(0, -.2, 0), axisA: v3(1, 0, 0), pivotB: v3(0, .19, 0), axisB: v3(1, 0, 0), collideConnected: false });
-      world.addConstraint(q1); world.addConstraint(q2);
+      var olho = new T.Mesh(new T.SphereGeometry(.045, 12, 10), Mt("#ffffff", .25)); olho.scale.set(.85, 1.15, .5); olho.position.set(s * .075, .03, .17); cab3.add(olho);
+      var pup = new T.Mesh(new T.SphereGeometry(.026, 10, 8), Mt("#151515", .25)); pup.scale.set(1, 1.2, .5); pup.position.set(s * .075, .025, .19); cab3.add(pup);
+      var sob = new T.Mesh(new T.BoxGeometry(.07, .014, .012), Mt(cabC)); sob.position.set(s * .078, .1, .18); sob.rotation.z = s * -.15; cab3.add(sob);
+      var orelha = new T.Mesh(new T.SphereGeometry(.035, 8, 6), mPele); orelha.scale.set(.5, 1, .8); orelha.position.set(s * .19, 0, 0); cab3.add(orelha);
+    });
+    var boca = new T.Mesh(new T.TorusGeometry(.03, .008, 6, 12, Math.PI), Mt("#6b2b24")); boca.position.set(0, -.07, .18); boca.rotation.z = Math.PI; cab3.add(boca);
+    [-1, 1].forEach(function (s) { var omb = bola(.065, mManga); omb.position.set(s * .19, DIM.troncoH - .05, 0); gT.add(omb); });
+    tronco.material = MAT.corpo; tronco.linearDamping = .05; tronco.angularDamping = .5; world.addBody(tronco); scene.add(gT); P.partes.push({ b: tronco, g: gT }); P.tronco = tronco; tronco.__dono = P;
+    // pernas
+    P.coxas = []; P.canelas = []; P.q = [];
+    [-1, 1].forEach(function (s) {
+      var coxa = new C.Body({ mass: 2 }); coxa.addShape(new C.Box(v3(.055, DIM.coxa, .055))); coxa.position.set(x + s * .09, y0 - DIM.troncoH - DIM.coxa, z);
+      var gc = new T.Group(); var cc = new T.Mesh(new T.CylinderGeometry(.075, .07, .17, 14), mCal); cc.position.y = DIM.coxa - .08; cc.castShadow = true; gc.add(cc);
+      var cp = caps(.052, DIM.coxa * 2 - .14, mPele); cp.position.y = -.04; gc.add(cp); var jo = bola(.055, mPele); jo.position.y = -DIM.coxa; gc.add(jo);
+      add(coxa, gc);
+      var canela = new C.Body({ mass: 1.6 }); canela.addShape(new C.Box(v3(.05, DIM.canela, .05))); canela.addShape(new C.Box(v3(.06, .04, .11)), v3(0, -DIM.canela - .02, .05)); canela.position.set(x + s * .09, y0 - DIM.troncoH - DIM.coxa * 2 - DIM.canela, z);
+      var gn = new T.Group(); var mm = caps(.05, DIM.canela * 2 - .1, mMeia); gn.add(mm);
+      var chut = caps(.05, .12, mChut); chut.rotation.x = Math.PI / 2; chut.scale.set(1.15, 1, .75); chut.position.set(0, -DIM.canela - .02, .05); gn.add(chut);
+      add(canela, gn);
+      var q1 = new C.HingeConstraint(tronco, coxa, { pivotA: v3(s * .09, -DIM.troncoH, 0), axisA: v3(1, 0, 0), pivotB: v3(0, DIM.coxa, 0), axisB: v3(1, 0, 0), collideConnected: false });
+      var q2 = new C.HingeConstraint(coxa, canela, { pivotA: v3(0, -DIM.coxa, 0), axisA: v3(1, 0, 0), pivotB: v3(0, DIM.canela, 0), axisB: v3(1, 0, 0), collideConnected: false });
+      world.addConstraint(q1); world.addConstraint(q2); P.q.push(q1, q2);
       P.coxas.push(coxa); P.canelas.push(canela);
     });
-    // braços (soltos)
-    P.bracos = [];
+    // braços com cotovelo (soltos, balançam pela física)
+    P.bracos = []; P.antes = [];
     [-1, 1].forEach(function (s) {
-      var br = new C.Body({ mass: .8 }); br.addShape(new C.Box(v3(.045, .26, .045))); br.position.set(x + s * .27, y0 - .02, z);
-      var mb = new T.Group(); var mg = new T.Mesh(new T.CapsuleGeometry(.055, .12, 4, 8), gk ? Mt(kit.gol) : mLado); mg.position.y = .15; mg.castShadow = true; mb.add(mg);
-      var ma = new T.Mesh(new T.CapsuleGeometry(.045, .26, 4, 8), mPele); ma.position.y = -.08; ma.castShadow = true; mb.add(ma);
-      var mao = new T.Mesh(new T.SphereGeometry(gk ? .07 : .05, 10, 8), gk ? Mt("#ffd23f") : mPele); mao.position.y = -.27; mb.add(mao);
-      add(br, mb);
-      var c3 = new C.PointToPointConstraint(tronco, v3(s * .26, .22, 0), br, v3(0, .25, 0)); c3.collideConnected = false; world.addConstraint(c3);
-      P.bracos.push(br);
+      var br = new C.Body({ mass: .5 }); br.addShape(new C.Box(v3(.04, DIM.braco, .04))); br.position.set(x + s * .21, y0 + DIM.troncoH - .08 - DIM.braco, z);
+      var gb = new T.Group(); var mg = caps(.055, .09, gk ? Mt(kit.gol) : mManga); mg.position.y = DIM.braco - .07; gb.add(mg); var bp = caps(.04, DIM.braco * 2 - .12, gk ? Mt(kit.gol) : mPele); bp.position.y = -.03; gb.add(bp); var co = bola(.042, gk ? Mt(kit.gol) : mPele); co.position.y = -DIM.braco; gb.add(co);
+      add(br, gb);
+      var an = new C.Body({ mass: .4 }); an.addShape(new C.Box(v3(.035, DIM.ante, .035))); an.position.set(x + s * .21, y0 + DIM.troncoH - .08 - DIM.braco * 2 - DIM.ante, z);
+      var ga = new T.Group(); var ap = caps(.036, DIM.ante * 2 - .08, gk ? Mt(kit.gol) : mPele); ga.add(ap); var mao = bola(gk ? .07 : .045, gk ? Mt("#ffd23f") : mPele); mao.position.y = -DIM.ante; mao.scale.set(.9, 1.15, .7); ga.add(mao);
+      add(an, ga);
+      var c3 = new C.PointToPointConstraint(tronco, v3(s * .2, DIM.troncoH - .08, 0), br, v3(0, DIM.braco, 0)); c3.collideConnected = false; world.addConstraint(c3);
+      var c4 = new C.PointToPointConstraint(br, v3(0, -DIM.braco, 0), an, v3(0, DIM.ante, 0)); c4.collideConnected = false; world.addConstraint(c4);
+      P.bracos.push(br); P.antes.push(an);
     });
-    P.massa = 8 + 2 * (2 + 1.6) + 1.6;
+    P.massa = 8 + 2 * (2 + 1.6) + 2 * (.5 + .4);
     P.tronco.addEventListener("collide", function (ev) { colisao(P, ev); });
-    P.coxas.concat(P.canelas).forEach(function (b) { b.addEventListener("collide", function (ev) { colisao(P, ev); }); b.__dono = P; });
-    tronco.__dono = P; P.bracos.forEach(function (b) { b.__dono = P; });
+    P.coxas.concat(P.canelas).forEach(function (b) { b.addEventListener("collide", function (ev) { colisao(P, ev); }); });
     return P;
   }
   function colisao(P, ev) {
@@ -21971,7 +22029,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     if (P.ko > 0) { P.ko -= dt; P.carr = Math.max(0, P.carr - dt); return; }
     P.carr = Math.max(0, P.carr - dt);
     // sustentação (mola até a altura de pé) + compensa a gravidade
-    var alvoY = 1.12, err = alvoY - tb.position.y;
+    var alvoY = ALTURA - .03, err = alvoY - tb.position.y;
     if (err > -.35) { var fy = P.massa * (20 * .82 + 70 * err - 9 * tb.velocity.y); tb.force.y += clamp(fy, 0, P.massa * 60); }
     // movimento: força para chegar na velocidade desejada
     var ax = (P.vdes.x - tb.velocity.x) * 9, az = (P.vdes.z - tb.velocity.z) * 9;
@@ -22045,19 +22103,19 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     J.pausa = 1.2; J.ctrl = null;
   }
   function resetar(P, x, z) {
-    var dz = z - P.tronco.position.z, dx = x - P.tronco.position.x;
-    P.partes.forEach(function (p) { p.b.position.x += dx; p.b.position.z += dz; p.b.velocity.setZero(); p.b.angularVelocity.setZero(); });
-    var y = P.tronco.position.y, dy = 1.12 - y; P.partes.forEach(function (p) { p.b.position.y += dy; });
-    // reposiciona as partes em pé
-    var c = P.tronco; c.quaternion.setFromAxisAngle(v3(0, 1, 0), P.lado ? Math.PI : 0); P.face = P.lado ? Math.PI : 0;
-    P.coxas.forEach(function (b, i) { var s = i ? 1 : -1, o = c.quaternion.vmult(v3(s * .11, -.46, 0)); b.position.set(c.position.x + o.x, c.position.y + o.y, c.position.z + o.z); b.quaternion.copy(c.quaternion); });
-    P.canelas.forEach(function (b, i) { var s = i ? 1 : -1, o = c.quaternion.vmult(v3(s * .11, -.86, 0)); b.position.set(c.position.x + o.x, c.position.y + o.y, c.position.z + o.z); b.quaternion.copy(c.quaternion); });
-    P.bracos.forEach(function (b, i) { var s = i ? 1 : -1, o = c.quaternion.vmult(v3(s * .27, -.02, 0)); b.position.set(c.position.x + o.x, c.position.y + o.y, c.position.z + o.z); b.quaternion.copy(c.quaternion); });
+    var c = P.tronco, y = ALTURA - .02;
+    c.position.set(x, y, z); c.quaternion.setFromAxisAngle(v3(0, 1, 0), P.lado ? Math.PI : 0); P.face = P.lado ? Math.PI : 0;
+    var pos = function (b, ox, oy) { var o = c.quaternion.vmult(v3(ox, oy, 0)); b.position.set(c.position.x + o.x, c.position.y + o.y, c.position.z + o.z); b.quaternion.copy(c.quaternion); };
+    P.coxas.forEach(function (b, i) { pos(b, (i ? 1 : -1) * .09, -DIM.troncoH - DIM.coxa); });
+    P.canelas.forEach(function (b, i) { pos(b, (i ? 1 : -1) * .09, -DIM.troncoH - DIM.coxa * 2 - DIM.canela); });
+    P.bracos.forEach(function (b, i) { pos(b, (i ? 1 : -1) * .21, DIM.troncoH - .08 - DIM.braco); });
+    P.antes.forEach(function (b, i) { pos(b, (i ? 1 : -1) * .21, DIM.troncoH - .08 - DIM.braco * 2 - DIM.ante); });
+    P.partes.forEach(function (p) { p.b.velocity.setZero(); p.b.angularVelocity.setZero(); });
     P.ko = 0; P.kick = 0; P.carr = 0; P.vdes.setZero();
   }
   function parar() { cancelAnimationFrame(raf); raf = 0; if (J && world) { J.jog.forEach(removerJogador); } J = null; }
   // ---------------- chute / passe / carrinho ----------------
-  function pe(P) { var c = P.canelas[1]; return c.position.vadd(c.quaternion.vmult(v3(0, -.2, .1))); }
+  function pe(P) { var c = P.canelas[1]; return c.position.vadd(c.quaternion.vmult(v3(0, -DIM.canela, .1))); }
   function chutar(P, forca, alvo, alto) {
     if (P.ko > 0 || P.kick > 0) return;
     P.kick = .34; P.kickT = 0;
@@ -22259,6 +22317,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     camAlvo.set(b.x * .6, ret ? 11 : 7.5, b.z - (ret ? 10 : 9));
     camera.position.lerp(camAlvo, Math.min(1, dt * 3));
     camera.lookAt(b.x * .8, 0, b.z + 2);
+    if (window.__ffCamFix) { var cf = window.__ffCamFix; camera.position.set(cf[0], cf[1], cf[2]); camera.lookAt(cf[3], cf[4], cf[5]); }
     renderer.render(scene, camera);
   }
   // ---------------- botão no menu ----------------
