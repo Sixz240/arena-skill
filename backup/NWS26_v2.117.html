@@ -22053,7 +22053,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     if (P._mk !== mk) { P._mk = mk; P.partes.forEach(function (p) { if (p.b !== tb) p.b.collisionFilterMask = (P.gk ? 8 : 0) | mk; }); }
     // mergulho / pulo do goleiro: o corpo é lançado e os braços esticam pra bola
     if (P.mergulho > 0) {
-      P.mergulho -= dt;
+      P.mergulho -= dt; P.mergT = (P.mergT || 0) + dt;
       var r = P.mergLado ? -P.mergLado * Math.cos(P.face) * 1.25 : 0;
       var al = new C.Quaternion(), qr = new C.Quaternion(); al.setFromAxisAngle(v3(0, 1, 0), P.face); qr.setFromAxisAngle(v3(0, 0, 1), r); al = al.mult(qr);
       tb.quaternion.conjugate(qTmp); al.mult(qTmp, qTmp2);
@@ -22118,6 +22118,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
   function dominar(P, dt) {
     if (P.ko > 0 || P.kick > 0 || P.carr > 0 || P.gk || P.mergulho > 0) return;
     if (P.semDom > 0) { P.semDom -= dt; return; }
+    if (J.gkSeg) return;
     var b = J.bola.b, tb = P.tronco;
     var rvx = b.velocity.x - tb.velocity.x, rvz = b.velocity.z - tb.velocity.z; if (rvx * rvx + rvz * rvz > 81) return; // bola forte não gruda
     if (b.position.y > .7) return;
@@ -22177,6 +22178,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     J.ctrl = J.eu; MEU_LADO = J.eu ? J.eu.lado : 0; camYaw = MEU_LADO ? Math.PI : 0; camPitch = -.08;
     if (J.eu && CFG.cam === "1p") J.eu.cab3.visible = false;
     J.bola = criarBola();
+    J.bola.b.addEventListener("collide", function (ev) { var Q = ev.body.__dono; if (Q && Q.gk && !(ONLINE && !ONLINE.host)) J.defPend = Q; });
     J.alvoGol = [L / 2, -L / 2];
     hud(); saida(Math.random() < .5 ? 0 : 1);
     ultimo = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
@@ -22208,7 +22210,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     P.bracos.forEach(function (b, i) { pos(b, (i ? 1 : -1) * .215, DIM.troncoH - .08 - DIM.braco); });
     P.antes.forEach(function (b, i) { pos(b, (i ? 1 : -1) * .215, DIM.troncoH - .08 - DIM.braco * 2 - DIM.ante); });
     P.partes.forEach(function (p) { p.b.velocity.setZero(); p.b.angularVelocity.setZero(); });
-    P.ko = 0; P.kick = 0; P.carr = 0; P.vdes.setZero();
+    P.ko = 0; P.kick = 0; P.carr = 0; P.mergulho = 0; P.vdes.setZero();
   }
   function parar() { cancelAnimationFrame(raf); raf = 0; if (J && world) { J.jog.forEach(removerJogador); } J = null; }
   // ---------------- chute / passe / carrinho ----------------
@@ -22218,7 +22220,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     P.kick = .48; P.kickT = 0; P.chuteP = { f: forca, alvo: alvo, alto: alto };
   }
   function baterBola(P, forca, alvo, alto) {
-    if (!J) return;
+    if (!J || (J.gkSeg && J.gkSeg.P !== P)) return;
     var b = J.bola.b, tb = P.tronco;
     var dist = b.position.vsub(tb.position); dist.y = 0;
     var frente = v3(Math.sin(P.face), 0, Math.cos(P.face));
@@ -22226,7 +22228,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       var dir = alvo ? alvo.vsub(b.position) : frente.clone(); dir.y = 0; var d = dir.length() || 1; dir.scale(1 / d, dir);
       var v = forca; b.velocity.set(dir.x * v, alto ? v * .3 + 1.5 : 1.2 + v * .06, dir.z * v);
       b.angularVelocity.set(rnd() * 6 - 3, rnd() * 6 - 3, rnd() * 6 - 3);
-      J.ult = P.lado; J.ultToque = P; P.semDom = .45;
+      J.ult = P.lado; J.ultToque = P; P.semDom = .45; J.tChute = J.simT || 0; J.reacao = .14 + rnd() * .14;
     }
   }
   function carrinho(P) {
@@ -22240,29 +22242,63 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     if (d.length() < 2 && d.dot(fr) > 0) setTimeout(function () { if (J) { b.velocity.set(fr.x * 9 + rnd() * 4 - 2, 1.5, fr.z * 9 + rnd() * 4 - 2); } }, 150);
   }
   // ---------------- IA ----------------
+  function defesa(Q) {
+    var b = J.bola.b, s = Q.lado ? -1 : 1, golMeu = -s * J.L / 2, v = b.velocity;
+    if (J.defT && performance.now() - J.defT < 300) { if (J.defV) b.velocity.copy(J.defV); return; } J.defT = performance.now(); J.defV = null;
+    var sp = v.length();
+    if (sp < 10 && Q.mergulho <= 0 && b.position.y < 1.9) { // segura a bola
+      J.gkSeg = { P: Q, t: 1.1 }; J.ultToque = Q; J.ult = Q.lado; return; // agarra e segura no peito
+    }
+    // espalma: pra fora do gol, pro lado da trave mais perto
+    var ladoX = b.position.x >= 0 ? 1 : -1; if (Math.abs(b.position.x) < .4) ladoX = Q.mergLado || (rnd() < .5 ? -1 : 1);
+    b.velocity.set(ladoX * (4 + sp * .3), 2.5 + rnd() * 2.5, s * (5 + sp * .35)); J.defV = b.velocity.clone();
+    if (Math.abs(b.position.z - golMeu) < .5) b.position.z = golMeu + s * .5;
+    b.angularVelocity.set(rnd() * 8 - 4, rnd() * 8 - 4, rnd() * 8 - 4);
+    J.ultToque = Q; J.ult = Q.lado;
+  }
+  function segurarGK(dt) {
+    var G = J.gkSeg, Q = G.P, b = J.bola.b, s = Q.lado ? -1 : 1;
+    if (!J.jog.includes(Q) || J.pausa > 0) { J.gkSeg = null; return; }
+    Q.face = s > 0 ? 0 : Math.PI;
+    var f = v3(Math.sin(Q.face), 0, Math.cos(Q.face)), tp = Q.tronco.position;
+    b.position.set(tp.x + f.x * .32, Math.max(.6, tp.y - .05), tp.z + f.z * .32); b.velocity.copy(Q.tronco.velocity); b.angularVelocity.setZero();
+    G.t -= dt;
+    if (G.t <= 0 && Q.ko <= 0 && Q.mergulho <= 0) { // repõe: chutão pro campo
+      J.gkSeg = null; b.position.set(tp.x + f.x * .7, 1, tp.z + f.z * .7);
+      b.velocity.set((rnd() - .5) * 8, 7 + rnd() * 2, s * (16 + rnd() * 5)); Q.cool = 1; Q.semDom = .6; Q.kick = .48; Q.kickT = .15;
+    }
+  }
+  function py0(b, t) { return b.position.y + b.velocity.y * t - 10 * t * t; }
   function ia(P, dt) {
     var b = J.bola.b, tb = P.tronco, s = P.lado ? -1 : 1, L = J.L, W = J.W, golAlvo = v3(0, 0, s * L / 2), golMeu = -s * L / 2;
     var alvo, vmax = P.lado ? 5.6 : 5.9;
     P.cool -= dt;
     if (P.gk) {
+      if (J.gkSeg && J.gkSeg.P === P) { P.vdes.setZero(); return; }
       var x = clamp(b.position.x * .7, -J.GW / 2 + .3, J.GW / 2 - .3), z = golMeu + s * .9;
       alvo = v3(x, 0, z);
       var dBola = b.position.distanceTo(tb.position);
       var vindo = b.velocity.z * -s > 4 && Math.abs(b.position.z - golMeu) < 9;
       if (vindo && P.ko <= 0 && P.cool <= 0) {
         var t = Math.abs((b.position.z - (golMeu + s * .6)) / (b.velocity.z || 1)), px = b.position.x + b.velocity.x * t;
-        if (Math.abs(px - tb.position.x) > .6 && Math.abs(px) < J.GW / 2 + .8) { // mergulho de verdade: o corpo é jogado para o lado
-          var lado = px > tb.position.x ? 1 : -1, dx = Math.abs(px - tb.position.x);
-          P.mergulho = .6; P.mergLado = lado; P.cool = 1.8; tb.velocity.set(lado * clamp(dx * 2.4, 4, 8.5), 4.2, -s * 1.2);
+        if (t > .5 || (J.simT || 0) - (J.tChute || -9) < (J.reacao || 0)) { /* tempo de reação / espera a hora certa */ }
+        else if (Math.abs(px - tb.position.x) > .55 && Math.abs(px) < J.GW / 2 + 1) { // voa de lado com os braços esticados
+          var lado = px > tb.position.x ? 1 : -1, dx = Math.abs(px - tb.position.x), erroGK = dx > 1.6 ? .7 + rnd() * .45 : .85 + rnd() * .3; // no cantinho às vezes não alcança
+          var tt = Math.max(t, .25), yAlvo = clamp(py0(b, t), .45, 2.1), vy = clamp((yAlvo - tb.position.y + 10 * tt * tt) / tt, 4.8, 6.8);
+          P.mergulho = .62; P.mergLado = lado; P.cool = 1.8; P.mergT = 0;
+          P.partes.forEach(function (q) { q.b.velocity.set(lado * clamp(Math.max(0, dx - .45) / tt, 2.5, 5.8) * erroGK, vy, s * .8); });
           return;
         }
-        var py = b.position.y + b.velocity.y * t - 10 * t * t;
+        var py = py0(b, t);
         if (py > 1.75 && t < .6) { // bola alta no meio: pula com os braços pra cima
-          P.mergulho = .55; P.mergLado = 0; P.cool = 1.5; tb.velocity.set((px - tb.position.x) * 2, 6.5, 0);
+          P.mergulho = .55; P.mergLado = 0; P.cool = 1.5; P.mergT = 0; P.partes.forEach(function (q) { q.b.velocity.set((px - tb.position.x) * 2, clamp((py - 1.1 - tb.position.y + 10 * t * t) / Math.max(t, .25), 3, 6.5), 0); });
           return;
         }
       }
       if (dBola < 3.2 && Math.abs(b.position.z - golMeu) < 4.5) alvo = v3(b.position.x, 0, b.position.z - s * .4);
+      if (dBola < 1.1 && P.ko <= 0 && P.mergulho <= 0 && b.velocity.length() < 7 && b.position.y < 1.6 && !P.segura) { defesa(P); P.segura = 1; } // bola mansa perto: pega
+      if (dBola > 1.6) P.segura = 0;
+      if (tb.position.z * s < golMeu * s + .3) alvo.z = golMeu + s * .9; // nunca fica dentro do gol
       if (dBola < 1.2 && P.cool <= 0) { P.face = Math.atan2(golAlvo.x - tb.position.x, golAlvo.z - tb.position.z); chutar(P, 15, v3((rnd() - .5) * W, 0, s * L / 4), true); P.cool = 1; }
     } else {
       var time = J.jog.filter(function (q) { return q.lado === P.lado && !q.gk && q.ko <= 0; });
@@ -22426,7 +22462,9 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       while (acum >= PASSO && n < 3) {
         J.jog.forEach(function (P) { controlar(P, PASSO); });
         if (!conv || J.eu) J.jog.forEach(function (P) { if (!conv || P === J.eu) dominar(P, PASSO); });
-        world.step(PASSO); acum -= PASSO; n++;
+        world.step(PASSO); acum -= PASSO; n++; J.simT = (J.simT || 0) + PASSO;
+        if (J.defPend) { defesa(J.defPend); J.defPend = null; }
+        if (J.gkSeg) segurarGK(PASSO);
         J.jog.forEach(limitar);
       }
       if (n === 3) acum = 0;
