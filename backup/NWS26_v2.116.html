@@ -21900,7 +21900,7 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var _add = world.addBody.bind(world); world.addBody = function (b) { if (b.collisionFilterGroup === 1) b.collisionFilterMask = -1; return _add(b); }; // estáticos colidem com tudo
     MAT.chao = new C.Material("chao"); MAT.bola = new C.Material("bola"); MAT.corpo = new C.Material("corpo"); MAT.parede = new C.Material("parede");
     world.addContactMaterial(new C.ContactMaterial(MAT.chao, MAT.bola, { friction: .35, restitution: .55 }));
-    world.addContactMaterial(new C.ContactMaterial(MAT.chao, MAT.corpo, { friction: .8, restitution: .05 }));
+    world.addContactMaterial(new C.ContactMaterial(MAT.chao, MAT.corpo, { friction: .08, restitution: 0 }));
     world.addContactMaterial(new C.ContactMaterial(MAT.corpo, MAT.bola, { friction: .7, restitution: .04 }));
     world.addContactMaterial(new C.ContactMaterial(MAT.parede, MAT.bola, { friction: .1, restitution: .7 }));
     world.addContactMaterial(new C.ContactMaterial(MAT.corpo, MAT.corpo, { friction: .1, restitution: 0 }));
@@ -22045,8 +22045,12 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var t = kp * (alvo - a) - kd * wRel;
     filho.torque.vadd(eixo.scale(t), filho.torque); pai.torque.vsub(eixo.scale(t * .5), pai.torque);
   }
+  var PE_LOCAL = new C.Vec3(0, -.28, .05);
   function controlar(P, dt) {
     var tb = P.tronco;
+    // de pé: pernas/braços não empurram o chão (a mola segura o corpo e mantém o pé no chão); caído: tudo colide
+    var caido = P.ko > 0 || P.mergulho > 0 || P.carr > 0, mk = caido ? 1 : 0;
+    if (P._mk !== mk) { P._mk = mk; P.partes.forEach(function (p) { if (p.b !== tb) p.b.collisionFilterMask = (P.gk ? 8 : 0) | mk; }); }
     // mergulho / pulo do goleiro: o corpo é lançado e os braços esticam pra bola
     if (P.mergulho > 0) {
       P.mergulho -= dt;
@@ -22057,8 +22061,8 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       var an = 2 * Math.acos(clamp(qTmp2.w, -1, 1)), sn = Math.sqrt(1 - qTmp2.w * qTmp2.w) || 1;
       tb.torque.vadd(v3(qTmp2.x / sn * an * 220, qTmp2.y / sn * an * 120, qTmp2.z / sn * an * 220), tb.torque); tb.torque.vsub(tb.angularVelocity.scale(18), tb.torque);
       for (var g = 0; g < 2; g++) {
-        motor(P.q[4 * g], tb, P.coxas[g], g ? -.25 : .1, 12, 60); motor(P.q[4 * g + 1], P.coxas[g], P.canelas[g], .15, 12, 40);
-        motor(P.q[4 * g + 2], tb, P.bracos[g], -2.9, 16, 25); motor(P.q[4 * g + 3], P.bracos[g], P.antes[g], -.1, 14, 15);
+        motor(P.q[2 * g], tb, P.coxas[g], g ? -.25 : .1, 12, 60); motor(P.q[2 * g + 1], P.coxas[g], P.canelas[g], .15, 12, 40);
+        motor(P.q[4 + 2 * g], tb, P.bracos[g], -2.9, 16, 25); motor(P.q[5 + 2 * g], P.bracos[g], P.antes[g], -.1, 14, 15);
       }
       if (P.mergulho <= 0) P.ko = P.mergLado ? .7 : 0;
       return;
@@ -22066,7 +22070,9 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     if (P.ko > 0) { P.ko -= dt; P.carr = Math.max(0, P.carr - dt); soltarJuntas(P, P.carr > 0 ? 25 : 4); return; }
     P.carr = Math.max(0, P.carr - dt);
     // sustentação (mola até a altura de pé) + compensa a gravidade
-    var alvoY = ALTURA - .03, err = alvoY - tb.position.y;
+    // altura: a mola deixa o pé mais baixo encostando no chão (sem flutuar)
+    var pMin = 9; for (var f = 0; f < 2; f++) { var cn = P.canelas[f]; cn.quaternion.vmult(PE_LOCAL, vTmp); var yy = cn.position.y + vTmp.y; if (yy < pMin) pMin = yy; }
+    var alvoY = clamp(tb.position.y - pMin + .005, 1.0, ALTURA - .14), err = alvoY - tb.position.y;
     if (err > -.35) { var fy = P.massa * (20 * .82 + 70 * err - 9 * tb.velocity.y); tb.force.y += clamp(fy, 0, P.massa * 60); }
     // movimento: força para chegar na velocidade desejada
     var ax = (P.vdes.x - tb.velocity.x) * 9, az = (P.vdes.z - tb.velocity.z) * 9;
@@ -22098,10 +22104,10 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
       if (P.carr > 0) { alvoCoxa = -1.3; alvoJoelho = .1; alvoOmbro = -.6; alvoCot = -.2; }
       if (P.gk && amp < .4 && P.kick <= 0) { alvoOmbro = -.7; alvoCot = -1.1; alvoJoelho = .45; alvoCoxa = -.25; } // goleiro agachado de braço aberto
       var forteK = P.kick > 0 && i === pe;
-      motor(P.q[4 * i], tb, P.coxas[i], alvoCoxa, forteK ? 24 : 14, forteK ? 160 : 90);
-      motor(P.q[4 * i + 1], P.coxas[i], P.canelas[i], alvoJoelho, forteK ? 22 : 14, 60);
-      motor(P.q[4 * i + 2], tb, P.bracos[i], alvoOmbro, 12, 18);
-      motor(P.q[4 * i + 3], P.bracos[i], P.antes[i], alvoCot, 12, 10);
+      motor(P.q[2 * i], tb, P.coxas[i], alvoCoxa, forteK ? 24 : 14, forteK ? 160 : 90);
+      motor(P.q[2 * i + 1], P.coxas[i], P.canelas[i], alvoJoelho, forteK ? 22 : 14, 60);
+      motor(P.q[4 + 2 * i], tb, P.bracos[i], alvoOmbro, 12, 18);
+      motor(P.q[5 + 2 * i], P.bracos[i], P.antes[i], alvoCot, 12, 10);
     }
     if (P.kick > 0) {
       P.kickT += dt; P.kick -= dt;
