@@ -22246,22 +22246,25 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
     var b = J.bola.b, s = Q.lado ? -1 : 1, golMeu = -s * J.L / 2, v = b.velocity;
     if (J.defT && performance.now() - J.defT < 300) { if (J.defV) b.velocity.copy(J.defV); return; } J.defT = performance.now(); J.defV = null;
     var sp = v.length();
-    if (sp < 10 && Q.mergulho <= 0 && b.position.y < 1.9) { // segura a bola
+    var naFrente = Q.tronco.position.z * s > golMeu * s + .35 && b.position.z * s > golMeu * s + .35;
+    if (sp < 12 && Q.mergulho <= 0 && Q.ko <= 0 && naFrente && b.position.y < 1.9) { // segura a bola (só de pé e na frente da linha)
       J.gkSeg = { P: Q, t: 1.1 }; J.ultToque = Q; J.ult = Q.lado; return; // agarra e segura no peito
     }
     // espalma: pra fora do gol, pro lado da trave mais perto
     var ladoX = b.position.x >= 0 ? 1 : -1; if (Math.abs(b.position.x) < .4) ladoX = Q.mergLado || (rnd() < .5 ? -1 : 1);
-    b.velocity.set(ladoX * (4 + sp * .3), 2.5 + rnd() * 2.5, s * (5 + sp * .35)); J.defV = b.velocity.clone();
-    if (Math.abs(b.position.z - golMeu) < .5) b.position.z = golMeu + s * .5;
+    if (sp < 6) b.velocity.set(ladoX * 2, 1.5, s * 3.5); else
+    b.velocity.set(ladoX * (6 + sp * .4), 3 + rnd() * 2.5, s * (1.5 + sp * .1)); J.defV = b.velocity.clone(); // espalma pro lado (escanteio), não devolve pro atacante
+    if ((b.position.z - golMeu) * s < .5) b.position.z = golMeu + s * .5;
     b.angularVelocity.set(rnd() * 8 - 4, rnd() * 8 - 4, rnd() * 8 - 4);
     J.ultToque = Q; J.ult = Q.lado;
   }
   function segurarGK(dt) {
-    var G = J.gkSeg, Q = G.P, b = J.bola.b, s = Q.lado ? -1 : 1;
+    var G = J.gkSeg, Q = G.P, b = J.bola.b, s = Q.lado ? -1 : 1, golMeu = -s * J.L / 2;
     if (!J.jog.includes(Q) || J.pausa > 0) { J.gkSeg = null; return; }
     Q.face = s > 0 ? 0 : Math.PI;
     var f = v3(Math.sin(Q.face), 0, Math.cos(Q.face)), tp = Q.tronco.position;
-    b.position.set(tp.x + f.x * .32, Math.max(.6, tp.y - .05), tp.z + f.z * .32); b.velocity.copy(Q.tronco.velocity); b.angularVelocity.setZero();
+    var bz = tp.z + f.z * .32; if ((bz - golMeu) * s < .7) bz = golMeu + s * .7; // a bola segura nunca fica dentro do gol
+    b.position.set(clamp(tp.x, -J.GW / 2 + .3, J.GW / 2 - .3), Math.max(.6, tp.y - .05), bz); b.velocity.copy(Q.tronco.velocity); b.angularVelocity.setZero();
     G.t -= dt;
     if (G.t <= 0 && Q.ko <= 0 && Q.mergulho <= 0) { // repõe: chutão pro campo
       J.gkSeg = null; b.position.set(tp.x + f.x * .7, 1, tp.z + f.z * .7);
@@ -22416,8 +22419,10 @@ T>=2*U&&(x._wakeUpAfterNarrowphase=!0)}if(R.allowSleep&&R.type===c.DYNAMIC&&R.sl
   function aviso(txt, ms) { var a = $("#ff-aviso"); a.innerHTML = txt; a.classList.add("on"); clearTimeout(a._t); a._t = setTimeout(function () { a.classList.remove("on"); }, ms || 1600); }
   function checarGol() {
     var b = J.bola.b, L = J.L;
+    if (J.gkSeg) return;
     if (Math.abs(b.position.x) < J.GW / 2 && b.position.y < J.GH && Math.abs(b.position.z) > L / 2 + .25) {
       var quem = b.position.z > 0 ? 0 : 1; J.gols[quem]++; hud();
+      (window.__ffGols = window.__ffGols || []).push({ x: +b.position.x.toFixed(2), y: +b.position.y.toFixed(2), z: +b.position.z.toFixed(2), seg: !!J.gkSeg, def: J.defT || 0, t: performance.now() });
       var tA = ONLINE && ONLINE.roster ? ONLINE.timeA : CFG.meu, tB = ONLINE && ONLINE.roster ? ONLINE.timeB : CFG.adv;
       var autor = J.ultToque && J.ultToque.lado === quem ? (J.ultToque.nick || J.ultToque.nome) : "";
       J.avisoTxt = "GOOOOL!<br><span style=\"font-size:.45em\">" + (quem === 0 ? tA : tB) + (autor ? " • " + autor : "") + "</span>"; J.avisoN = (J.avisoN || 0) + 1;
