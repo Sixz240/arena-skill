@@ -26860,5 +26860,211 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
 })();
 
 </script>
+<script id="evento-tnp">
+// ===== Evento TNP • MELHOR TEMPORADA =====
+// Faça os objetivos de cada time e ganhe a versão dele da melhor temporada (jogadores antigos + ano).
+// O time ganho aparece na Batalha Livre e na Batalha Livre Pênaltis, na categoria "⭐ Melhor Temporada" e em "Todos".
+(function(){
+  "use strict";
+  var KEY = "eaTNP";
+  // ---------- TIMES DO EVENTO ----------
+  // base: time atual do jogo (de onde vêm escudo, uniforme e bandeira) • ano: a melhor temporada
+  // objetivos: { com: time usado na partida (padrão = base), adv: adversário, saldo: vitória por pelo menos N gols, gols: marcar pelo menos N gols }
+  // elenco: GOL, LAT, ZAG, VOL, MEI, ATA (a ordem define o time titular: 1 GOL, 2 LAT, 2 ZAG, 2 VOL, 2 MEI, 2 ATA)
+  var TIMES = [
+    { base: "Flamengo", ano: 1981, txt: "Campeão da Libertadores e do Mundial (3 x 0 no Liverpool)",
+      elenco: {
+        GOL: [{ n: "Raul", p: "Brasil" }],
+        LAT: [{ n: "Leandro", p: "Brasil" }, { n: "Júnior", p: "Brasil" }],
+        ZAG: [{ n: "Marinho", p: "Brasil" }, { n: "Mozer", p: "Brasil" }],
+        VOL: [{ n: "Andrade", p: "Brasil" }, { n: "Adílio", p: "Brasil" }],
+        MEI: [{ n: "Zico", p: "Brasil" }, { n: "Tita", p: "Brasil" }],
+        ATA: [{ n: "Nunes", p: "Brasil" }, { n: "Lico", p: "Brasil" }]
+      },
+      objetivos: [
+        { adv: "Vasco", txt: "Vença o Vasco jogando com o Flamengo" },
+        { adv: "Liverpool", txt: "Vença o Liverpool jogando com o Flamengo" },
+        { adv: "Liverpool", saldo: 3, txt: "Repita 1981: vença o Liverpool por 3 gols de diferença" }
+      ] }
+  ];
+  TIMES.forEach(function(t){ t.nome = t.base + " " + t.ano; t.id = t.nome.toLowerCase().replace(/[^a-z0-9]+/g, "-"); });
+  var NOMES = TIMES.map(function(t){ return t.nome; });
+  window.TNP_TIMES = TIMES;
+
+  // ---------- progresso salvo ----------
+  function ler(){ var d = null; try{ d = JSON.parse(localStorage.getItem(KEY) || "null"); }catch(e){} if(!d || typeof d !== "object") d = {}; d.feitos = d.feitos || {}; d.times = d.times || []; return d; }
+  function gravar(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
+  var D = ler();
+  function liberado(nome){ return D.times.indexOf(nome) >= 0; }
+  function liberados(){ return NOMES.filter(liberado); }
+  function feito(t, i){ return !!(D.feitos[t.id] && D.feitos[t.id][i]); }
+  function qtdFeitos(t){ var n = 0; t.objetivos.forEach(function(o, i){ if(feito(t, i)) n++; }); return n; }
+  window.tnpLiberados = liberados;
+
+  // ---------- registra os times no jogo (escudo, uniforme, bandeira e elenco do ano) ----------
+  function registrar(){
+    TIMES.forEach(function(t){
+      try{ var esc = window._escudosBR || (window._escudosBR = {}); if(esc[t.base] && !esc[t.nome]) esc[t.nome] = esc[t.base]; }catch(e){}
+      try{ if(typeof bandeiras !== "undefined" && !bandeiras[t.nome]) bandeiras[t.nome] = bandeiras[t.base] || "⭐"; }catch(e){}
+      try{ window.P3D_KITS = window.P3D_KITS || {}; if(window.P3D_KITS[t.base] && !window.P3D_KITS[t.nome]) window.P3D_KITS[t.nome] = window.P3D_KITS[t.base]; }catch(e){}
+      try{ if(typeof plantelBR === "object" && plantelBR) plantelBR[t.nome] = t.elenco; }catch(e){}
+    });
+  }
+  registrar(); setTimeout(registrar, 1500); setTimeout(registrar, 5000);
+  if(typeof getElencoPais === "function"){
+    getElencoPais = (function(original){
+      return function(paisForcado){
+        try{ var n = paisForcado || estado.time || estado.pais; var t = TIMES.find(function(x){ return x.nome === n; }); if(t) return t.elenco; }catch(e){}
+        return original.apply(this, arguments);
+      };
+    })(getElencoPais);
+  }
+
+  // ---------- Batalha Livre e Pênaltis: categoria MELHOR TEMPORADA ----------
+  var times = window.timesCategoriaBatalha;
+  if(typeof times === "function"){
+    window.timesCategoriaBatalha = function(cat){
+      if(cat === "melhor") return liberados();
+      var lista = times.apply(this, arguments) || [];
+      if(cat === "todos" && liberados().length) return Array.from(new Set(lista.concat(liberados()))).sort();
+      return lista;
+    };
+  }
+  var selecionar = window.selecionarCategoriaBatalha;
+  if(typeof selecionar === "function"){
+    window.selecionarCategoriaBatalha = function(cat){
+      var r = selecionar.apply(this, arguments);
+      document.querySelectorAll(".b14-tab").forEach(function(tab){ tab.classList.toggle("active", tab.dataset.b14Cat === cat); });
+      if(cat === "melhor"){
+        var st = document.getElementById("batalha14-status"), ob = document.getElementById("batalha14-objetivo");
+        if(liberados().length){ if(st) st.textContent = "⭐ MELHOR TEMPORADA • escolha um time de cada lado"; if(ob) ob.textContent = "Times da melhor temporada com os jogadores e o ano. Ganhe mais no evento TNP."; }
+        else { if(st) st.textContent = "🔒 Nenhum time da MELHOR TEMPORADA ainda"; if(ob) ob.textContent = "Objetivo: faça os objetivos do evento TNP no menu para ganhar os times."; }
+      }
+      return r;
+    };
+  }
+  function aba(){
+    var tabs = document.querySelector(".batalha14-tabs");
+    if(tabs && !tabs.querySelector('.b14-tab[data-b14-cat="melhor"]')){
+      var tab = document.createElement("button"); tab.type = "button"; tab.className = "b14-tab"; tab.dataset.b14Cat = "melhor"; tab.textContent = "⭐ MELHOR TEMPORADA";
+      tab.onclick = function(ev){ ev.preventDefault(); ev.stopPropagation(); window.selecionarCategoriaBatalha("melhor"); };
+      var esp = tabs.querySelector('.b14-tab[data-b14-cat="especiais"]'); if(esp) esp.insertAdjacentElement("afterend", tab); else tabs.appendChild(tab);
+    }
+  }
+
+  // ---------- tela do evento ----------
+  var css = document.createElement("style");
+  css.textContent =
+    "#tnp-ov{position:fixed;inset:0;z-index:100000;overflow:auto;background:radial-gradient(circle at 50% 0,#3a2a08,#0b0905 70%);color:#fbf6ea;font-family:system-ui,-apple-system,Segoe UI,sans-serif}" +
+    "#tnp-ov *{box-sizing:border-box}.tnp-w{max-width:640px;margin:0 auto;padding:14px 14px 30px}" +
+    ".tnp-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.tnp-top h1{margin:0;font-size:1.3rem;color:#ffcf4a;text-align:right}" +
+    ".tnp-top h1 small{display:block;font-size:.72rem;color:#e9d9a8;letter-spacing:.12em}" +
+    ".tnp-b{border:0;border-radius:10px;padding:9px 14px;font-weight:800;cursor:pointer;background:#ffcf4a;color:#1a1305;width:auto;margin:0}" +
+    ".tnp-b.s{background:#3a2f1a;color:#fff;border:1px solid #6b5a33}.tnp-b:disabled{opacity:.45;cursor:not-allowed}" +
+    ".tnp-intro{opacity:.9;margin:10px 0 14px;font-size:.92rem;line-height:1.4}" +
+    ".tnp-card{display:flex;gap:12px;align-items:center;width:100%;margin:0 0 10px;padding:12px;border-radius:14px;background:#1d170c;border:2px solid #4a3c1f;color:#fff;text-align:left;cursor:pointer}" +
+    ".tnp-card.ok{border-color:#ffcf4a;background:#2b2210}.tnp-card img{width:48px;height:48px;object-fit:contain}" +
+    ".tnp-card b{display:block;font-size:1.05rem}.tnp-card small{display:block;opacity:.75}.tnp-card .tnp-ano{margin-left:auto;font-weight:900;font-size:1.4rem;color:#ffcf4a}" +
+    ".tnp-bar{height:8px;border-radius:4px;background:#3a2f1a;overflow:hidden;margin-top:6px}.tnp-bar i{display:block;height:100%;background:#ffcf4a}" +
+    ".tnp-sec{margin-top:16px;background:#151008;border:1px solid #3d321c;border-radius:12px;padding:12px}.tnp-sec h3{margin:0 0 8px;font-size:.95rem;color:#ffcf4a}" +
+    ".tnp-obj{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #2c2414}.tnp-obj:last-child{border:0}.tnp-obj span{flex:1}" +
+    ".tnp-obj .ok{color:#7ee787;font-weight:800}.tnp-xi{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;font-size:.88rem}" +
+    ".tnp-xi div{background:#1f190d;border-radius:8px;padding:6px 8px}.tnp-xi em{font-style:normal;opacity:.6;font-size:.75rem;margin-right:4px}" +
+    ".tnp-fim{text-align:center;padding:14px;border-radius:14px;margin:12px 0;font-weight:800;background:#3d2e05;border:2px solid #ffcf4a}";
+  document.head.appendChild(css);
+
+  var ov = null, aberto = null, aviso = null;
+  function fechar(){ if(ov){ ov.remove(); ov = null; } }
+  function escSrc(t){ try{ var im = window._escudosBR && (window._escudosBR[t] || window._escudosBR[t.replace(/ \d{4}$/, "")]); return im && im.src && im.src !== location.href ? im.src : ""; }catch(e){ return ""; } }
+  function escImg(t){ var e = escSrc(t); return e ? '<img src="' + e + '" alt="">' : '<span style="font-size:40px">⭐</span>'; }
+  function objTxt(t, o){ return o.txt || ("Vença o " + o.adv + " jogando com o " + (o.com || t.base) + (o.saldo ? " por " + o.saldo + "+ gols" : "") + (o.gols ? " marcando " + o.gols + "+ gols" : "")); }
+  function render(){
+    D = ler();
+    var h = '<div class="tnp-w"><div class="tnp-top"><button class="tnp-b s" id="tnp-sair">← ' + (aberto ? "Times" : "Menu") + '</button><h1>🕰️ TNP<small>MELHOR TEMPORADA</small></h1></div>';
+    if(aviso){ h += '<div class="tnp-fim">' + aviso + '</div>'; aviso = null; }
+    if(!aberto){
+      h += '<div class="tnp-intro">Faça os <b>objetivos</b> de cada time e ganhe a versão da <b>melhor temporada</b> dele, com os jogadores antigos e o ano. O time ganho aparece na <b>Batalha Livre</b> e nos <b>Pênaltis</b>, na categoria <b>⭐ MELHOR TEMPORADA</b>.</div>';
+      TIMES.forEach(function(t){
+        var n = qtdFeitos(t), tot = t.objetivos.length, ok = liberado(t.nome);
+        h += '<button class="tnp-card' + (ok ? ' ok' : '') + '" data-id="' + t.id + '">' + escImg(t.base) + '<span><b>' + t.base + '</b><small>' + (ok ? "✅ Liberado" : "Objetivos: " + n + "/" + tot) + '</small><div class="tnp-bar"><i style="width:' + Math.round(n / tot * 100) + '%"></i></div></span><span class="tnp-ano">' + t.ano + '</span></button>';
+      });
+    } else {
+      var t = aberto, ok = liberado(t.nome);
+      h += '<div class="tnp-card ok" style="cursor:default">' + escImg(t.base) + '<span><b>' + t.nome + '</b><small>' + (t.txt || "") + '</small></span><span class="tnp-ano">' + t.ano + '</span></div>';
+      if(ok) h += '<div class="tnp-fim">✅ ' + t.nome + ' liberado na Batalha Livre e nos Pênaltis (categoria ⭐ MELHOR TEMPORADA)</div>';
+      h += '<div class="tnp-sec"><h3>🎯 Objetivos (' + qtdFeitos(t) + '/' + t.objetivos.length + ')</h3>' + t.objetivos.map(function(o, i){
+        var f = feito(t, i);
+        return '<div class="tnp-obj"><span>' + objTxt(t, o) + '</span>' + (f ? '<span class="ok" style="flex:0">✅ Feito</span>' : '<button class="tnp-b" data-obj="' + i + '">⚽ Jogar</button>') + '</div>';
+      }).join("") + '</div>';
+      var ord = [["GOL", "GOL"], ["LAT", "LAT"], ["ZAG", "ZAG"], ["VOL", "VOL"], ["MEI", "MEI"], ["ATA", "ATA"]];
+      h += '<div class="tnp-sec"><h3>👥 Elenco de ' + t.ano + '</h3><div class="tnp-xi">' + ord.map(function(p){ return (t.elenco[p[0]] || []).map(function(j){ return '<div><em>' + p[1] + '</em>' + j.n + '</div>'; }).join(""); }).join("") + '</div></div>';
+    }
+    h += '</div>';
+    ov.innerHTML = h;
+    ov.querySelector("#tnp-sair").onclick = function(){ if(aberto){ aberto = null; render(); return; } fechar(); try{ voltarMenu(); }catch(e){ try{ mostrar("menu"); }catch(_){} } };
+    ov.querySelectorAll(".tnp-card[data-id]").forEach(function(b){ b.onclick = function(){ aberto = TIMES.find(function(x){ return x.id === b.getAttribute("data-id"); }); render(); }; });
+    ov.querySelectorAll("[data-obj]").forEach(function(b){ b.onclick = function(){ jogar(aberto, +b.getAttribute("data-obj")); }; });
+  }
+  function abrir(){ fechar(); ov = document.createElement("div"); ov.id = "tnp-ov"; document.body.appendChild(ov); render(); }
+  window.abrirTNP = abrir;
+
+  // ---------- partida de objetivo ----------
+  var sess = null, KEYS = ["modo", "fase", "pais", "adv", "time", "escalacao", "ultimoXI", "penaltisLivre", "bonus"];
+  function restaurar(s){ if(!s || s.rest) return; try{ KEYS.forEach(function(k){ estado[k] = s.saved[k]; }); }catch(e){} s.rest = true; }
+  function cumpriu(o, gm, gs){ if(gm <= gs) return false; if(o.saldo && gm - gs < o.saldo) return false; if(o.gols && gm < o.gols) return false; return true; }
+  function terminar(score){
+    var s = sess; if(!s || s.fim) return; s.fim = true; sess = null; window._onFimCampo = s.prevFim; restaurar(s);
+    var gm = Number(score && score.casa) || 0, gs = Number(score && score.fora) || 0, t = s.t, o = t.objetivos[s.i];
+    D = ler();
+    if(cumpriu(o, gm, gs)){
+      D.feitos[t.id] = D.feitos[t.id] || {}; D.feitos[t.id][s.i] = true;
+      aviso = "🎯 Objetivo cumprido! (" + gm + " x " + gs + ")";
+      if(qtdFeitos(t) === t.objetivos.length && D.times.indexOf(t.nome) < 0){
+        D.times.push(t.nome);
+        aviso = "🏆 " + t.nome + " LIBERADO!<br><span style='font-weight:600'>Já pode usar na Batalha Livre e nos Pênaltis, na categoria ⭐ MELHOR TEMPORADA.</span>";
+      }
+      gravar(D);
+    } else aviso = "❌ Não deu dessa vez (" + gm + " x " + gs + "). Tente de novo!";
+    aberto = t; setTimeout(abrir, 2200);
+  }
+  function cancelar(){ var s = sess; if(!s) return; sess = null; s.fim = true; window._onFimCampo = s.prevFim; restaurar(s); }
+  function jogar(t, i){
+    var o = t.objetivos[i], com = o.com || t.base, saved = {};
+    KEYS.forEach(function(k){ try{ saved[k] = estado[k]; }catch(e){} });
+    fechar();
+    var s = { t: t, i: i, saved: saved, prevFim: window._onFimCampo, fim: false, rest: false, t0: Date.now() }; sess = s;
+    try{ estado.modo = "batalha"; estado.fase = "tnp"; estado.pais = com; estado.time = null; estado.adv = o.adv; estado.penaltisLivre = false; }catch(e){}
+    window._onFimCampo = function(r){ if(sess === s) terminar(r && r.score); };
+    try{ iniciarCampo({ casa: com, fora: o.adv, meuLado: "casa", meuPais: com, nickCasa: (typeof getNick === "function" && getNick()) || "Você", nickFora: "CPU", online: false, versao: (estado && estado.batalhaVersao) || "atual" }); }
+    catch(e){ cancelar(); alert("Não foi possível iniciar a partida: " + (e && e.message ? e.message : e)); aberto = t; abrir(); }
+  }
+  // a versão atual do campo termina mostrando a tela "resultado" (sem _onFimCampo)
+  if(typeof mostrar === "function"){
+    mostrar = (function(orig){ return function(id){
+      var r = orig.apply(this, arguments);
+      try{
+        if(sess && !sess.fim && Date.now() - sess.t0 > 1500){
+          if(id === "resultado"){ var sc = window.__campoDbg && window.__campoDbg.score; terminar(sc ? { casa: sc.casa, fora: sc.fora } : null); }
+          else if(id === "menu"){ cancelar(); }
+        }
+      }catch(e){}
+      return r;
+    }; })(mostrar);
+  }
+
+  function botao(){
+    aba();
+    if(document.getElementById("btn-tnp")) return;
+    var ref = document.getElementById("btn-batalha-pen") || document.getElementById("btn-batalha"); if(!ref || !ref.parentNode) return;
+    var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-tnp"; b.style.borderColor = "#ffcf4a";
+    b.innerHTML = "<h3>🕰️ Evento TNP • Melhor Temporada</h3><p>Faça objetivos e ganhe times com os jogadores da melhor temporada • Batalha Livre e Pênaltis</p>";
+    b.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); abrir(); });
+    ref.insertAdjacentElement("afterend", b);
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
+  setTimeout(botao, 1500);
+})();
+
+</script>
 </body>
 </html>
