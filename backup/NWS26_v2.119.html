@@ -26966,6 +26966,8 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   function gravar(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
   var D = ler();
   function liberado(nome){ return D.times.indexOf(nome) >= 0; }
+  // ordem de desbloqueio: cada time só abre depois que o anterior foi liberado
+  function disponivel(t){ var k = TIMES.indexOf(t); return k <= 0 || liberado(TIMES[k - 1].nome) || liberado(t.nome); }
   function liberados(){ return NOMES.filter(liberado); }
   function feito(t, i){ return !!(D.feitos[t.id] && D.feitos[t.id][i]); }
   function qtdFeitos(t){ var n = 0; t.objetivos.forEach(function(o, i){ if(feito(t, i)) n++; }); return n; }
@@ -27035,7 +27037,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
     ".tnp-b.s{background:#3a2f1a;color:#fff;border:1px solid #6b5a33}.tnp-b:disabled{opacity:.45;cursor:not-allowed}" +
     ".tnp-intro{opacity:.9;margin:10px 0 14px;font-size:.92rem;line-height:1.4}" +
     ".tnp-card{display:flex;gap:12px;align-items:center;width:100%;margin:0 0 10px;padding:12px;border-radius:14px;background:#1d170c;border:2px solid #4a3c1f;color:#fff;text-align:left;cursor:pointer}" +
-    ".tnp-card.ok{border-color:#ffcf4a;background:#2b2210}.tnp-card img{width:48px;height:48px;object-fit:contain}" +
+    ".tnp-card.ok{border-color:#ffcf4a;background:#2b2210}.tnp-card.trava{opacity:.5;cursor:not-allowed;filter:grayscale(.6)}.tnp-card img{width:48px;height:48px;object-fit:contain}" +
     ".tnp-card b{display:block;font-size:1.05rem}.tnp-card small{display:block;opacity:.75}.tnp-card .tnp-ano{margin-left:auto;font-weight:900;font-size:1.25rem;color:#ffcf4a;white-space:nowrap}" +
     ".tnp-bar{height:8px;border-radius:4px;background:#3a2f1a;overflow:hidden;margin-top:6px}.tnp-bar i{display:block;height:100%;background:#ffcf4a}" +
     ".tnp-sec{margin-top:16px;background:#151008;border:1px solid #3d321c;border-radius:12px;padding:12px}.tnp-sec h3{margin:0 0 8px;font-size:.95rem;color:#ffcf4a}" +
@@ -27055,10 +27057,10 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
     var h = '<div class="tnp-w"><div class="tnp-top"><button class="tnp-b s" id="tnp-sair">← ' + (aberto ? "Times" : "Menu") + '</button><h1>🕰️ TNP<small>MELHOR TEMPORADA</small></h1></div>';
     if(aviso){ h += '<div class="tnp-fim">' + aviso + '</div>'; aviso = null; }
     if(!aberto){
-      h += '<div class="tnp-intro">Faça os <b>objetivos</b> de cada time e ganhe a versão da <b>melhor temporada</b> dele, com os jogadores antigos e o ano. O time ganho aparece na <b>Batalha Livre</b> e nos <b>Pênaltis</b>, na categoria <b>⭐ MELHOR TEMPORADA</b>.</div>';
-      TIMES.forEach(function(t){
-        var n = qtdFeitos(t), tot = t.objetivos.length, ok = liberado(t.nome);
-        h += '<button class="tnp-card' + (ok ? ' ok' : '') + '" data-id="' + t.id + '">' + escImg(t.nome) + '<span><b>' + t.base + '</b><small>' + (ok ? "✅ Liberado" : "Objetivos: " + n + "/" + tot) + '</small><div class="tnp-bar"><i style="width:' + Math.round(n / tot * 100) + '%"></i></div></span><span class="tnp-ano">' + t.ano + '</span></button>';
+      h += '<div class="tnp-intro">Os times abrem <b>em ordem</b>: libere um para destravar o próximo. Faça os <b>objetivos</b> de cada time e ganhe a versão da <b>melhor temporada</b> dele, com os jogadores antigos e o ano. O time ganho aparece na <b>Batalha Livre</b> e nos <b>Pênaltis</b>, na categoria <b>⭐ MELHOR TEMPORADA</b>.</div>';
+      TIMES.forEach(function(t, k){
+        var n = qtdFeitos(t), tot = t.objetivos.length, ok = liberado(t.nome), pode = disponivel(t);
+        h += '<button class="tnp-card' + (ok ? ' ok' : '') + (pode ? '' : ' trava') + '" data-id="' + t.id + '"' + (pode ? '' : ' disabled') + '>' + escImg(t.nome) + '<span><b>' + (k + 1) + '. ' + t.base + '</b><small>' + (ok ? "✅ Liberado" : pode ? "Objetivos: " + n + "/" + tot : "🔒 Libere o " + TIMES[k - 1].nome + " primeiro") + '</small><div class="tnp-bar"><i style="width:' + Math.round(n / tot * 100) + '%"></i></div></span><span class="tnp-ano">' + t.ano + '</span></button>';
       });
     } else {
       var t = aberto, ok = liberado(t.nome);
@@ -27101,6 +27103,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   }
   function cancelar(){ var s = sess; if(!s) return; sess = null; s.fim = true; window._onFimCampo = s.prevFim; restaurar(s); }
   function jogar(t, i){
+    if(!disponivel(t)) return;
     var o = t.objetivos[i], com = o.com || t.base, saved = {};
     KEYS.forEach(function(k){ try{ saved[k] = estado[k]; }catch(e){} });
     fechar();
