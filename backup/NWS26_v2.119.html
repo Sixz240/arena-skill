@@ -26872,19 +26872,19 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
   // objetivos: { com: time usado na partida (padrão = base), adv: adversário, saldo: vitória por pelo menos N gols, gols: marcar pelo menos N gols }
   // elenco: GOL, LAT, ZAG, VOL, MEI, ATA (a ordem define o time titular: 1 GOL, 2 LAT, 2 ZAG, 2 VOL, 2 MEI, 2 ATA)
   var TIMES = [
-    { base: "Flamengo", ano: 1981, txt: "Campeão da Libertadores e do Mundial (3 x 0 no Liverpool)",
+    { base: "Atlético de Madrid", ano: "2013-14", tecnico: "Diego Simeone", txt: "Campeão da La Liga e vice da Champions League",
       elenco: {
-        GOL: [{ n: "Raul", p: "Brasil" }],
-        LAT: [{ n: "Leandro", p: "Brasil" }, { n: "Júnior", p: "Brasil" }],
-        ZAG: [{ n: "Marinho", p: "Brasil" }, { n: "Mozer", p: "Brasil" }],
-        VOL: [{ n: "Andrade", p: "Brasil" }, { n: "Adílio", p: "Brasil" }],
-        MEI: [{ n: "Zico", p: "Brasil" }, { n: "Tita", p: "Brasil" }],
-        ATA: [{ n: "Nunes", p: "Brasil" }, { n: "Lico", p: "Brasil" }]
+        GOL: [{ n: "Thibaut Courtois", p: "Bélgica" }, { n: "Daniel Aranzubia", p: "Espanha" }],
+        LAT: [{ n: "Juanfran Torres", p: "Espanha" }, { n: "Filipe Luís", p: "Brasil" }, { n: "Javier Manquillo", p: "Espanha" }, { n: "Emiliano Insúa", p: "Argentina" }],
+        ZAG: [{ n: "Diego Godín", p: "Uruguai" }, { n: "João Miranda", p: "Brasil" }, { n: "Toby Alderweireld", p: "Bélgica" }, { n: "José María Giménez", p: "Uruguai" }],
+        VOL: [{ n: "Gabi Fernández", p: "Espanha" }, { n: "Tiago Mendes", p: "Portugal" }, { n: "Mario Suárez", p: "Espanha" }, { n: "Josuha Guilavogui", p: "França" }],
+        MEI: [{ n: "Koke", p: "Espanha" }, { n: "Arda Turan", p: "Turquia" }, { n: "Raúl García", p: "Espanha" }, { n: "Diego Ribas", p: "Brasil" }, { n: "Cristian Rodríguez", p: "Uruguai" }, { n: "José Sosa", p: "Argentina" }],
+        ATA: [{ n: "Diego Costa", p: "Espanha" }, { n: "David Villa", p: "Espanha" }, { n: "Adrián López", p: "Espanha" }]
       },
       objetivos: [
-        { adv: "Vasco", txt: "Vença o Vasco jogando com o Flamengo" },
-        { adv: "Liverpool", txt: "Vença o Liverpool jogando com o Flamengo" },
-        { adv: "Liverpool", saldo: 3, txt: "Repita 1981: vença o Liverpool por 3 gols de diferença" }
+        { adv: "Barcelona", txt: "Vença o Barcelona jogando com o Atlético de Madrid" },
+        { adv: "Chelsea", txt: "Vença o Chelsea jogando com o Atlético de Madrid" },
+        { adv: "Real Madrid", saldo: 2, txt: "Vingue a final de Lisboa: vença o Real Madrid por 2 gols de diferença" }
       ] }
   ];
   TIMES.forEach(function(t){ t.nome = t.base + " " + t.ano; t.id = t.nome.toLowerCase().replace(/[^a-z0-9]+/g, "-"); });
@@ -26964,7 +26964,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
     ".tnp-intro{opacity:.9;margin:10px 0 14px;font-size:.92rem;line-height:1.4}" +
     ".tnp-card{display:flex;gap:12px;align-items:center;width:100%;margin:0 0 10px;padding:12px;border-radius:14px;background:#1d170c;border:2px solid #4a3c1f;color:#fff;text-align:left;cursor:pointer}" +
     ".tnp-card.ok{border-color:#ffcf4a;background:#2b2210}.tnp-card img{width:48px;height:48px;object-fit:contain}" +
-    ".tnp-card b{display:block;font-size:1.05rem}.tnp-card small{display:block;opacity:.75}.tnp-card .tnp-ano{margin-left:auto;font-weight:900;font-size:1.4rem;color:#ffcf4a}" +
+    ".tnp-card b{display:block;font-size:1.05rem}.tnp-card small{display:block;opacity:.75}.tnp-card .tnp-ano{margin-left:auto;font-weight:900;font-size:1.25rem;color:#ffcf4a;white-space:nowrap}" +
     ".tnp-bar{height:8px;border-radius:4px;background:#3a2f1a;overflow:hidden;margin-top:6px}.tnp-bar i{display:block;height:100%;background:#ffcf4a}" +
     ".tnp-sec{margin-top:16px;background:#151008;border:1px solid #3d321c;border-radius:12px;padding:12px}.tnp-sec h3{margin:0 0 8px;font-size:.95rem;color:#ffcf4a}" +
     ".tnp-obj{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #2c2414}.tnp-obj:last-child{border:0}.tnp-obj span{flex:1}" +
@@ -26990,7 +26990,7 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
       });
     } else {
       var t = aberto, ok = liberado(t.nome);
-      h += '<div class="tnp-card ok" style="cursor:default">' + escImg(t.base) + '<span><b>' + t.nome + '</b><small>' + (t.txt || "") + '</small></span><span class="tnp-ano">' + t.ano + '</span></div>';
+      h += '<div class="tnp-card ok" style="cursor:default">' + escImg(t.base) + '<span><b>' + t.nome + '</b><small>' + (t.txt || "") + (t.tecnico ? " • Técnico: " + t.tecnico : "") + '</small></span><span class="tnp-ano">' + t.ano + '</span></div>';
       if(ok) h += '<div class="tnp-fim">✅ ' + t.nome + ' liberado na Batalha Livre e nos Pênaltis (categoria ⭐ MELHOR TEMPORADA)</div>';
       h += '<div class="tnp-sec"><h3>🎯 Objetivos (' + qtdFeitos(t) + '/' + t.objetivos.length + ')</h3>' + t.objetivos.map(function(o, i){
         var f = feito(t, i);
