@@ -13623,7 +13623,7 @@ function iniciarCampoAtual(cfg){
   const ball={x:W/2,y:H/2,vx:0,vy:0,r:9};
   let ballOwner=-1, selectedIdx=players.indexOf(humanTeam.find(p=>!p.gk));
   let pendingTarget=-1, releaseFrom=-1, releaseUntil=0, shotSide=null, score={casa:0,fora:0};
-  let running=false,ended=false,halfShown=false,timeLeft=210,lastTs=0,raf=0,acc=0,moveTarget=null,dragging=false,dragMoved=false,aiShotCooldown=0,aiming=false,aimStart=null,aimPoint=null,aimVector=null,aiTackleCooldown=0,humanTackleCooldown=0,tapComBola=false,shotId=0,lastTouch=null,bolaParadaAte=0,escanteioHumano=null,ajudaCooldown=0;
+  let running=false,ended=false,halfShown=false,meioTempo=((typeof estado==="object"&&estado&&estado.modo==="batalha"&&(estado.fase==="batalha"||estado.fase==="tnp"))?45:105),timeLeft=meioTempo*2,lastTs=0,raf=0,acc=0,moveTarget=null,dragging=false,dragMoved=false,aiShotCooldown=0,aiming=false,aimStart=null,aimPoint=null,aimVector=null,aiTackleCooldown=0,humanTackleCooldown=0,tapComBola=false,shotId=0,lastTouch=null,bolaParadaAte=0,escanteioHumano=null,ajudaCooldown=0;
   const timeoutIds=new Set();
   const sessionToken=(window._campoAtualToken=(window._campoAtualToken||0)+1);
   function delayed(fn,ms){const id=setTimeout(function(){timeoutIds.delete(id);if(window._campoAtualToken===sessionToken)fn();},ms);timeoutIds.add(id);return id;}
@@ -14040,7 +14040,7 @@ function iniciarCampoAtual(cfg){
   }
   function physics(dt){
     if(!running||ended)return;
-    timeLeft-=dt;if(!halfShown&&timeLeft<=105&&timeLeft>0){halfShown=true;if(overlay){overlay.textContent="INTERVALO";delayed(()=>{if(overlay.textContent==="INTERVALO")overlay.textContent="";},1000);}}
+    timeLeft-=dt;if(!halfShown&&timeLeft<=meioTempo&&timeLeft>0){halfShown=true;if(overlay){overlay.textContent="INTERVALO";delayed(()=>{if(overlay.textContent==="INTERVALO")overlay.textContent="";},1000);}}
     if(timeLeft<=0){endGame();return;}
     if(moveTarget&&players[selectedIdx]&&players[selectedIdx].side===humanSide){const p=players[selectedIdx],speed=selectedIdx===ballOwner?205+(p.ovr||75)*.65:220+(p.ovr||75)*.65;moveToward(p,moveTarget.x,moveTarget.y,speed,dt);if(Math.hypot(p.x-moveTarget.x,p.y-moveTarget.y)<7)moveTarget=null;}
     aiStep(dt);
