@@ -27141,5 +27141,160 @@ var timesItalia = ["Inter de Milão", "Napoli", "Juventus", "Milan", "Atalanta",
 })();
 
 </script>
+<script id="mundial-medios">
+/* ===== Mundial dos Times Médios (mesmo formato do Mundial dos Times Fortes) ===== */
+(function(){
+  var GRUPOS = {
+    "A": ["Botafogo","Sevilla","Fiorentina","Porto"],
+    "B": ["Vasco da Gama","FC Famalicão","Aston Villa","Everton"],
+    "C": ["Fulham","Espanyol","Al Ahly","Seattle Sounders"],
+    "D": ["Bahia","LAFC","Auckland City","Monterrey"],
+    "E": ["Coritiba","Bragantino","Urawa Reds","Deportivo Alavés"],
+    "F": ["Athletico-PR","Mirassol","Espérance","Orlando City SC"],
+    "G": ["Union Berlin","Celta de Vigo","West Ham","Rennes"],
+    "H": ["Mainz 05","Goiás","Freiburg","Real Betis"]
+  };
+  var FORCAS = {
+    "Botafogo":81,"Sevilla":80,"Fiorentina":80,"Porto":82,
+    "Vasco da Gama":78,"FC Famalicão":74,"Aston Villa":82,"Everton":78,
+    "Fulham":78,"Espanyol":75,"Al Ahly":76,"Seattle Sounders":75,
+    "Bahia":78,"LAFC":77,"Auckland City":72,"Monterrey":77,
+    "Coritiba":74,"Bragantino":77,"Urawa Reds":74,"Deportivo Alavés":74,
+    "Athletico-PR":77,"Mirassol":76,"Espérance":74,"Orlando City SC":75,
+    "Union Berlin":76,"Celta de Vigo":77,"West Ham":79,"Rennes":78,
+    "Mainz 05":76,"Goiás":73,"Freiburg":78,"Real Betis":80
+  };
+  // nome no torneio -> nome que já existe no jogo (escudo/elenco)
+  var ALIAS = { "Porto":"FC Porto", "Vasco da Gama":"Vasco", "FC Famalicão":"Famalicão", "Seattle Sounders":"Seattle Sounders FC", "Deportivo Alavés":"Alavés" };
+  function E(t,o){var r={};Object.keys(o).forEach(function(k){r[k]=o[k].map(function(n){return {n:n,p:t};});});return r;}
+  // elencos para os clubes que no jogo só tinham nomes genéricos (ou nem existiam)
+  var ELENCOS = {
+    "Fiorentina":E("Itália",{GOL:["David de Gea","Luca Lezzerini"],LAT:["Dodô","Robin Gosens","Fabiano Parisi"],ZAG:["Luca Ranieri","Marin Pongračić","Pietro Comuzzo"],VOL:["Rolando Mandragora","Nicolò Fagioli","Simon Sohm"],MEI:["Albert Gudmundsson","Cher Ndour"],ATA:["Moise Kean","Edin Džeko","Roberto Piccoli"]}),
+    "West Ham":E("Inglaterra",{GOL:["Alphonse Areola","Mads Hermansen"],LAT:["Aaron Wan-Bissaka","El Hadji Malick Diouf","Kyle Walker-Peters"],ZAG:["Max Kilman","Jean-Clair Todibo","Konstantinos Mavropanos"],VOL:["Tomáš Souček","Mateus Fernandes","Soungoutou Magassa"],MEI:["Lucas Paquetá","Crysencio Summerville"],ATA:["Jarrod Bowen","Niclas Füllkrug","Callum Wilson"]}),
+    "Union Berlin":E("Alemanha",{GOL:["Frederik Rønnow","Carl Klaus"],LAT:["Christopher Trimmel","Derrick Köhn","Tom Rothe"],ZAG:["Danilho Doekhi","Diogo Leite","Leopold Querfeld"],VOL:["Rani Khedira","Aljoscha Kemlein","Janik Haberer"],MEI:["András Schäfer","Tim Skarke"],ATA:["Andrej Ilić","Oliver Burke","Ilyas Ansah","Marin Ljubičić"]}),
+    "Mainz 05":E("Alemanha",{GOL:["Robin Zentner","Lasse Rieß"],LAT:["Anthony Caci","Phillipp Mwene","Danny da Costa"],ZAG:["Stefan Bell","Dominik Kohr","Andreas Hanche-Olsen"],VOL:["Kaishu Sano","Nadiem Amiri"],MEI:["Paul Nebel","Jae-sung Lee"],ATA:["Benedict Hollerbach","Nelson Weiper","Armindo Sieb"]}),
+    "Freiburg":E("Alemanha",{GOL:["Noah Atubolu","Florian Müller"],LAT:["Lukas Kübler","Christian Günter","Jordy Makengo"],ZAG:["Matthias Ginter","Philipp Lienhart","Bruno Ogbus"],VOL:["Maximilian Eggestein","Patrick Osterhage","Nicolas Höfler"],MEI:["Vincenzo Grifo","Yuito Suzuki","Derry Scherhant"],ATA:["Igor Matanović","Lucas Höler","Junior Adamu"]}),
+    "FC Famalicão":E("Portugal",{GOL:["Lazar Carević","Zlobin"],LAT:["Rodrigo Pinheiro","Gil Dias","Rafa Soares"],ZAG:["Justin de Haas","Léo Realpe","Ibrahima Ba"],VOL:["Mirko Topić","Mathias de Amorim"],MEI:["Gustavo Sá","Sorriso"],ATA:["Óscar Aranda","Gil Dias","Simon Elisor"]}),
+    "LAFC":E("Estados Unidos",{GOL:["Hugo Lloris","Thomas Hasal"],LAT:["Sergi Palencia","Ryan Hollingshead","Artem Smolyakov"],ZAG:["Aaron Long","Eddie Segura","Nkosi Tafari"],VOL:["Mark Delgado","Igor Jesus Jr.","Timothy Tillman"],MEI:["Marco Delgado","David Martínez"],ATA:["Son Heung-min","Denis Bouanga","Nathan Ordaz"]}),
+    "Monterrey":E("México",{GOL:["Esteban Andrada","Luis Cárdenas"],LAT:["Stefan Medina","Gerardo Arteaga","Ricardo Chávez"],ZAG:["Sergio Ramos","Víctor Guzmán","Héctor Moreno"],VOL:["Jorge Rodríguez","Óliver Torres","Fidel Ambríz"],MEI:["Sergio Canales","Iker Fimbres","Jesús Corona"],ATA:["Germán Berterame","Lucas Ocampos","Brandon Vázquez"]}),
+    "Seattle Sounders":E("Estados Unidos",{GOL:["Stefan Frei","Andrew Thomas"],LAT:["Alex Roldan","Nouhou","Reed Baker-Whiting"],ZAG:["Jackson Ragen","Yeimar Gómez Andrade","Jon Bell"],VOL:["Cristian Roldan","Obed Vargas","João Paulo"],MEI:["Albert Rusnák","Pedro de la Vega","Paul Rothrock"],ATA:["Jordan Morris","Jesús Ferreira","Osaze De Rosario"]}),
+    "Orlando City SC":E("Estados Unidos",{GOL:["Pedro Gallese","Javier Otero"],LAT:["Kyle Smith","Rafael Santos","Alex Freeman"],ZAG:["Robin Jansson","David Brekalo","Rodrigo Schlegel"],VOL:["César Araújo","Eduard Atuesta","Joran Gerbet"],MEI:["Martín Ojeda","Marco Pašalić","Iván Angulo"],ATA:["Luis Muriel","Duncan McGuire","Ramiro Enrique"]}),
+    "Urawa Reds":E("Japão",{GOL:["Shusaku Nishikawa","Ayumi Niekawa"],LAT:["Hirokazu Ishihara","Takuya Ogiwara","Ayumu Ohata"],ZAG:["Marius Høibråten","Danilo Boza","Takuya Iwanami"],VOL:["Samuel Gustafson","Kaito Yasui","Takahiro Akimoto"],MEI:["Yoshio Koizumi","Matheus Savio","Takahiro Sekine"],ATA:["Thiago Santana","Yusuke Matsuo","Genki Haraguchi"]}),
+    "Espérance":E("Tunísia",{GOL:["Amanallah Memmiche","Béchir Ben Saïd"],LAT:["Mohamed Ben Ali","Raed Bouchniba","Ali Ben Hammouda"],ZAG:["Yassine Meriah","Hamza Jelassi","Mohamed Amine Ben Hamida"],VOL:["Houssem Tka","Ghaylen Chaaleli","Onuche Ogbelu"],MEI:["Youcef Belaïli","Elias Mokwana","Yan Sasse"],ATA:["Rodrigo Rodrigues","Kouame Jores","Hamza Rafia"]})
+  };
+
+  function setup(){
+    try{
+      var esc = window._escudosBR || {}, logos = (typeof mundialClubesLogosBase64 !== "undefined") ? mundialClubesLogosBase64 : null;
+      Object.keys(FORCAS).forEach(function(t){
+        var a = ALIAS[t] || t;
+        // escudo do torneio (base64 sem o prefixo, como o Mundial de Clubes usa)
+        if(logos && !logos[t]){
+          if(logos[a]) logos[t] = logos[a];
+          else { var im = esc[t] || esc[a]; var src = im && im.src || ""; var m = /^data:image\/[a-z+]+;base64,(.+)$/.exec(src); if(m) logos[t] = m[1]; }
+        }
+        if(!esc[t] && esc[a]) esc[t] = esc[a];
+        try{ if(typeof bandeiras !== "undefined" && !bandeiras[t]) bandeiras[t] = bandeiras[a] || "⚽"; }catch(e){}
+        try{ window.P3D_KITS = window.P3D_KITS || {}; if(!window.P3D_KITS[t] && window.P3D_KITS[a]) window.P3D_KITS[t] = window.P3D_KITS[a]; }catch(e){}
+        // elenco: o que veio aqui > o que já existe no jogo com o mesmo nome ou com o apelido
+        if(typeof plantelUCL !== "undefined"){
+          if(ELENCOS[t]) plantelUCL[t] = ELENCOS[t];
+          else if(!plantelUCL[t]){
+            var src2 = (plantelUCL[a]) || (typeof plantelLiga !== "undefined" && (plantelLiga[t] || plantelLiga[a])) || (typeof plantelBR !== "undefined" && (plantelBR[t] || plantelBR[a])) || (typeof plantelLib !== "undefined" && (plantelLib[t] || plantelLib[a]));
+            if(src2) plantelUCL[t] = src2;
+          }
+        }
+      });
+    }catch(e){ console.error(e); }
+  }
+  setup(); setTimeout(setup, 1500); setTimeout(setup, 5000);
+
+  var ORIG_G = null, ORIG_F = null;
+  function ativo(){ return !!(estado && estado.mediosMundial); }
+  function aplicar(on){
+    try{
+      if(on) setup();
+      if(!ORIG_G){ ORIG_G = JSON.parse(JSON.stringify(gruposMundialClubes)); ORIG_F = JSON.parse(JSON.stringify(mundialClubesForcas)); }
+      var G = on ? GRUPOS : ORIG_G;
+      Object.keys(gruposMundialClubes).forEach(function(k){ delete gruposMundialClubes[k]; });
+      Object.keys(G).forEach(function(k){ gruposMundialClubes[k] = G[k].slice(); });
+      Object.keys(mundialClubesForcas).forEach(function(k){ delete mundialClubesForcas[k]; });
+      Object.assign(mundialClubesForcas, ORIG_F); if(on) Object.assign(mundialClubesForcas, FORCAS);
+      estado.mediosMundial = !!on;
+    }catch(e){ console.error(e); }
+  }
+  window.__medios = { aplicar: aplicar, ativo: ativo, GRUPOS: GRUPOS, FORCAS: FORCAS };
+  try{ if(estado && estado.mediosMundial && estado.modo === "mundialclubes") aplicar(true); else if(estado) estado.mediosMundial = false; }catch(e){}
+
+  // qualquer outro botão do menu desliga o Mundial dos Times Médios
+  document.addEventListener("click", function(ev){
+    var t = ev.target; while(t && t !== document){ if(t.id && /^btn-/.test(t.id)) break; t = t.parentNode; }
+    if(!t || t === document || !t.id) return;
+    if(t.id === "btn-mundial-medios") return;
+    if(!t.classList || !t.classList.contains("menu-btn")) return;
+    if(ativo()) aplicar(false);
+  }, true);
+
+  // troca os textos "Mundial de Clubes" pelo nome do modo enquanto ele está ativo
+  var NOME = "Mundial dos Times Médios", re = /Mundial de Clubes/g, reUp = /MUNDIAL DE CLUBES/g;
+  function trocarTextos(root){
+    if(!ativo() || !root) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n;
+    while((n = w.nextNode())){
+      if(n.parentNode && n.parentNode.closest && n.parentNode.closest("#btn-mundial-clubes,#menu,#btn-simulador")) continue;
+      var v = n.nodeValue; if(v.indexOf("Mundial de Clubes") < 0 && v.indexOf("MUNDIAL DE CLUBES") < 0) continue;
+      n.nodeValue = v.replace(re, NOME).replace(reUp, NOME.toUpperCase());
+    }
+  }
+  var agendado = false;
+  new MutationObserver(function(){ if(!ativo() || agendado) return; agendado = true; setTimeout(function(){ agendado = false; document.querySelectorAll(".screen.active").forEach(trocarTextos); }, 0); })
+    .observe(document.body, { subtree: true, childList: true, characterData: true });
+
+  // títulos separados do Mundial de Clubes normal
+  var fv = window.fimVitoria;
+  if(typeof fv === "function") window.fimVitoria = fimVitoria = function(){
+    if(!(ativo() && estado.modo === "mundialclubes")) return fv.apply(this, arguments);
+    var antes = estado.tacasMundialClubes || 0;
+    var r = fv.apply(this, arguments);
+    estado.tacasMundialClubes = antes;
+    estado.tacasMundialMedios = (estado.tacasMundialMedios || 0) + 1;
+    try{
+      var msg = document.getElementById("resultado-msg");
+      if(msg) msg.innerHTML = '<b>' + estado.pais + '</b> conquistou o Mundial dos Times Médios.<br><span style="color:#ffdf00;font-weight:800">Títulos do Mundial dos Times Médios: ' + estado.tacasMundialMedios + '</span>';
+      var tt = document.getElementById("resultado-titulo");
+      if(tt) tt.innerHTML = '<h1 style="color:var(--amarelo)">🏆 CAMPEÃO DO MUNDIAL DOS TIMES MÉDIOS!</h1>' + mundialClubesBadge(estado.pais, 72);
+      if(typeof attTacas === "function") attTacas();
+      if(typeof salvar === "function") salvar();
+    }catch(e){}
+    return r;
+  };
+
+  // botão no menu, logo abaixo do Mundial dos Times Fortes
+  function botao(){
+    if(document.getElementById("btn-mundial-medios")) return;
+    var ref = document.getElementById("btn-mundial-fortes") || document.getElementById("btn-mundial-clubes"); if(!ref || !ref.parentNode) return;
+    var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-mundial-medios";
+    setup();
+    var esc = ["Botafogo","Sevilla","Aston Villa","Monterrey","Real Betis","Bahia"].map(function(t){ return (typeof mundialClubesLogosBase64 !== "undefined" && mundialClubesLogosBase64[t]) ? '<img src="data:image/png;base64,' + mundialClubesLogosBase64[t] + '" style="width:26px;height:26px;object-fit:contain;margin-right:3px;vertical-align:middle">' : ""; }).join("");
+    b.innerHTML = '<h3>⚖️ Mundial dos Times Médios</h3><p>32 times médios do mundo • 8 grupos • Oitavas até a final</p><div style="margin-top:.35rem">' + esc + '</div>';
+    b.style.setProperty("background", "linear-gradient(135deg,#0f3d5a 0%,#2a2a52 55%,#4a3510 100%)", "important");
+    b.style.setProperty("border", "1px solid rgba(120,190,255,.85)", "important");
+    b.addEventListener("click", function(ev){
+      ev.preventDefault(); ev.stopPropagation();
+      try{ if(window.__fortes && window.__fortes.ativo()) window.__fortes.aplicar(false); }catch(e){}
+      aplicar(true);
+      estado.copaCarreira = false; estado.gruposCustom = null;
+      iniciarModo("mundialclubes");
+      var h2 = document.querySelector("#escolha-pais h2"), sub = document.querySelector("#escolha-pais p");
+      if(h2) h2.textContent = "Escolha seu clube • Mundial dos Times Médios";
+      if(sub) sub.textContent = "32 times médios • 8 grupos de 4 • os dois melhores avançam às oitavas, até a final.";
+    });
+    ref.parentNode.insertBefore(b, ref.nextSibling);
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
+  setTimeout(botao, 1000);
+})();
+
+</script>
 </body>
 </html>
