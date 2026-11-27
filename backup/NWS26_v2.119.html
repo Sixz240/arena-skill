@@ -27816,5 +27816,99 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
 })();
 
 </script>
+<script id="modo-sera">
+// ===== Modo "Será?" • coisas que podem (ou não) acontecer no futebol =====
+// Notícias pesquisadas em 27/11/2026. Cada cartão diz o que já se sabe e se é confirmado, boato ou só possibilidade.
+// A pessoa vota Sim ou Não em cada "Será?" (fica salvo no aparelho).
+(function(){
+  var KEY = "eaSeraVotos", ATUAL = "27/11/2026";
+  var ST = {
+    ok:     { txt: "✅ CONFIRMADO", cor: "#3fb950" },
+    forte:  { txt: "🔥 BOATO FORTE", cor: "#f0883e" },
+    talvez: { txt: "🤔 PODE ACONTECER", cor: "#d29922" },
+    longe:  { txt: "⏳ VAI DEMORAR", cor: "#58a6ff" },
+    fraco:  { txt: "🧊 BOATO FRACO", cor: "#8b949e" }
+  };
+  var SERA = [
+    { id: "furia", ico: "🐆", tit: "Será que o Novorizontino vai deixar de ser Grêmio Novorizontino e virar Fúria Novorizontino?", st: "ok",
+      txt: "<b>Vai, sim!</b> O clube anunciou na quinta, 26/11/2026, uma parceria com a <b>FURIA</b> (a organização de e-sports que tem o <b>Neymar</b> entre os sócios) e o nome muda para <b>FURIA Novorizontino</b> a partir de <b>janeiro de 2027</b>.",
+      fatos: ["Estreia com o nome novo marcada para <b>10/01/2027</b>, contra o <b>Corinthians</b>, pelo Paulistão, na Neo Química Arena.", "Antes do anúncio o Neto vazou a história como “Grêmio Fúria”, mas o nome oficial ficou FURIA Novorizontino.", "O futebol continua com a mesma direção que levou o time à Série A.", "Em 2027 o Novorizontino joga a <b>Série A pela primeira vez</b>, depois de subir como campeão da Série B."] },
+    { id: "grecopa", ico: "🔵", tit: "Será que o Grêmio pode ganhar a Copa do Brasil e cair para a Série B no mesmo ano?", st: "talvez",
+      txt: "Pode! O Grêmio está na <b>final da Copa do Brasil contra o Palmeiras</b> e, ao mesmo tempo, briga para <b>não cair</b> no Brasileirão.",
+      fatos: ["Remo e Chapecoense já caíram. As outras 2 vagas da Série B estão entre Vitória, Botafogo, Grêmio, Mirassol, Corinthians e Internacional.", "<b>Corinthians x Grêmio</b> no sábado, 29/11, na Neo Química Arena, é um confronto direto contra a degola."] },
+    { id: "inter", ico: "🔴", tit: "Será que o Internacional vai ser rebaixado?", st: "forte",
+      txt: "É o mais ameaçado: um cálculo da UFMG dava cerca de <b>93,7%</b> de chance de queda para o Inter na reta final.",
+      fatos: ["Ainda dá matematicamente para escapar, mas depende dos resultados dos rivais.", "O Brasileirão 2026 termina em <b>2 de dezembro</b>.", "Este ano vai ter pelo menos um campeão brasileiro rebaixado."] },
+    { id: "neymar", ico: "🐟", tit: "Será que o Neymar fica no Santos em 2027?", st: "talvez",
+      txt: "Ninguém sabe ainda. O contrato do Neymar com o Santos <b>acaba em 31/12/2026</b>.",
+      fatos: ["O presidente do Santos disse que a renovação só vai ser discutida depois da <b>eleição do clube, em 12/12</b>.", "O Neymar disse que vai pensar no futuro quando acabar o Brasileirão.", "Nenhuma notícia fala em aposentadoria: o assunto é renovar ou não."] },
+    { id: "messi", ico: "🐐", tit: "Será que o Messi sai do Inter Miami para jogar no Newell's em 2027?", st: "fraco",
+      txt: "Por enquanto é só boato. O Inter Miami confirmou que o Messi tem <b>contrato até o fim de 2028</b>.",
+      fatos: ["Jornalistas argentinos falaram de uma volta ao Newell's em janeiro de 2027, mas não teve anúncio oficial.", "O Inter Miami marcou amistoso contra o <b>River Plate</b> em 19/01/2027, no Monumental, com o Messi.", "O Messi já se despediu da seleção argentina (207 jogos e 125 gols)."] },
+    { id: "textor", ico: "⭐", tit: "Será que o John Textor volta a mandar no Botafogo?", st: "fraco",
+      txt: "O Textor foi <b>afastado da SAF em abril</b> e o Botafogo entrou com pedido de <b>recuperação judicial</b>. Sites de torcedores dizem que ele quer voltar, até como CEO.",
+      fatos: ["A empresa <b>GDA Luma</b> assinou um acordo inicial para entrar no controle da SAF.", "O Botafogo também está na briga contra o rebaixamento no Brasileirão.", "A notícia da volta vem de sites de torcida, sem confirmação de jornais grandes."] },
+    { id: "ancelotti", ico: "🇧🇷", tit: "Será que o Ancelotti fica na Seleção até a Copa de 2030?", st: "ok",
+      txt: "Por enquanto, sim. A CBF já tinha <b>renovado o contrato até o fim da Copa de 2030</b> e manteve o técnico mesmo depois da eliminação.",
+      fatos: ["O Brasil caiu nas oitavas da Copa 2026: <b>Noruega 2 x 1 Brasil</b>.", "Depois da Copa foram 5 amistosos: 3 vitórias, 1 empate e 1 derrota.", "O plano agora é renovar o time e montar uma geração nova para 2030."] },
+    { id: "gasometro", ico: "🏟️", tit: "Será que o estádio do Flamengo no Gasômetro fica pronto logo?", st: "longe",
+      txt: "Vai demorar bastante: a previsão de inauguração passou de 2029 para <b>2036</b>, com custo de pelo menos <b>R$ 2,2 bilhões</b>.",
+      fatos: ["Antes o clube falava em começar as obras em maio de 2026.", "Um dos problemas é limpar o terreno, que ainda tem tubulação de gás.", "Um estudo da FGV calculou cerca de 10 anos de construção."] }
+  ];
+  function votos(){ try{ return JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return {}; } }
+  function votar(id, v){ var d = votos(); d[id] = d[id] === v ? null : v; try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
+
+  var css = document.createElement("style");
+  css.textContent =
+    "#sera-ov{position:fixed;inset:0;z-index:99990;overflow:auto;background:#0d1117;color:#e6edf3;font-family:inherit}" +
+    "#sera-ov *{box-sizing:border-box}#sera-ov .sw{max-width:640px;margin:0 auto;padding:12px 14px 40px}" +
+    "#sera-ov .stop{display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:0;background:#0d1117;padding:6px 0 10px;z-index:2}" +
+    "#sera-ov h1{margin:0;font-size:1.5rem;color:var(--amarelo,#f2c572)}#sera-ov .sx{width:auto;margin:0;padding:8px 14px;border-radius:10px;background:#21262d;color:#e6edf3;border:1px solid #30363d;font-weight:800;cursor:pointer}" +
+    "#sera-ov .sint{opacity:.85;font-size:.9rem;margin:0 0 10px;line-height:1.4}#sera-ov .fil{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px}" +
+    "#sera-ov .fil button{width:auto;margin:0;white-space:nowrap;padding:6px 10px;border-radius:99px;border:1px solid #30363d;background:#161b22;color:#c9d1d9;font-weight:700;font-size:.78rem;cursor:pointer}#sera-ov .fil button.on{background:#238636;border-color:#238636;color:#fff}" +
+    "#sera-ov .card{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:12px;margin:10px 0}" +
+    "#sera-ov .chip{display:inline-block;font-size:.7rem;font-weight:900;padding:3px 8px;border-radius:99px;color:#0d1117;margin-bottom:6px}" +
+    "#sera-ov .card h3{margin:0 0 6px;font-size:1.02rem;line-height:1.3}#sera-ov .card p{margin:0 0 6px;font-size:.9rem;line-height:1.45}" +
+    "#sera-ov .card ul{margin:4px 0 8px;padding-left:18px;font-size:.84rem;opacity:.9;line-height:1.45}" +
+    "#sera-ov .vt{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#sera-ov .vt button{width:auto;margin:0;padding:8px 16px;border-radius:10px;border:2px solid #30363d;background:#0d1117;color:#e6edf3;font-weight:900;cursor:pointer}" +
+    "#sera-ov .vt button.sim.on{background:#238636;border-color:#3fb950}#sera-ov .vt button.nao.on{background:#8e1519;border-color:#f85149}#sera-ov .vt small{opacity:.7;width:100%}#sera-ov .vt button{flex:1}" +
+    "#sera-ov .res{background:#1f6feb22;border:1px solid #1f6feb;border-radius:12px;padding:10px;font-size:.88rem;margin:6px 0 4px}";
+  document.head.appendChild(css);
+
+  var ov = null, filtro = "todos";
+  function fechar(){ if(ov){ ov.remove(); ov = null; } }
+  function render(){
+    var d = votos(), sim = 0, nao = 0; SERA.forEach(function(s){ if(d[s.id] === "sim") sim++; else if(d[s.id] === "nao") nao++; });
+    var lista = SERA.filter(function(s){ return filtro === "todos" || s.st === filtro; });
+    var h = '<div class="sw"><div class="stop"><button class="sx" id="sera-sair">← Menu</button><h1>🤔 Será?</h1><span style="width:70px"></span></div>' +
+      '<p class="sint">Coisas que podem (ou não) acontecer no futebol. Cada cartão diz <b>o que já se sabe</b> e se é <b>confirmado</b>, <b>boato</b> ou <b>só possibilidade</b>. Vote no que você acha! <span style="opacity:.7">Notícias de ' + ATUAL + '.</span></p>' +
+      '<div class="res">🗳️ Seus palpites: <b>' + sim + '</b> “vai acontecer” • <b>' + nao + '</b> “não vai” • ' + (SERA.length - sim - nao) + ' sem voto</div>' +
+      '<div class="fil">' + [["todos", "Todos"]].concat(Object.keys(ST).map(function(k){ return [k, ST[k].txt]; })).map(function(f){ return '<button data-f="' + f[0] + '" class="' + (filtro === f[0] ? "on" : "") + '">' + f[1] + '</button>'; }).join("") + '</div>';
+    lista.forEach(function(s){
+      var v = d[s.id];
+      h += '<div class="card"><span class="chip" style="background:' + ST[s.st].cor + '">' + ST[s.st].txt + '</span><h3>' + s.ico + ' ' + s.tit + '</h3><p>' + s.txt + '</p><ul>' + s.fatos.map(function(f){ return '<li>' + f + '</li>'; }).join("") + '</ul>' +
+        '<div class="vt"><small>Seu palpite:</small><button class="sim' + (v === "sim" ? " on" : "") + '" data-v="sim" data-id="' + s.id + '">👍 Vai acontecer</button><button class="nao' + (v === "nao" ? " on" : "") + '" data-v="nao" data-id="' + s.id + '">👎 Não vai</button></div></div>';
+    });
+    if(!lista.length) h += '<p class="sint">Nenhum “Será?” nesse filtro.</p>';
+    ov.innerHTML = h + '</div>';
+    ov.querySelector("#sera-sair").onclick = function(){ fechar(); try{ mostrar("menu"); }catch(e){} };
+    ov.querySelectorAll("[data-f]").forEach(function(b){ b.onclick = function(){ filtro = b.getAttribute("data-f"); render(); }; });
+    ov.querySelectorAll("[data-v]").forEach(function(b){ b.onclick = function(){ votar(b.getAttribute("data-id"), b.getAttribute("data-v")); var y = ov.scrollTop; render(); ov.scrollTop = y; }; });
+  }
+  function abrir(){ fechar(); ov = document.createElement("div"); ov.id = "sera-ov"; document.body.appendChild(ov); filtro = "todos"; render(); }
+  window.abrirSera = abrir;
+  function botao(){
+    if(document.getElementById("btn-sera")) return;
+    var ref = document.getElementById("btn-br-bolinhas") || document.getElementById("btn-torneios"); if(!ref || !ref.parentNode) return;
+    var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-sera"; b.style.borderColor = "#d29922";
+    b.innerHTML = "<h3>🤔 Será?</h3><p>Será que vai acontecer? Fúria Novorizontino, Neymar, Messi, rebaixamento e mais • vote no seu palpite</p>";
+    b.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); abrir(); });
+    ref.insertAdjacentElement("afterend", b);
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
+  setTimeout(botao, 1800); setTimeout(botao, 4000);
+})();
+
+</script>
 </body>
 </html>
