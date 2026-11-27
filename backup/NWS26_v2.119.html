@@ -14024,6 +14024,7 @@ function iniciarCampoAtual(cfg){
   function detectPossession(){
     if(ballOwner>=0){ball._px=null;return;}
     if(espalmando)return; // bola espalmada: ninguém pega, ela vai para fora
+    if(shotSide&&Math.abs(ball.vx)+Math.abs(ball.vy)<150){shotSide=null;ball.forcado=null;} // chute fraco/parado: a bola volta a ser de quem chegar
     let _sx=ball._px,_sy=ball._py;if(_sx==null){_sx=ball.x;_sy=ball.y;}ball._px=ball.x;ball._py=ball.y;
     let gkHit=-1;
     const _f=shotSide?ball.forcado:null;
