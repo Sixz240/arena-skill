@@ -19853,6 +19853,9 @@ window.COPAS_ANT = {"2010": {"grupos": {"A": ["África do Sul", "México", "Urug
       // Gigantes mais fortes no simulador (Chelsea ainda pode perder pro Flamengo, Botafogo pode ganhar do PSG)
       forcas: {"PSG":94, "Manchester City":93, "Real Madrid":93, "Chelsea":92, "Flamengo":92, "Palmeiras":91, "Botafogo":89},
       grupos:function(){ return typeof gruposMundialClubes!=="undefined" ? gruposMundialClubes : null; } },
+    medios: { nome:"Mundial dos Times Médios", modo:"mundialclubes", clubes:true, terceiro:false, de:"do ", soPalpite:true,
+      get forcas(){ return window.__medios ? window.__medios.FORCAS : null; },
+      grupos:function(){ return window.__medios ? JSON.parse(JSON.stringify(window.__medios.GRUPOS)) : null; } },
     liberta2026: { nome:"Libertadores 2026", modo:"liberta", clubes:true, terceiro:false, formato:"libertadores", rodadas:6, de:"da ",
       grupos:function(){ return typeof gruposLib!=="undefined" ? gruposLib : null; } },
     brasileirao2026: { nome:"Brasileirão 2026", modo:"brasileirao", clubes:true, terceiro:false, formato:"liga", de:"do ",
@@ -20448,6 +20451,7 @@ window.COPAS_ANT = {"2010": {"grupos": {"A": ["África do Sul", "México", "Urug
       '<button type="button" data-t="copa2026"><h3>🏆 Copa do Mundo 2026</h3><p>48 seleções • 12 grupos • 8 melhores terceiros • 16 avos até a final</p></button>'+
       '<button type="button" data-t="mortos"><h3>💀 Copa do Mundo Mortos</h3><p>16 seleções que não existem mais • 4 grupos • quartas até a final + 3º lugar</p></button>'+
       '<button type="button" data-t="mundial2025"><h3>🏆 Mundial de Clubes 2025</h3><p>32 clubes • 8 grupos • oitavas até a final</p></button>'+
+      (modoManual ? '<button type="button" data-t="medios"><h3>⚖️ Mundial dos Times Médios</h3><p>32 times médios • 8 grupos • oitavas até a final</p></button>' : '')+
       '<button type="button" data-t="liberta2026"><h3>🏆 Libertadores 2026</h3><p>32 clubes • 8 grupos (ida e volta) • mata-mata ida e volta • final única</p></button>'+
       (modoManual ? '<button type="button" data-t="lpaises"><h3>🌍 Liga dos Países</h3><p>'+lpPaises().length+' seleções • Séries A a E • você escreve os placares • 3 sobem e 3 caem, temporada após temporada'+(lpProxSalva()?' • próxima: temporada '+lpProxSalva().temporada:'')+'</p></button>' : '')+
       (modoManual ? '<button type="button" data-t="ultra"><h3>🏆 Brasileirão Ultra Séries</h3><p>Séries A, B, C e D • você escreve todos os placares • acessos e rebaixamentos de verdade, temporada após temporada'+(ultraProxSalva()?' • próxima: temporada '+ultraProxSalva().temporada:'')+'</p></button>'
