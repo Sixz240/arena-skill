@@ -27827,9 +27827,30 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
     forte:  { txt: "🔥 BOATO FORTE", cor: "#f0883e" },
     talvez: { txt: "🤔 PODE ACONTECER", cor: "#d29922" },
     longe:  { txt: "⏳ VAI DEMORAR", cor: "#58a6ff" },
-    fraco:  { txt: "🧊 BOATO FRACO", cor: "#8b949e" }
+    fraco:  { txt: "🧊 BOATO FRACO", cor: "#8b949e" },
+    nao:    { txt: "❌ JÁ NÃO DÁ", cor: "#f85149" }
   };
   var SERA = [
+    // ---------- Bahia ----------
+    { id: "bah-liberta", clube: "bahia", ico: "🔵⚪🔴", tit: "Será que o Bahia vai para a Libertadores 2027?", st: "talvez",
+      txt: "Ainda dá! Faltando <b>2 rodadas</b>, o Bahia tem <b>54 pontos</b> e briga pelas últimas vagas da Libertadores. Depois do 0 x 0 com o Grêmio, um cálculo do jornal A Tarde dava <b>75%</b> de chance.",
+      fatos: ["Próximo jogo: <b>Botafogo x Bahia</b>, sábado, <b>28/11</b>, fora de casa.", "O Bahia já não pode ser campeão nem chegar ao G4. A briga agora é pela 5ª ou 6ª vaga, com o Athletico-PR e o Atlético-MG.", "Como o Palmeiras está na final da Copa do Brasil, a zona de vaga para a Libertadores pelo Brasileirão vai até pelo menos o 6º lugar.", "Se não der Libertadores, o caminho é a Sul-Americana."] },
+    { id: "bah-ceni", clube: "bahia", ico: "🧤", tit: "Será que o Rogério Ceni continua no Bahia em 2027?", st: "talvez",
+      txt: "Ninguém confirmou ainda. O Ceni está no Bahia desde <b>setembro de 2023</b> e virou o técnico <b>há mais tempo no cargo em todo o Grupo City</b>.",
+      fatos: ["Com a saída do Guardiola do Manchester City e a demissão do técnico do Girona, ninguém do Grupo City está há mais tempo no cargo que ele.", "A torcida pressionou bastante por causa de uma temporada 2026 abaixo do esperado.", "Não achei nenhuma notícia de renovação ou de saída para 2027: deve ser decidido depois do Brasileirão."] },
+    { id: "bah-2025", clube: "bahia", ico: "📉", tit: "Será que o Bahia ainda faz mais pontos que em 2025?", st: "nao",
+      txt: "Não dá mais. Em 2025 o Bahia fez <b>60 pontos</b>. Com 54 e só 2 jogos (6 pontos) pela frente, no máximo empata, e o jornal A Tarde já cravou que a campanha vai ser pior.",
+      fatos: ["Mas teve recorde: o Bahia fez a <b>melhor campanha fora de casa da história dos pontos corridos</b> (24 pontos como visitante).", "Nas retas finais desde 2023, o Bahia vem tendo aproveitamento de time que briga contra o rebaixamento."] },
+    { id: "bah-iago", clube: "bahia", ico: "🛡️", tit: "Será que o Bahia contrata o zagueiro Iago Teodoro, do Orlando City?", st: "talvez",
+      txt: "O Bahia <b>voltou a se interessar</b> no zagueiro de <b>20 anos</b>, revelado no Flamengo e hoje no <b>Orlando City</b>, da MLS.",
+      fatos: ["A ideia inicial seria um <b>empréstimo com opção de compra</b> no fim.", "O Bahia já tinha tentado em 2025.", "É interesse, não negociação fechada."] },
+    { id: "bah-ferretti", clube: "bahia", ico: "🗳️", tit: "Será que o Emerson Ferretti é reeleito presidente do Bahia?", st: "talvez",
+      txt: "O presidente <b>Emerson Ferretti</b>, ex-goleiro do clube e no cargo desde 2024, <b>se candidatou à reeleição</b>, com Marcus Verhine de vice.",
+      fatos: ["O presidente cuida da parte associativa do clube: <b>90% da SAF do Bahia é do Grupo City</b>.", "A candidatura foi registrada em meados de novembro de 2026."] },
+    { id: "bah-estadio", clube: "bahia", ico: "🏟️", tit: "Será que o Bahia vai ter estádio próprio ou passar a administrar a Fonte Nova?", st: "longe",
+      txt: "Por enquanto, não. O Bahia <b>não tem estádio próprio</b> e manda os jogos na <b>Arena Fonte Nova</b>, que é do governo da Bahia.",
+      fatos: ["O Grupo City já mostrou interesse em <b>ajudar a administrar a Fonte Nova</b>, e o presidente disse que conversa com o governo sobre isso.", "O que está andando é o novo CT, a <b>Cidade Tricolor</b>, que está sendo levado para <b>Camaçari</b>.", "Não achei notícia de 2026 sobre estádio próprio."] },
+    // ---------- outros ----------
     { id: "furia", ico: "🐆", tit: "Será que o Novorizontino vai deixar de ser Grêmio Novorizontino e virar Fúria Novorizontino?", st: "ok",
       txt: "<b>Vai, sim!</b> O clube anunciou na quinta, 26/11/2026, uma parceria com a <b>FURIA</b> (a organização de e-sports que tem o <b>Neymar</b> entre os sócios) e o nome muda para <b>FURIA Novorizontino</b> a partir de <b>janeiro de 2027</b>.",
       fatos: ["Estreia com o nome novo marcada para <b>10/01/2027</b>, contra o <b>Corinthians</b>, pelo Paulistão, na Neo Química Arena.", "Antes do anúncio o Neto vazou a história como “Grêmio Fúria”, mas o nome oficial ficou FURIA Novorizontino.", "O futebol continua com a mesma direção que levou o time à Série A.", "Em 2027 o Novorizontino joga a <b>Série A pela primeira vez</b>, depois de subir como campeão da Série B."] },
@@ -27879,11 +27900,11 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
   function fechar(){ if(ov){ ov.remove(); ov = null; } }
   function render(){
     var d = votos(), sim = 0, nao = 0; SERA.forEach(function(s){ if(d[s.id] === "sim") sim++; else if(d[s.id] === "nao") nao++; });
-    var lista = SERA.filter(function(s){ return filtro === "todos" || s.st === filtro; });
+    var lista = SERA.filter(function(s){ return filtro === "todos" || s.st === filtro || (filtro === "c-bahia" && s.clube === "bahia"); });
     var h = '<div class="sw"><div class="stop"><button class="sx" id="sera-sair">← Menu</button><h1>🤔 Será?</h1><span style="width:70px"></span></div>' +
       '<p class="sint">Coisas que podem (ou não) acontecer no futebol. Cada cartão diz <b>o que já se sabe</b> e se é <b>confirmado</b>, <b>boato</b> ou <b>só possibilidade</b>. Vote no que você acha! <span style="opacity:.7">Notícias de ' + ATUAL + '.</span></p>' +
       '<div class="res">🗳️ Seus palpites: <b>' + sim + '</b> “vai acontecer” • <b>' + nao + '</b> “não vai” • ' + (SERA.length - sim - nao) + ' sem voto</div>' +
-      '<div class="fil">' + [["todos", "Todos"]].concat(Object.keys(ST).map(function(k){ return [k, ST[k].txt]; })).map(function(f){ return '<button data-f="' + f[0] + '" class="' + (filtro === f[0] ? "on" : "") + '">' + f[1] + '</button>'; }).join("") + '</div>';
+      '<div class="fil">' + [["todos", "Todos"], ["c-bahia", "🔵⚪🔴 Bahia"]].concat(Object.keys(ST).map(function(k){ return [k, ST[k].txt]; })).map(function(f){ return '<button data-f="' + f[0] + '" class="' + (filtro === f[0] ? "on" : "") + '">' + f[1] + '</button>'; }).join("") + '</div>';
     lista.forEach(function(s){
       var v = d[s.id];
       h += '<div class="card"><span class="chip" style="background:' + ST[s.st].cor + '">' + ST[s.st].txt + '</span><h3>' + s.ico + ' ' + s.tit + '</h3><p>' + s.txt + '</p><ul>' + s.fatos.map(function(f){ return '<li>' + f + '</li>'; }).join("") + '</ul>' +
@@ -27901,7 +27922,7 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
     if(document.getElementById("btn-sera")) return;
     var ref = document.getElementById("btn-br-bolinhas") || document.getElementById("btn-torneios"); if(!ref || !ref.parentNode) return;
     var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-sera"; b.style.borderColor = "#d29922";
-    b.innerHTML = "<h3>🤔 Será?</h3><p>Será que vai acontecer? Fúria Novorizontino, Neymar, Messi, rebaixamento e mais • vote no seu palpite</p>";
+    b.innerHTML = "<h3>🤔 Será?</h3><p>Será que vai acontecer? Fúria Novorizontino, Bahia, Neymar, Messi, rebaixamento e mais • vote no seu palpite</p>";
     b.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); abrir(); });
     ref.insertAdjacentElement("afterend", b);
   }
