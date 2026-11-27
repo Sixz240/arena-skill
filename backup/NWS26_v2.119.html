@@ -13734,7 +13734,7 @@ function iniciarCampoAtual(cfg){
     let _forc=null,_corte=-1;
     {
       const r0=Math.random();
-      if(side===humanSide)_forc=r0<.3452?"defesa":r0<.4731?"gol":"fora";
+      if(side===humanSide){let pg=.42,pd=.33;try{if(customAim){const ag3=attack(side),gx3=vertical?W/2:(ag3.x>0?W-margin:margin),gy3=vertical?(ag3.y<0?margin:H-margin):H/2,t3=vertical?(gy3-ball.y)/(Math.abs(dir.y)<1e-6?1e-6:dir.y):(gx3-ball.x)/(Math.abs(dir.x)<1e-6?1e-6:dir.x),c3=t3>0?(vertical?ball.x+dir.x*t3-W/2:ball.y+dir.y*t3-H/2):0,k3=players.find(q=>q.gk&&q.side!==side),l3=k3?(vertical?k3.x-W/2:k3.y-H/2):0;if(Math.abs(c3-l3)>goalSpan*.28){pg=.58;pd=.24;}else if(Math.abs(c3-l3)<goalSpan*.12){pg=.30;pd=.50;}}}catch(e){}_forc=r0<pd?"defesa":r0<pd+pg?"gol":"fora";}
       else _forc=r0<.21?"gol":r0<.5111?"defesa":r0<.711?"fora":"corte";
       const ag2=attack(side),gx2=vertical?W/2:(ag2.x>0?W-margin:margin),gy2=vertical?(ag2.y<0?margin:H-margin):H/2;
       const gk2=players.find(q=>q.gk&&q.side!==side),gl2=gk2?(vertical?gk2.x-W/2:gk2.y-H/2):0;let off;
@@ -27615,8 +27615,68 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
     return r; }; })(attTacas);
   try{ attTacas(); }catch(e){}
 
+  // ---------- objetivo (Especiais): ganhe a MLS Cup 1 vez -> os 30 clubes na Batalha Livre e nos Pênaltis ----------
+  var META = 1;
+  function mlsLiberada(){ return titulos() >= META; }
+  window.mlsLiberada = mlsLiberada;
+  function naBatalha(){ try{ return estado.modo === "batalha"; }catch(e){ return false; } }
+  if(typeof getElencoPais === "function") getElencoPais = (function(o){ return function(p){ try{ var t = p || estado.time || estado.pais; if(naBatalha() && mlsLiberada() && DATA.elencos[t] && TODOS.indexOf(t) >= 0) return DATA.elencos[t]; }catch(e){} return o.apply(this, arguments); }; })(getElencoPais);
+  function xiMLS(e){ function tk(a, n){ return (a || []).slice(0, n).map(function(x){ return x.n; }); }
+    var l = [].concat(tk(e.GOL, 1), tk(e.LAT, 2), tk(e.ZAG, 2), tk(e.VOL, 2), tk(e.MEI, 2), tk(e.ATA, 2));
+    [].concat(e.LAT || [], e.ZAG || [], e.VOL || [], e.MEI || [], e.ATA || []).forEach(function(x){ if(l.length < 11 && l.indexOf(x.n) < 0) l.push(x.n); });
+    return l.slice(0, 11); }
+  if(typeof nomesTimeCampo === "function") nomesTimeCampo = (function(o){ return function(t){ try{ if((naBatalha() && mlsLiberada()) || naMLS()){ if(TODOS.indexOf(t) >= 0 && DATA.elencos[t]) return xiMLS(DATA.elencos[t]); } }catch(e){} return o.apply(this, arguments); }; })(nomesTimeCampo);
+  if(typeof window.timesCategoriaBatalha === "function"){
+    var tcb = window.timesCategoriaBatalha;
+    window.timesCategoriaBatalha = timesCategoriaBatalha = function(cat){
+      if(cat === "mls") return mlsLiberada() ? TODOS.slice() : [];
+      var l = tcb.apply(this, arguments) || [];
+      if(cat === "todos" && mlsLiberada()) return Array.from(new Set(l.concat(TODOS))).sort();
+      return l;
+    };
+  }
+  if(typeof window.selecionarCategoriaBatalha === "function"){
+    var scb = window.selecionarCategoriaBatalha;
+    window.selecionarCategoriaBatalha = selecionarCategoriaBatalha = function(cat){
+      var r = scb.apply(this, arguments);
+      document.querySelectorAll(".b14-tab").forEach(function(t){ t.classList.toggle("active", t.dataset.b14Cat === cat); });
+      if(cat === "mls"){
+        var st = document.getElementById("batalha14-status"), ob = document.getElementById("batalha14-objetivo");
+        if(mlsLiberada()){ if(st) st.textContent = "🇺🇸 MLS • escolha um time de cada lado"; if(ob) ob.textContent = "Os 30 clubes da MLS com os elencos de 2026."; }
+        else { if(st) st.textContent = "🔒 MLS bloqueada"; if(ob) ob.textContent = "Objetivo: ganhe a MLS Cup " + META + " vez no modo MLS 2026 (em 🏆 Torneios) (" + titulos() + "/" + META + ")."; }
+      }
+      return r;
+    };
+  }
+  function abaMLS(){
+    var tabs = document.querySelector(".batalha14-tabs");
+    if(tabs && !tabs.querySelector('.b14-tab[data-b14-cat="mls"]')){
+      var tab = document.createElement("button"); tab.type = "button"; tab.className = "b14-tab"; tab.dataset.b14Cat = "mls"; tab.textContent = "🇺🇸 MLS";
+      tab.onclick = function(ev){ ev.preventDefault(); ev.stopPropagation(); window.selecionarCategoriaBatalha("mls"); };
+      var ref = tabs.querySelector('.b14-tab[data-b14-cat="bbva"]'); if(ref) ref.insertAdjacentElement("afterend", tab); else tabs.appendChild(tab);
+    }
+  }
+  if(typeof window.abrirEspeciais === "function"){
+    var aes = window.abrirEspeciais;
+    window.abrirEspeciais = abrirEspeciais = function(){
+      var r = aes.apply(this, arguments);
+      try{
+        var div = document.getElementById("lista-especiais");
+        if(div && !div.querySelector("[data-esp-mls]") && typeof cardEspecial === "function"){
+          var w = document.createElement("div"); w.setAttribute("data-esp-mls", "1");
+          w.innerHTML = cardEspecial("🇺🇸", "MLS", mlsLiberada(), "Categoria 🇺🇸 MLS • Batalha Livre e Pênaltis",
+            "Ganhe a MLS Cup " + META + " vez no modo MLS 2026 (em 🏆 Torneios) para liberar os 30 clubes da MLS, com escudos e elencos de 2026.",
+            "Progresso: " + Math.min(titulos(), META) + "/" + META);
+          div.appendChild(w);
+        }
+      }catch(e){}
+      return r;
+    };
+  }
+
   // ---------- botão (fica dentro de 🏆 Torneios) ----------
   function botao(){
+    abaMLS();
     if(document.getElementById("btn-mls")) return;
     var ref = document.getElementById("btn-premier") || document.getElementById("btn-italia"); if(!ref || !ref.parentNode) return;
     var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-mls";
@@ -27625,7 +27685,7 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
     ref.insertAdjacentElement("afterend", b);
   }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
-  setTimeout(botao, 1300); setTimeout(botao, 3000);
+  setTimeout(botao, 1300); setTimeout(botao, 3000); setInterval(abaMLS, 2500);
 })();
 
 </script>
