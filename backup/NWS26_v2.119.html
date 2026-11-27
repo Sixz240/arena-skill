@@ -13623,7 +13623,7 @@ function iniciarCampoAtual(cfg){
   const ball={x:W/2,y:H/2,vx:0,vy:0,r:9};
   let ballOwner=-1, selectedIdx=players.indexOf(humanTeam.find(p=>!p.gk));
   let pendingTarget=-1, releaseFrom=-1, releaseUntil=0, shotSide=null, score={casa:0,fora:0};
-  let running=false,ended=false,halfShown=false,meioTempo=((typeof estado==="object"&&estado&&estado.modo==="batalha"&&(estado.fase==="batalha"||estado.fase==="tnp"))?45:105),timeLeft=meioTempo*2,lastTs=0,raf=0,acc=0,moveTarget=null,dragging=false,dragMoved=false,aiShotCooldown=0,aiming=false,aimStart=null,aimPoint=null,aimVector=null,aiTackleCooldown=0,humanTackleCooldown=0,tapComBola=false,shotId=0,lastTouch=null,bolaParadaAte=0,escanteioHumano=null,ajudaCooldown=0;
+  let running=false,ended=false,halfShown=false,meioTempo=((typeof estado==="object"&&estado&&estado.modo==="batalha"&&(estado.fase==="batalha"||estado.fase==="tnp"||estado.fase==="brbol"))?45:105),timeLeft=meioTempo*2,lastTs=0,raf=0,acc=0,moveTarget=null,dragging=false,dragMoved=false,aiShotCooldown=0,aiming=false,aimStart=null,aimPoint=null,aimVector=null,aiTackleCooldown=0,humanTackleCooldown=0,tapComBola=false,shotId=0,lastTouch=null,bolaParadaAte=0,escanteioHumano=null,ajudaCooldown=0;
   const timeoutIds=new Set();
   const sessionToken=(window._campoAtualToken=(window._campoAtualToken||0)+1);
   function delayed(fn,ms){const id=setTimeout(function(){timeoutIds.delete(id);if(window._campoAtualToken===sessionToken)fn();},ms);timeoutIds.add(id);return id;}
@@ -27626,6 +27626,193 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
   }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
   setTimeout(botao, 1300); setTimeout(botao, 3000);
+})();
+
+</script>
+<script id="br-bolinhas">
+// ===== Brasileirão Série A 2026 (Jogue com as Bolinhas) =====
+// 20 clubes • 38 rodadas (turno e returno) • você joga a sua partida de cada rodada no campo das bolinhas (versão atual),
+// com 45 segundos em cada tempo • os outros jogos são simulados • vitória 3, empate 1, derrota 0.
+(function(){
+  var KEY = "eaBrBolinhas", KT = "eaBrBolinhasTitulos";
+  function times(){ try{ if(typeof timesBR !== "undefined" && timesBR.length >= 20) return timesBR.slice(0, 20); }catch(e){} return ["Flamengo","Palmeiras","Athletico-PR","Bahia","Fluminense","Cruzeiro","Atlético-MG","Coritiba","Bragantino","Santos","Botafogo","São Paulo","Vitória","Corinthians","Mirassol","Grêmio","Vasco","Internacional","Remo","Chapecoense"]; }
+  var S = null;
+  function ler(){ try{ return JSON.parse(localStorage.getItem(KEY) || "null"); }catch(e){ return null; } }
+  function gravar(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+  function titulos(){ try{ return Number(localStorage.getItem(KT)) || 0; }catch(e){ return 0; } }
+  function e(t){ try{ return escudoBR(t); }catch(x){ return ""; } }
+
+  // ---------- calendário (turno e returno, 38 rodadas) ----------
+  function calendario(lista){
+    var t = lista.slice().sort(function(){ return Math.random() - 0.5; }), n = t.length, ida = [];
+    for(var r = 0; r < n - 1; r++){ var j = [];
+      for(var i = 0; i < n / 2; i++){ var a = t[i], b = t[n - 1 - i]; j.push((r + i) % 2 ? [b, a] : [a, b]); }
+      ida.push(j); t.splice(1, 0, t.pop()); }
+    return ida.concat(ida.map(function(j){ return j.map(function(x){ return [x[1], x[0]]; }); }));
+  }
+  function nova(time){
+    var T = {}; times().forEach(function(t){ T[t] = { j: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0, pts: 0 }; });
+    S = { time: time, rodada: 0, cal: calendario(times()), tab: T, ultimos: [], fim: false }; gravar();
+  }
+  function somar(a, b, ga, gb){
+    var A = S.tab[a], B = S.tab[b]; if(!A || !B) return;
+    A.j++; B.j++; A.gp += ga; A.gc += gb; B.gp += gb; B.gc += ga;
+    if(ga > gb){ A.v++; A.pts += 3; B.d++; } else if(gb > ga){ B.v++; B.pts += 3; A.d++; } else { A.e++; B.e++; A.pts += 1; B.pts += 1; }
+  }
+  function ordem(){
+    return Object.keys(S.tab).map(function(t){ var x = S.tab[t]; return { t: t, j: x.j, v: x.v, e: x.e, d: x.d, gp: x.gp, gc: x.gc, sg: x.gp - x.gc, pts: x.pts }; })
+      .sort(function(a, b){ return (b.pts - a.pts) || (b.v - a.v) || (b.sg - a.sg) || (b.gp - a.gp) || a.t.localeCompare(b.t); });
+  }
+  function posicao(t){ var o = ordem(); for(var i = 0; i < o.length; i++) if(o[i].t === t) return i + 1; return 0; }
+  function simOutro(a, b){
+    var om = estado.modo, ot = estado.time, op = estado.pais, r;
+    try{ estado.modo = "brasileirao"; estado.time = S.time; estado.pais = "Brasil"; r = simular(a, b); }
+    catch(x){ r = { ga: Math.floor(Math.random() * 3), gb: Math.floor(Math.random() * 3) }; }
+    finally{ estado.modo = om; estado.time = ot; estado.pais = op; }
+    return [Number(r.ga) || 0, Number(r.gb) || 0];
+  }
+
+  // ---------- telas (mesmo visual do jogo) ----------
+  function abrirTela(){
+    try{ mostrar("simulacao"); }catch(x){}
+    var pr = document.getElementById("prog"); if(pr) pr.innerHTML = "";
+    var lg = document.getElementById("log"); if(lg) lg.innerHTML = "";
+  }
+  function setBotoes(lista){
+    var b = document.getElementById("botoes"); b.innerHTML = "";
+    lista.forEach(function(x){ var el = document.createElement("button"); el.type = "button"; if(x.cls) el.className = x.cls; el.textContent = x.txt;
+      if(x.menu) el.setAttribute("data-acao", "menu"); else el.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); x.fn(); });
+      b.appendChild(el); });
+  }
+  function telaEscolha(){
+    abrirTela();
+    document.getElementById("titulo-fase").textContent = "⚽ Brasileirão Série A 2026 • Jogue com as Bolinhas";
+    var h = '<p style="margin:.2rem 0 .7rem;opacity:.9">20 clubes • 38 rodadas (turno e returno) • você joga cada partida do seu time no campo das bolinhas, com <b>45 segundos</b> em cada tempo. Vitória = 3 pts • Empate = 1 • Derrota = 0.</p>' +
+      (titulos() ? '<p style="color:#f0c14b;font-weight:800;margin:.2rem 0 .7rem">🏆 Títulos com as bolinhas: ' + titulos() + '</p>' : "") +
+      '<div style="font-weight:800;color:var(--amarelo);margin:.3rem 0 .5rem">Escolha seu time</div><div id="brb-lista" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem"></div>';
+    document.getElementById("conteudo").innerHTML = h;
+    var lista = document.getElementById("brb-lista"), sel = null;
+    times().forEach(function(t){
+      var b = document.createElement("button"); b.type = "button"; b.className = "pais-btn"; b.style.cssText = "display:flex;align-items:center;gap:.35rem;justify-content:flex-start;margin:0;width:100%;padding:.6rem .5rem;font-size:.88rem;text-align:left";
+      b.innerHTML = e(t) + '<span>' + t + '</span>';
+      b.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); lista.querySelectorAll(".pais-btn").forEach(function(x){ x.classList.remove("sel"); x.style.outline = ""; }); b.classList.add("sel"); b.style.outline = "2px solid #3fb950"; sel = t; conf.disabled = false; conf.textContent = "Confirmar: " + t + " →"; });
+      lista.appendChild(b);
+    });
+    setBotoes([{ txt: "Confirmar Time →", fn: function(){ if(sel){ nova(sel); telaTemporada(); } } }, { txt: "← Voltar ao Menu", cls: "sec", menu: true }]);
+    var conf = document.getElementById("botoes").firstChild; conf.disabled = true;
+  }
+  function tabelaHTML(){
+    var h = '<div style="overflow:auto;margin:.6rem 0"><table style="width:100%;font-size:.78rem;border-collapse:collapse;text-align:center">';
+    h += '<tr style="opacity:.7"><th style="text-align:left">#</th><th style="text-align:left">Time</th><th>Pts</th><th>J</th><th>V</th><th>E</th><th>D</th><th>SG</th></tr>';
+    ordem().forEach(function(x, i){
+      var eu = x.t === S.time, faixa = i < 4 ? "#3fb950" : (i < 6 ? "#58a6ff" : (i >= 16 ? "#f85149" : "transparent"));
+      h += '<tr style="' + (eu ? 'background:rgba(242,197,114,.22);font-weight:700' : '') + '"><td style="text-align:left;box-shadow:inset 3px 0 ' + faixa + ';padding-left:5px">' + (i + 1) + 'º</td><td style="text-align:left">' + (eu ? '➤ ' : '') + e(x.t) + x.t + '</td><td>' + x.pts + '</td><td>' + x.j + '</td><td>' + x.v + '</td><td>' + x.e + '</td><td>' + x.d + '</td><td>' + (x.sg > 0 ? '+' : '') + x.sg + '</td></tr>';
+    });
+    return h + '</table><p style="opacity:.6;font-size:.72rem;margin:.35rem 0 0">🟩 G4 Libertadores • 🟦 5º e 6º pré-Libertadores • 🟥 Z4 rebaixamento • Vitória = 3 pts • Empate = 1 • Derrota = 0</p></div>';
+  }
+  function meuJogo(){ var r = S.cal[S.rodada] || []; for(var i = 0; i < r.length; i++) if(r[i][0] === S.time || r[i][1] === S.time) return r[i]; return null; }
+  function cartao(g){
+    var eu = g[0] === S.time || g[1] === S.time, meus = g[0] === S.time ? g[2] : g[3], deles = g[0] === S.time ? g[3] : g[2];
+    var cl = !eu ? "" : meus > deles ? "vitoria" : (meus === deles ? "empate" : "derrota");
+    return '<div class="match"' + (eu ? ' style="border-left:4px solid #3fb950"' : '') + '><div style="font-weight:700">' + e(g[0]) + g[0] + ' vs ' + e(g[1]) + g[1] + '</div><div class="placar">' + g[2] + ' x ' + g[3] + '</div>' + (eu ? '<div class="resultado ' + cl + '">' + (meus > deles ? "Vitória" : meus === deles ? "Empate" : "Derrota") + '</div>' : '') + '</div>';
+  }
+  function telaTemporada(aviso){
+    if(!S) return telaEscolha();
+    if(S.fim || S.rodada >= S.cal.length) return telaFim();
+    abrirTela();
+    document.getElementById("titulo-fase").textContent = "Brasileirão 2026 (Bolinhas) • " + S.time;
+    var eu = S.tab[S.time], prox = meuJogo(), casa = prox && prox[0] === S.time, riv = prox ? (casa ? prox[1] : prox[0]) : "";
+    var h = (aviso ? '<div style="background:#1f6feb22;border:1px solid #1f6feb;border-radius:10px;padding:.6rem;margin:.3rem 0 .6rem;font-weight:700">' + aviso + '</div>' : "");
+    h += '<div id="resumo-br" style="margin:0.5rem 0;font-size:0.9rem;opacity:0.9">📊 <b>' + posicao(S.time) + 'º</b> • <b>' + eu.pts + ' pts</b> • ' + eu.v + 'V ' + eu.e + 'E ' + eu.d + 'D • Rodada ' + S.rodada + '/38</div>';
+    h += '<div style="font-weight:800;color:var(--amarelo);margin:.6rem 0 .3rem">Rodada ' + (S.rodada + 1) + '/38 • seu jogo</div>';
+    h += '<div class="match" style="border-left:4px solid #3fb950"><div style="font-weight:700">' + e(prox[0]) + prox[0] + ' vs ' + e(prox[1]) + prox[1] + '</div><div style="opacity:.8;font-size:.85rem;margin-top:.2rem">' + (casa ? "🏟️ Em casa" : "✈️ Fora de casa") + ' • 45 segundos cada tempo</div></div>';
+    h += tabelaHTML();
+    if(S.ultimos && S.ultimos.length){
+      var meu = S.ultimos.filter(function(g){ return g[0] === S.time || g[1] === S.time; });
+      h += '<div style="font-weight:800;color:var(--amarelo);margin:.6rem 0 .3rem">Rodada ' + S.rodada + ' • resultados</div>' + meu.concat(S.ultimos.filter(function(g){ return meu.indexOf(g) < 0; })).map(cartao).join("");
+    }
+    document.getElementById("conteudo").innerHTML = h;
+    setBotoes([
+      { txt: "⚽ Jogar contra o " + riv, fn: jogar },
+      { txt: "✏️ Mudar Escalação", cls: "sec", fn: escalar },
+      { txt: "🔁 Nova temporada", cls: "sec", fn: function(){ if(window.confirm("Começar uma temporada nova? A atual será apagada.")){ S = null; try{ localStorage.removeItem(KEY); }catch(x){} telaEscolha(); } } },
+      { txt: "← Voltar ao Menu", cls: "sec", menu: true }
+    ]);
+  }
+  function fecharRodada(gc, gf){
+    var r = S.cal[S.rodada], res = [];
+    r.forEach(function(p){ var ga, gb;
+      if(p[0] === S.time || p[1] === S.time){ var euCasa = p[0] === S.time; ga = euCasa ? gc : gf; gb = euCasa ? gf : gc; }
+      else { var x = simOutro(p[0], p[1]); ga = x[0]; gb = x[1]; }
+      somar(p[0], p[1], ga, gb); res.push([p[0], p[1], ga, gb]); });
+    S.ultimos = res; S.rodada++;
+    if(gc > gf){ try{ estado.moedas = (estado.moedas || 0) + 40; attMoedas(); }catch(x){} }
+    if(S.rodada >= S.cal.length) S.fim = true;
+    gravar(); try{ salvar(); }catch(x){}
+  }
+  function telaFim(){
+    var pos = posicao(S.time), o = ordem(), campeao = pos === 1;
+    if(!S.premiado){ S.premiado = true; if(campeao){ try{ localStorage.setItem(KT, String(titulos() + 1)); }catch(x){} try{ estado.moedas = (estado.moedas || 0) + 300; attMoedas(); salvar(); }catch(x){} } gravar(); }
+    try{ mostrar("resultado"); }catch(x){}
+    document.getElementById("resultado-titulo").innerHTML = campeao ? '<h1 style="color:#f0c14b">🏆 CAMPEÃO BRASILEIRO!</h1>' : '<h1>Fim do Brasileirão</h1>';
+    document.getElementById("resultado-msg").innerHTML = 'O <b>' + S.time + '</b> terminou em <b>' + pos + 'º</b> com <b>' + S.tab[S.time].pts + ' pts</b> (' + S.tab[S.time].v + 'V ' + S.tab[S.time].e + 'E ' + S.tab[S.time].d + 'D).' +
+      (campeao ? '<br><span style="color:#f0c14b;font-weight:800">Título com as bolinhas • Total: ' + titulos() + ' • +300 moedas</span>' : '<br>Campeão: ' + e(o[0].t) + '<b>' + o[0].t + '</b> (' + o[0].pts + ' pts)') +
+      '<br><br>' + o.slice(0, 6).map(function(x, i){ return (i + 1) + 'º ' + x.t + ' ' + x.pts + 'pts' + (x.t === S.time ? ' ←' : ''); }).join('<br>') +
+      (pos >= 17 ? '<br><br><span style="color:#f85149;font-weight:800">Rebaixado para a Série B.</span>' : '');
+    try{ localStorage.removeItem(KEY); }catch(x){}
+  }
+
+  // ---------- escalação (a mesma tela do jogo) ----------
+  function escalar(){
+    var om = estado.modo, ot = estado.time, op = estado.pais;
+    try{ estado.modo = "brasileirao"; estado.time = S.time; estado.pais = S.time; abrirEditarEscalacao("brbol"); }
+    catch(x){ estado.modo = om; estado.time = ot; estado.pais = op; alert("Não deu para abrir a escalação."); return; }
+    function volta(salvarEsc){ if(salvarEsc){ try{ salvarEscalacao(); }catch(x){} } estado.voltarEscalacao = null; estado.modo = om; estado.time = ot; estado.pais = op; telaTemporada(salvarEsc ? "✅ Escalação salva." : ""); try{ salvar(); }catch(x){} }
+    try{ setBtn(document.getElementById("btn-comecar"), "💾 Salvar Escalação →", function(){ volta(true); }); setBtn(document.getElementById("btn-voltar-esc"), "← Voltar", function(){ volta(false); }); }catch(x){}
+  }
+
+  // ---------- a partida no campo das bolinhas ----------
+  var sess = null, KEYS = ["modo", "fase", "pais", "adv", "time", "escalacao", "ultimoXI", "penaltisLivre", "bonus"];
+  function restaurar(s){ if(!s || s.rest) return; try{ KEYS.forEach(function(k){ estado[k] = s.saved[k]; }); }catch(x){} s.rest = true; }
+  function jogar(){
+    var p = meuJogo(); if(!p) return;
+    var riv = p[0] === S.time ? p[1] : p[0], saved = {};
+    KEYS.forEach(function(k){ try{ saved[k] = estado[k]; }catch(x){} });
+    var s = { saved: saved, prevFim: window._onFimCampo, fim: false, rest: false, t0: Date.now() }; sess = s;
+    try{ estado.modo = "batalha"; estado.fase = "brbol"; estado.pais = S.time; estado.time = null; estado.adv = riv; estado.penaltisLivre = false; }catch(x){}
+    window._onFimCampo = function(r){ if(sess === s) terminar(r && r.score); };
+    try{ iniciarCampo({ casa: S.time, fora: riv, meuLado: "casa", meuPais: S.time, nickCasa: (typeof getNick === "function" && getNick()) || "Você", nickFora: "CPU", online: false, versao: "atual" }); }
+    catch(x){ cancelar(); alert("Não foi possível iniciar a partida: " + (x && x.message ? x.message : x)); telaTemporada(); }
+  }
+  function terminar(score){
+    var s = sess; if(!s || s.fim) return; s.fim = true; sess = null; window._onFimCampo = s.prevFim; restaurar(s);
+    var gc = Number(score && score.casa) || 0, gf = Number(score && score.fora) || 0;
+    fecharRodada(gc, gf);
+    var aviso = (gc > gf ? "✅ Vitória" : gc === gf ? "🤝 Empate" : "❌ Derrota") + " por " + gc + " x " + gf + "!";
+    setTimeout(function(){ telaTemporada(aviso); }, 1800);
+  }
+  function cancelar(){ var s = sess; if(!s) return; sess = null; s.fim = true; window._onFimCampo = s.prevFim; restaurar(s); }
+  if(typeof mostrar === "function"){
+    mostrar = (function(orig){ return function(id){
+      var r = orig.apply(this, arguments);
+      try{ if(sess && !sess.fim && Date.now() - sess.t0 > 1500){
+        if(id === "resultado"){ var sc = window.__campoDbg && window.__campoDbg.score; terminar(sc ? { casa: sc.casa, fora: sc.fora } : null); }
+        else if(id === "menu"){ cancelar(); } } }catch(x){}
+      return r; }; })(mostrar);
+  }
+
+  function abrir(){ S = ler(); if(S && S.time && !S.fim) telaTemporada(); else telaEscolha(); }
+  window.abrirBrBolinhas = abrir;
+  function botao(){
+    if(document.getElementById("btn-br-bolinhas")) return;
+    var ref = document.getElementById("btn-torneios") || document.getElementById("btn-brasileirao"); if(!ref || !ref.parentNode) return;
+    var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-br-bolinhas"; b.style.borderColor = "#3fb950";
+    b.innerHTML = "<h3>⚽ Brasileirão Série A 2026 (Jogue com as Bolinhas)</h3><p>20 clubes • 38 rodadas • você joga cada partida no campo • 45s cada tempo</p>";
+    b.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); abrir(); });
+    ref.insertAdjacentElement("afterend", b);
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
+  setTimeout(botao, 1500); setTimeout(botao, 3500);
 })();
 
 </script>
