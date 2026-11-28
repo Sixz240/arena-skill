@@ -1,0 +1,439 @@
+{
+ "_about": "Uniformes dos clubes da Bundesliga 2026/27 (casa e fora). Mesmo formato de kits-brasileirao-2026.json. Casa: cores tradicionais do clube; 'confidence' diz o quanto confiar. Fora: alternativa genérica nas cores do clube (o modelo real muda toda temporada), sempre a conferir. A cor do número é escolhida para contrastar com a camisa. Escudos: página 'wiki_page' na Wikipédia em inglês, buscada pelo jogo quando abre (uso pessoal). Lista de clubes: 15 que ficaram + Schalke 04, SV Elversberg e SC Paderborn (subiram; Paderborn venceu o Wolfsburg na repescagem). A lista vem de uma página que mistura temporadas: conferir na DFL.",
+ "league": "ger-bundesliga",
+ "season": "2026/27",
+ "teams": [
+  {
+   "id": "bayern",
+   "name": "Bayern de Munique",
+   "short": "FCB",
+   "wiki_page": "FC Bayern Munich",
+   "home": {
+    "pattern": "plain",
+    "primary": "#DC052D",
+    "secondary": "#FFFFFF",
+    "shorts": "#DC052D",
+    "socks": "#DC052D",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#DC052D",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#DC052D"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "dortmund",
+   "name": "Borussia Dortmund",
+   "short": "BVB",
+   "wiki_page": "Borussia Dortmund",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FDE100",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#FDE100",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#FDE100",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FDE100"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "leipzig",
+   "name": "RB Leipzig",
+   "short": "RBL",
+   "wiki_page": "RB Leipzig",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#DD0741",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#DD0741"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#DD0741",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#DD0741"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "leverkusen",
+   "name": "Bayer Leverkusen",
+   "short": "B04",
+   "wiki_page": "Bayer 04 Leverkusen",
+   "home": {
+    "pattern": "plain",
+    "primary": "#E32221",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#E32221",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#E32221",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#E32221"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "stuttgart",
+   "name": "VfB Stuttgart",
+   "short": "VFB",
+   "wiki_page": "VfB Stuttgart",
+   "home": {
+    "pattern": "chest_band",
+    "primary": "#FFFFFF",
+    "secondary": "#E32219",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#E32219"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#E32219",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#E32219"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "frankfurt",
+   "name": "Eintracht Frankfurt",
+   "short": "SGE",
+   "wiki_page": "Eintracht Frankfurt",
+   "home": {
+    "pattern": "v_stripes",
+    "primary": "#E1000F",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#E1000F",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#E1000F"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "hoffenheim",
+   "name": "Hoffenheim",
+   "short": "TSG",
+   "wiki_page": "TSG 1899 Hoffenheim",
+   "home": {
+    "pattern": "plain",
+    "primary": "#1C63B7",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#1C63B7",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#1C63B7",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#1C63B7"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "union-berlin",
+   "name": "Union Berlin",
+   "short": "FCU",
+   "wiki_page": "1. FC Union Berlin",
+   "home": {
+    "pattern": "plain",
+    "primary": "#EB1923",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#EB1923",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#EB1923",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#EB1923"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "freiburg",
+   "name": "Freiburg",
+   "short": "SCF",
+   "wiki_page": "SC Freiburg",
+   "home": {
+    "pattern": "plain",
+    "primary": "#E2001A",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#E2001A",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#E2001A",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#E2001A"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "mainz",
+   "name": "Mainz 05",
+   "short": "M05",
+   "wiki_page": "1. FSV Mainz 05",
+   "home": {
+    "pattern": "plain",
+    "primary": "#C3141E",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#C3141E",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#C3141E",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#C3141E"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "gladbach",
+   "name": "Borussia Mönchengladbach",
+   "short": "BMG",
+   "wiki_page": "Borussia Mönchengladbach",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#00A651",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#00A651"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#00A651",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#00A651"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "bremen",
+   "name": "Werder Bremen",
+   "short": "SVW",
+   "wiki_page": "SV Werder Bremen",
+   "home": {
+    "pattern": "plain",
+    "primary": "#1D9053",
+    "secondary": "#FFFFFF",
+    "shorts": "#1D9053",
+    "socks": "#1D9053",
+    "number": "#000000"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#1D9053",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#1D9053"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "augsburg",
+   "name": "Augsburg",
+   "short": "FCA",
+   "wiki_page": "FC Augsburg",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#BA3733",
+    "shorts": "#46714D",
+    "socks": "#FFFFFF",
+    "number": "#BA3733"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#BA3733",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#BA3733"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "koln",
+   "name": "Colônia",
+   "short": "KOE",
+   "wiki_page": "1. FC Köln",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#ED1C24",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#ED1C24"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#ED1C24",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#ED1C24"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "hamburg",
+   "name": "Hamburgo",
+   "short": "HSV",
+   "wiki_page": "Hamburger SV",
+   "home": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#E2001A",
+    "shorts": "#E2001A",
+    "socks": "#0A3F86",
+    "number": "#0A3F86"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#E2001A",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#E2001A"
+   },
+   "confidence": "medium",
+   "away_confidence": "low"
+  },
+  {
+   "id": "schalke",
+   "name": "Schalke 04",
+   "short": "S04",
+   "wiki_page": "FC Schalke 04",
+   "home": {
+    "pattern": "plain",
+    "primary": "#004D9D",
+    "secondary": "#FFFFFF",
+    "shorts": "#FFFFFF",
+    "socks": "#004D9D",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#004D9D",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#004D9D"
+   },
+   "confidence": "high",
+   "away_confidence": "low"
+  },
+  {
+   "id": "elversberg",
+   "name": "SV Elversberg",
+   "short": "SVE",
+   "wiki_page": "SV Elversberg",
+   "home": {
+    "pattern": "plain",
+    "primary": "#000000",
+    "secondary": "#FFFFFF",
+    "shorts": "#000000",
+    "socks": "#000000",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#000000",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#000000"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  },
+  {
+   "id": "paderborn",
+   "name": "Paderborn",
+   "short": "SCP",
+   "wiki_page": "SC Paderborn 07",
+   "home": {
+    "pattern": "plain",
+    "primary": "#005CA9",
+    "secondary": "#000000",
+    "shorts": "#000000",
+    "socks": "#005CA9",
+    "number": "#FFFFFF"
+   },
+   "away": {
+    "pattern": "plain",
+    "primary": "#FFFFFF",
+    "secondary": "#005CA9",
+    "shorts": "#FFFFFF",
+    "socks": "#FFFFFF",
+    "number": "#005CA9"
+   },
+   "confidence": "low",
+   "away_confidence": "low"
+  }
+ ]
+}

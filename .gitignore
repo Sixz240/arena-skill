@@ -4,3 +4,10 @@ __pycache__/
 .venv/
 *.tmp
 .arena/
+game/Tests/bin/
+game/Tests/obj/
+game/Library/
+game/Temp/
+game/Logs/
+game/UserSettings/
+game/Build/
