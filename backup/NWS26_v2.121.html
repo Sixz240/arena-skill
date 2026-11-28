@@ -27995,7 +27995,7 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
 <script id="nws-config">
 // ===== ⚙️ Configurações do NWS 26 • gráficos 3D, escudos e informações do jogo =====
 (function(){
-  var VERSAO = "2.120", DATA_V = "28/11/2026", KEY = "eaConfig";
+  var VERSAO = "2.121", DATA_V = "28/11/2026", KEY = "eaConfig";
   var PAD = { g3d: "alto", escQ: "alta", escT: 100, verTopo: true };
   function ler(){ var c = {}; try{ c = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; }catch(e){} for(var k in PAD) if(c[k] == null) c[k] = PAD[k]; return c; }
   var CFG = ler();
@@ -28159,6 +28159,186 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
   function iniciar(){ botoes(); aplicarEscudos(); }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();
   setTimeout(iniciar, 2000); setTimeout(function(){ botoes(); if(CFG.escQ !== "alta") aplicarEscudos(); }, 6000);
+})();
+
+</script>
+<script id="nws-perfil">
+// ===== 👤 Perfil + Redes Sociais do NWS 26 =====
+// Meu perfil: foto, nick, quando entrou no NWS 26, todas as insígnias/troféus e as redes sociais (YouTube, Discord, Instagram, TikTok, Twitch).
+// Ver perfil: procura outro nick e mostra o que ele publicou (troféus, redes e data de entrada).
+// Ícones das redes: Simple Icons (CC0).
+(function(){
+  var ICON = {"youtube": "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z", "discord": "M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z", "instagram": "M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077", "tiktok": "M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z", "twitch": "M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"};
+  var REDES = [
+    { k: "youtube",   nome: "YouTube",   cor: "#FF0000", ph: "@seucanal ou link do canal", url: function(v){ return /^@/.test(v) ? "https://www.youtube.com/" + v : "https://www.youtube.com/@" + v; }, dom: ["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"] },
+    { k: "discord",   nome: "Discord",   cor: "#5865F2", ph: "seu usuário ou convite discord.gg/...", url: null, dom: ["discord.gg", "discord.com", "www.discord.com"] },
+    { k: "instagram", nome: "Instagram", cor: "#E4405F", ph: "@seuperfil", url: function(v){ return "https://www.instagram.com/" + v.replace(/^@/, ""); }, dom: ["instagram.com", "www.instagram.com"] },
+    { k: "tiktok",    nome: "TikTok",    cor: "#000000", ph: "@seuperfil", url: function(v){ return "https://www.tiktok.com/@" + v.replace(/^@/, ""); }, dom: ["tiktok.com", "www.tiktok.com", "vm.tiktok.com"] },
+    { k: "twitch",    nome: "Twitch",    cor: "#9146FF", ph: "seu canal", url: function(v){ return "https://www.twitch.tv/" + v.replace(/^@/, ""); }, dom: ["twitch.tv", "www.twitch.tv"] }
+  ];
+  var KEY = "eaPerfilRedes", KENT = "eaEntrouNWS";
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function svg(k, cor, px){ var d = ICON[k]; return d ? '<svg viewBox="0 0 24 24" width="' + (px || 22) + '" height="' + (px || 22) + '" fill="' + (cor || "currentColor") + '" aria-hidden="true"><path d="' + d + '"/></svg>' : ""; }
+  function nick(){ try{ return (typeof getNick === "function" && getNick()) || ""; }catch(e){ return ""; } }
+  function chave(n){ try{ return typeof nickSeguro === "function" ? nickSeguro(n) : String(n).replace(/[.#$\[\]]/g, "_"); }catch(e){ return String(n); } }
+  function temDb(){ try{ return typeof db !== "undefined" && db && typeof db.ref === "function"; }catch(e){ return false; } }
+  function lerRedes(){ try{ return JSON.parse(localStorage.getItem(KEY) || "{}") || {}; }catch(e){ return {}; } }
+  // valor digitado -> link seguro (só domínios da rede) ou nome de usuário limpo
+  function limpar(r, v){
+    v = String(v || "").trim().slice(0, 120); if(!v) return "";
+    if(/^https?:\/\//i.test(v)){ try{ var u = new URL(v); if(r.dom.indexOf(u.hostname.toLowerCase()) >= 0) return u.href; }catch(e){} return ""; }
+    if(/^(www\.)?[a-z0-9.-]+\.[a-z]{2,}\//i.test(v)) return limpar(r, "https://" + v);
+    return v.replace(/[^\w.@\-]/g, "").slice(0, 40);
+  }
+  function link(r, v){ if(!v) return null; if(/^https?:\/\//i.test(v)) return v; return r.url ? r.url(v) : null; }
+  function dataBR(t){ try{ var d = new Date(Number(t)); if(isNaN(d)) return ""; return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); }catch(e){ return ""; } }
+  function diasDesde(t){ var n = Math.floor((Date.now() - Number(t)) / 86400000); return n <= 0 ? "hoje" : n === 1 ? "há 1 dia" : "há " + n + " dias"; }
+  try{ if(!localStorage.getItem(KENT)) localStorage.setItem(KENT, String(Date.now())); }catch(e){}
+
+  // ---------- meus troféus (as mesmas insígnias da tela de taças do menu) ----------
+  function minhasInsignias(){
+    try{ if(typeof attTacas === "function") attTacas(); }catch(e){}
+    var box = document.getElementById("box-tacas-menu"), out = [];
+    if(box) [].slice.call(box.children).forEach(function(c){
+      var linhas = (c.innerText || "").split("\n").map(function(x){ return x.trim(); }).filter(Boolean);
+      var nome = linhas[0] || "", q = parseInt((linhas.join(" ").match(/(\d+)\s*(t[ií]tulo|ta[cç]a|vez|conquist)/i) || [])[1] || (linhas[1] || "").replace(/\D/g, ""), 10) || 0;
+      var im = c.querySelector("img"); if(nome && q > 0) out.push({ n: nome.slice(0, 60), q: q, img: im ? im.src : "" });
+    });
+    return out;
+  }
+  // imagem da insígnia pelo nome (para mostrar no perfil dos outros mesmo sem você ter ela)
+  var CAT = [[/copa do mundo/i, "IMG_TACA"], [/série b|serie b/i, "IMG_TACA_SERIEB"], [/brasileir/i, "IMG_TACA_BR"], [/champions/i, "IMG_TACA_UCL"], [/la ?liga/i, "IMG_TACA_LALIGA"], [/premier/i, "IMG_TACA_PREMIER"],
+    [/ligue ?1/i, "IMG_TACA_LIGUE1"], [/serie a|enilive|itália/i, "IMG_TACA_ITALIA"], [/meisterschale|bundesliga/i, "IMG_TACA_ALEMANHA"], [/eredivisie/i, "IMG_TACA_HOLANDA"], [/portugal/i, "IMG_TACA_PORTUGAL"],
+    [/mls/i, "IMG_TACA_MLS"], [/mundial/i, "IMG_TACA_MUNDIAL_CLUBES"], [/crie sua copa|cria/i, "IMG_TACA_CRIA"]];
+  function glob(n){ try{ return (0, eval)("typeof " + n + "!=='undefined'?" + n + ":''") || ""; }catch(e){ return ""; } }
+  function imgDe(nomeIns){
+    var m = minhasInsignias().filter(function(x){ return x.n === nomeIns; })[0]; if(m && m.img) return m.img;
+    for(var i = 0; i < CAT.length; i++) if(CAT[i][0].test(nomeIns)){ var v = glob(CAT[i][1]); if(v) return v; }
+    return "";
+  }
+
+  // ---------- publicar meu perfil (para os outros verem) ----------
+  function publicar(){
+    var n = nick(); if(!n || !temDb()) return Promise.resolve(false);
+    var red = lerRedes(), pub = {}; REDES.forEach(function(r){ if(red[r.k]) pub[r.k] = red[r.k]; });
+    var ins = minhasInsignias().map(function(x){ return { n: x.n, q: x.q }; });
+    var dados = { redes: pub, insig: ins, desde: Number(localStorage.getItem(KENT)) || Date.now(), versao: window.NWS_VERSAO || "", t: Date.now() };
+    try{ return db.ref("nicks/" + chave(n) + "/perfil").set(dados).then(function(){ return true; }).catch(function(){ return false; }); }catch(e){ return Promise.resolve(false); }
+  }
+  // quando o nick foi criado no NWS 26 (reserva do nick online); guarda a data mais antiga
+  function buscarEntrada(n, cb){
+    var local = Number(localStorage.getItem(KENT)) || Date.now();
+    if(!n || !temDb()) return cb(local, false);
+    var feito = false; setTimeout(function(){ if(!feito){ feito = true; cb(local, false); } }, 4000);
+    try{ db.ref("nicksUnicos/" + chave(n)).once("value").then(function(s){ if(feito) return; feito = true; var v = s && s.val ? s.val() : null, t = v && Number(v.t);
+      if(t && t < local && n === nick()){ try{ localStorage.setItem(KENT, String(t)); }catch(e){} }
+      cb(t ? Math.min(t, n === nick() ? local : t) : local, !!t); }).catch(function(){ if(!feito){ feito = true; cb(local, false); } }); }catch(e){ feito = true; cb(local, false); }
+  }
+
+  // ---------- tela ----------
+  var css = document.createElement("style");
+  css.textContent =
+    "#pf-ov{position:fixed;inset:0;z-index:99994;overflow:auto;background:#0d1117;color:#e6edf3;font-family:inherit}#pf-ov *{box-sizing:border-box}" +
+    "#pf-ov .pw{max-width:640px;margin:0 auto;padding:12px 14px 40px}#pf-ov .ptop{display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:0;background:#0d1117;padding:6px 0 10px;z-index:2}" +
+    "#pf-ov h1{margin:0;font-size:1.35rem;color:var(--amarelo,#f2c572)}#pf-ov .px{width:auto;margin:0;padding:8px 14px;border-radius:10px;background:#21262d;color:#e6edf3;border:1px solid #30363d;font-weight:800;cursor:pointer}" +
+    "#pf-ov .tabs{display:flex;gap:6px;margin:4px 0 10px}#pf-ov .tabs button{flex:1;width:auto;margin:0;padding:10px;border-radius:10px;border:1px solid #30363d;background:#161b22;color:#c9d1d9;font-weight:900;cursor:pointer}#pf-ov .tabs button.on{background:#238636;border-color:#3fb950;color:#fff}" +
+    "#pf-ov .card{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:12px;margin:10px 0}#pf-ov .card h2{margin:0 0 8px;font-size:1.02rem}" +
+    "#pf-ov .cab{display:flex;align-items:center;gap:12px}#pf-ov .cab .foto{flex:none;width:72px;height:72px;border-radius:50%;overflow:hidden;background:#21262d;display:flex;align-items:center;justify-content:center;font-size:2rem}#pf-ov .cab .foto img{width:100%;height:100%;object-fit:cover}" +
+    "#pf-ov .cab b.nk{display:block;font-size:1.25rem}#pf-ov .cab small{display:block;opacity:.8;font-size:.82rem;margin-top:2px}" +
+    "#pf-ov .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}#pf-ov .nums div{background:#0d1117;border-radius:10px;padding:8px;text-align:center}#pf-ov .nums b{display:block;font-size:1.2rem;color:#f2c572}#pf-ov .nums span{font-size:.72rem;opacity:.75}" +
+    "#pf-ov .ins{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}#pf-ov .ins div{background:#0d1117;border:1px solid #30363d;border-radius:12px;padding:8px;text-align:center;font-size:.78rem;line-height:1.25}#pf-ov .ins img{width:46px;height:56px;object-fit:contain;display:block;margin:0 auto 4px}#pf-ov .ins .tr{font-size:40px;display:block}#pf-ov .ins b{display:block;color:#f2c572;font-size:1rem}" +
+    "#pf-ov .redes{display:grid;gap:8px}#pf-ov .rede{display:flex;align-items:center;gap:10px;background:#0d1117;border:1px solid #30363d;border-radius:12px;padding:10px;color:#e6edf3;text-decoration:none;font-weight:800}#pf-ov .rede .ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}#pf-ov .rede small{display:block;font-weight:600;opacity:.75;word-break:break-all}" +
+    "#pf-ov .campo{display:flex;align-items:center;gap:8px;margin:8px 0}#pf-ov .campo .ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}#pf-ov .campo input{flex:1;min-width:0;padding:10px;border-radius:10px;border:1px solid #30363d;background:#0d1117;color:#fff;font:inherit;margin:0}" +
+    "#pf-ov .bt{width:100%;margin:8px 0 0;padding:11px;border-radius:10px;border:0;background:#238636;color:#fff;font-weight:900;cursor:pointer}#pf-ov .bt.s{background:#21262d;border:1px solid #30363d}" +
+    "#pf-ov .msg{font-size:.84rem;margin-top:8px;font-weight:700}#pf-ov .vazio{opacity:.7;font-size:.88rem}";
+  document.head.appendChild(css);
+
+  var ov = null, aba = "meu", msg = "", visto = null;
+  function fechar(){ if(ov){ ov.remove(); ov = null; } }
+  function foto(n){ try{ if(typeof fotoNickHTML === "function"){ var h = fotoNickHTML(n, 72); if(/<img/i.test(h)) return h.replace(/style="[^"]*"/, ""); } }catch(e){} return "👤"; }
+  function blocoRedes(red, editar){
+    var lst = REDES.filter(function(r){ return red[r.k]; });
+    if(!lst.length) return '<p class="vazio">' + (editar ? "Você ainda não colocou nenhuma rede social." : "Esse jogador não colocou redes sociais.") + '</p>';
+    return '<div class="redes">' + lst.map(function(r){ var v = red[r.k], u = link(r, v), ic = '<span class="ic" style="background:' + r.cor + '">' + svg(r.k, "#fff", 22) + '</span>', txt = '<span>' + r.nome + '<small>' + esc(v) + '</small></span>';
+      return u ? '<a class="rede" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + ic + txt + '</a>' : '<div class="rede">' + ic + txt + '<button class="px" data-copiar="' + esc(v) + '" style="margin-left:auto;padding:6px 10px">Copiar</button></div>'; }).join("") + '</div>';
+  }
+  function blocoInsig(lista, minhas){
+    if(!lista.length) return '<p class="vazio">Nenhum troféu ainda. Ganhe campeonatos para encher a estante!</p>';
+    return '<div class="ins">' + lista.map(function(x){ var src = minhas ? x.img : imgDe(x.n); return '<div>' + (src ? '<img src="' + esc(src) + '" alt="">' : '<span class="tr">🏆</span>') + '<b>' + Number(x.q) + 'x</b>' + esc(String(x.n).replace(/^Insígnia (da |do |de )?/i, "")) + '</div>'; }).join("") + '</div>';
+  }
+  function cabecalho(n, desde, online, ins){
+    var tot = ins.reduce(function(a, x){ return a + (Number(x.q) || 0); }, 0);
+    return '<div class="card"><div class="cab"><div class="foto">' + foto(n) + '</div><div><b class="nk">' + esc(n || "sem nick") + '</b><small>📅 Entrou no NWS 26 em <b>' + dataBR(desde) + '</b> (' + diasDesde(desde) + ')' + (online ? "" : " • neste aparelho") + '</small></div></div>' +
+      '<div class="nums"><div><b>' + tot + '</b><span>títulos</span></div><div><b>' + ins.length + '</b><span>insígnias</span></div><div><b>' + diasDesde(desde).replace("há ", "") + '</b><span>no NWS 26</span></div></div></div>';
+  }
+  function render(){
+    var h = '<div class="pw"><div class="ptop"><button class="px" id="pf-sair">← Menu</button><h1>👤 Perfil</h1><span style="width:70px"></span></div>' +
+      '<div class="tabs"><button data-aba="meu" class="' + (aba === "meu" ? "on" : "") + '">👤 Meu perfil</button><button data-aba="redes" class="' + (aba === "redes" ? "on" : "") + '">🌐 Redes sociais</button><button data-aba="ver" class="' + (aba === "ver" ? "on" : "") + '">🔎 Ver perfil</button></div><div id="pf-corpo"></div></div>';
+    ov.innerHTML = h;
+    ov.querySelector("#pf-sair").onclick = function(){ fechar(); try{ mostrar("menu"); }catch(e){} };
+    ov.querySelectorAll("[data-aba]").forEach(function(b){ b.onclick = function(){ aba = b.getAttribute("data-aba"); msg = ""; render(); }; });
+    var c = ov.querySelector("#pf-corpo");
+    if(aba === "meu"){
+      var n = nick(), ins = minhasInsignias(), red = lerRedes();
+      var pinta = function(desde, online){ c.innerHTML = cabecalho(n, desde, online, ins) + '<div class="card"><h2>🏆 Troféus e insígnias</h2>' + blocoInsig(ins, true) + '</div><div class="card"><h2>🌐 Redes sociais</h2>' + blocoRedes(red, true) + '<button class="bt s" id="pf-ir-redes">✏️ Editar redes sociais</button></div>' + (n ? "" : '<p class="vazio">Crie um nick no menu para os outros jogadores verem o seu perfil.</p>'); ligar(c); };
+      pinta(Number(localStorage.getItem(KENT)) || Date.now(), false);
+      buscarEntrada(n, function(t, online){ if(ov && aba === "meu") pinta(t, online); });
+      publicar();
+    } else if(aba === "redes"){
+      var red2 = lerRedes();
+      c.innerHTML = '<div class="card"><h2>🌐 Suas redes sociais</h2><p class="vazio" style="margin-top:0">Coloque o @ ou o link. Elas aparecem no seu perfil e outros jogadores podem ver pelo seu nick.</p>' +
+        REDES.map(function(r){ return '<div class="campo"><span class="ic" style="background:' + r.cor + '">' + svg(r.k, "#fff", 20) + '</span><input id="pf-in-' + r.k + '" maxlength="120" placeholder="' + r.nome + ': ' + esc(r.ph) + '" value="' + esc(red2[r.k] || "") + '"></div>'; }).join("") +
+        '<button class="bt" id="pf-salvar">💾 Salvar redes sociais</button><div class="msg" id="pf-msg">' + msg + '</div></div>';
+      c.querySelector("#pf-salvar").onclick = function(){
+        var novo = {}, ruim = [];
+        REDES.forEach(function(r){ var bruto = c.querySelector("#pf-in-" + r.k).value, v = limpar(r, bruto); if(String(bruto).trim() && !v) ruim.push(r.nome); if(v) novo[r.k] = v; });
+        try{ localStorage.setItem(KEY, JSON.stringify(novo)); }catch(e){}
+        msg = ruim.length ? "⚠️ Link inválido em: " + ruim.join(", ") + " (use o @ ou um link do próprio site)." : "✅ Redes salvas!";
+        publicar().then(function(ok){ if(!ruim.length) msg = ok ? "✅ Redes salvas e publicadas no seu perfil!" : "✅ Redes salvas neste aparelho" + (nick() ? " (sem internet para publicar agora)." : " (crie um nick para publicar)."); if(ov && aba === "redes") render(); });
+        render();
+      };
+    } else {
+      c.innerHTML = '<div class="card"><h2>🔎 Ver o perfil de um jogador</h2><div class="campo"><input id="pf-busca" maxlength="40" placeholder="Digite o nick" value="' + esc(visto || "") + '"></div><button class="bt" id="pf-buscar">Ver perfil</button><div class="msg" id="pf-msg2"></div></div><div id="pf-res"></div>';
+      var bt = c.querySelector("#pf-buscar"), inp = c.querySelector("#pf-busca");
+      var buscar = function(){
+        var alvo = inp.value.trim(); if(!alvo) return; visto = alvo; var m2 = c.querySelector("#pf-msg2"), res = c.querySelector("#pf-res");
+        if(!temDb()){ m2.textContent = "⚠️ Sem conexão com o servidor agora."; return; }
+        m2.textContent = "Procurando...";
+        var k = chave(alvo);
+        Promise.all([db.ref("nicks/" + k + "/perfil").once("value"), db.ref("nicks/" + k + "/tacas").once("value"), db.ref("nicksUnicos/" + k).once("value")]).then(function(r){
+          var pf = r[0].val() || null, tc = r[1].val() || null, un = r[2].val() || null;
+          if(!pf && !tc && !un){ m2.textContent = "❌ Não achei nenhum jogador com o nick “" + alvo + "”."; res.innerHTML = ""; return; }
+          m2.textContent = "";
+          var ins = (pf && Array.isArray(pf.insig) ? pf.insig : []).filter(function(x){ return x && x.n; }).map(function(x){ return { n: String(x.n).slice(0, 60), q: Number(x.q) || 0 }; });
+          var desde = (un && Number(un.t)) || (pf && Number(pf.desde)) || Date.now();
+          var red = {}; if(pf && pf.redes) REDES.forEach(function(rd){ var v = limpar(rd, pf.redes[rd.k]); if(v) red[rd.k] = v; });
+          var antigos = "";
+          if(!ins.length && tc){ try{ antigos = typeof badgesTodas === "function" ? badgesTodas(unpackTacas(tc, tc.copa || 0)) : ""; }catch(e){} }
+          res.innerHTML = cabecalho(alvo, desde, !!un, ins) + '<div class="card"><h2>🏆 Troféus e insígnias</h2>' + (ins.length ? blocoInsig(ins, false) : (antigos ? '<div>' + antigos + '</div><p class="vazio">Esse jogador ainda não abriu o Perfil na versão nova, então só aparecem os troféus principais.</p>' : '<p class="vazio">Nenhum troféu publicado.</p>')) + '</div><div class="card"><h2>🌐 Redes sociais</h2>' + blocoRedes(red, false) + '</div>' + (pf && pf.versao ? '<p class="vazio">Última vez no Perfil com a versão v' + esc(pf.versao) + ' em ' + dataBR(pf.t) + '.</p>' : "");
+          ligar(res);
+        }).catch(function(){ m2.textContent = "⚠️ Não deu para buscar agora. Tente de novo."; });
+      };
+      bt.onclick = buscar; inp.onkeydown = function(e){ if(e.key === "Enter") buscar(); };
+      if(visto) buscar();
+    }
+  }
+  function ligar(root){
+    var b = root.querySelector("#pf-ir-redes"); if(b) b.onclick = function(){ aba = "redes"; render(); };
+    root.querySelectorAll("[data-copiar]").forEach(function(x){ x.onclick = function(ev){ ev.preventDefault(); var v = x.getAttribute("data-copiar"); try{ navigator.clipboard.writeText(v); x.textContent = "Copiado!"; }catch(e){ prompt("Copie:", v); } }; });
+  }
+  function abrir(qual){ fechar(); aba = qual || "meu"; ov = document.createElement("div"); ov.id = "pf-ov"; document.body.appendChild(ov); render(); }
+  window.abrirPerfil = abrir;
+  function botao(){
+    if(document.getElementById("btn-perfil")) return;
+    var ref = document.getElementById("btn-config") || document.getElementById("btn-sera"); if(!ref || !ref.parentNode) return;
+    var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-perfil"; b.style.borderColor = "#58a6ff";
+    b.innerHTML = '<h3>👤 Perfil e Redes Sociais</h3><p>Seus troféus, quando entrou no NWS 26, seu YouTube, Discord, Instagram e ver o perfil dos outros</p>';
+    b.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); abrir(); });
+    ref.insertAdjacentElement("afterend", b);
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", botao); else botao();
+  setTimeout(botao, 2200); setTimeout(botao, 6500);
+  setTimeout(function(){ try{ publicar(); }catch(e){} }, 8000);
 })();
 
 </script>
