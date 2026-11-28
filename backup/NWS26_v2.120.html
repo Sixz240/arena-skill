@@ -27992,5 +27992,175 @@ window.MLS_DATA={"logos": {"Minnesota United": "data:image/png;base64,iVBORw0KGg
 })();
 
 </script>
+<script id="nws-config">
+// ===== ⚙️ Configurações do NWS 26 • gráficos 3D, escudos e informações do jogo =====
+(function(){
+  var VERSAO = "2.120", DATA_V = "28/11/2026", KEY = "eaConfig";
+  var PAD = { g3d: "alto", escQ: "alta", escT: 100, verTopo: true };
+  function ler(){ var c = {}; try{ c = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; }catch(e){} for(var k in PAD) if(c[k] == null) c[k] = PAD[k]; return c; }
+  var CFG = ler();
+  function gravar(){ try{ localStorage.setItem(KEY, JSON.stringify(CFG)); }catch(e){} }
+  window.NWS_VERSAO = VERSAO; window.NWS_CFG = CFG;
+
+  // ---------- Gráficos 3D (Futebol Física, Pênaltis 3D, Brasileirinho 3Ds) ----------
+  var G3D = {
+    baixo: { nome: "Baixo", aa: false, px: 0.75, sombra: false, desc: "Mais leve: resolução menor, sem sombras e sem suavizar as bordas. Bom para celular fraco ou que esquenta." },
+    medio: { nome: "Médio", aa: true, px: 1.25, sombra: true, desc: "Equilíbrio: resolução média, sombras simples e bordas suavizadas." },
+    alto:  { nome: "Alto", aa: true, px: 2, sombra: true, desc: "Máximo: resolução cheia da tela, sombras suaves e bordas suavizadas (o padrão do jogo)." }
+  };
+  var renderers = [];
+  function capPx(){ var g = G3D[CFG.g3d] || G3D.alto; return Math.min(g.px, window.devicePixelRatio || 1); }
+  (function(){
+    var T = window.THREE; if(!T || !T.WebGLRenderer || T.WebGLRenderer.__nws) return;
+    var Orig = T.WebGLRenderer;
+    function Wrap(params){
+      var g = G3D[CFG.g3d] || G3D.alto; params = Object.assign({}, params || {}); params.antialias = g.aa && params.antialias !== false;
+      var r = new Orig(params), setPx = r.setPixelRatio.bind(r);
+      r.setPixelRatio = function(v){ return setPx(Math.min(Number(v) || 1, capPx())); };
+      try{ var sm = r.shadowMap, val = sm.enabled; Object.defineProperty(sm, "enabled", { configurable: true, get: function(){ return val && (G3D[CFG.g3d] || G3D.alto).sombra; }, set: function(v){ val = !!v; } });
+        if(CFG.g3d === "medio"){ var tp = sm.type; Object.defineProperty(sm, "type", { configurable: true, get: function(){ return CFG.g3d === "medio" ? T.PCFShadowMap : tp; }, set: function(v){ tp = v; } }); } }catch(e){}
+      renderers.push(r); return r;
+    }
+    Wrap.prototype = Orig.prototype; Wrap.__nws = true;
+    try{ Object.keys(Orig).forEach(function(k){ Wrap[k] = Orig[k]; }); }catch(e){}
+    try{ T.WebGLRenderer = Wrap; }catch(e){ try{ Object.defineProperty(T, "WebGLRenderer", { value: Wrap, configurable: true, writable: true }); }catch(_){} }
+  })();
+  function aplicar3D(){ renderers.forEach(function(r){ try{ r.setPixelRatio(window.devicePixelRatio || 1); var c = r.domElement; if(c && c.clientWidth) r.setSize(c.clientWidth, c.clientHeight, false); }catch(e){} }); }
+
+  // ---------- Escudos: qualidade (resolução da imagem) e tamanho na tela ----------
+  var ESCQ = { baixa: { nome: "Baixa", px: 40, desc: "Escudos com pouca resolução (mais leve e rápido)." }, normal: { nome: "Normal", px: 96, desc: "Resolução média, boa para a maioria dos celulares." }, alta: { nome: "Alta", px: 0, desc: "Resolução original dos escudos (o padrão do jogo)." } };
+  function reduzir(im, px){
+    try{
+      if(!im || !im.src) return;
+      if(!im.__orig) im.__orig = im.src;
+      if(!px){ if(im.src !== im.__orig) im.src = im.__orig; return; }
+      var fazer = function(){ try{
+        var src = new Image(); src.onload = function(){ try{
+          var w = src.naturalWidth || src.width, h = src.naturalHeight || src.height; if(!w || !h) return;
+          var k = Math.min(1, px / Math.max(w, h)); if(k >= 1){ if(im.src !== im.__orig) im.src = im.__orig; return; }
+          var c = document.createElement("canvas"); c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+          c.getContext("2d").drawImage(src, 0, 0, c.width, c.height); im.src = c.toDataURL("image/png"); im.__px = px; }catch(e){} };
+        src.src = im.__orig; }catch(e){} };
+      if(im.__px !== px) fazer();
+    }catch(e){}
+  }
+  function aplicarEscudos(){
+    var px = (ESCQ[CFG.escQ] || ESCQ.alta).px, E = window._escudosBR || {};
+    Object.keys(E).forEach(function(k){ var im = E[k]; if(im && typeof im === "object" && "src" in im){ if(!px && !im.__orig) return; if(!px) im.__px = 0; reduzir(im, px); } });
+    document.documentElement.style.setProperty("--nws-esc", String((Number(CFG.escT) || 100) / 100));
+  }
+  var cssE = document.createElement("style");
+  cssE.textContent = ":root{--nws-esc:1}img.nws-esc{transform:scale(var(--nws-esc));transform-origin:center}" +
+    "#simx .sx-t img,#simx td.nm img,#lista-times .pais-btn img,#brb-lista img,#tabela-br img,#jogos-br img,#conteudo .match img,.mls-tb img{transform:scale(var(--nws-esc));transform-origin:center}";
+  document.head.appendChild(cssE);
+  if(typeof escudoBR === "function") escudoBR = (function(o){ return function(){ var h = o.apply(this, arguments); return h ? String(h).replace("<img ", '<img class="nws-esc" ') : h; }; })(escudoBR);
+
+  // ---------- versão no topo ----------
+  function topo(){
+    var logo = document.querySelector("header .logo"); if(!logo) return;
+    var v = document.getElementById("nws-ver-topo");
+    if(!CFG.verTopo){ if(v) v.remove(); return; }
+    if(!v){ v = document.createElement("small"); v.id = "nws-ver-topo"; v.style.cssText = "display:block;font-size:.55rem;font-weight:800;opacity:.75;letter-spacing:.04em"; logo.appendChild(v); }
+    v.textContent = "v" + VERSAO;
+  }
+
+  // ---------- informações ----------
+  function webgl(){
+    try{ var c = document.createElement("canvas"), gl = c.getContext("webgl") || c.getContext("experimental-webgl"); if(!gl) return { ok: false };
+      var info = gl.getExtension("WEBGL_debug_renderer_info"), gpu = info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+      try{ var lose = gl.getExtension("WEBGL_lose_context"); if(lose) lose.loseContext(); }catch(e){}
+      return { ok: true, gpu: String(gpu || "").slice(0, 60) }; }catch(e){ return { ok: false }; }
+  }
+  function salvamento(){ var n = 0; try{ for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i), v = localStorage.getItem(k) || ""; n += (k.length + v.length) * 2; } }catch(e){} return n; }
+  function kb(n){ return n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB"; }
+  function contarModos(){ try{ return document.querySelectorAll("#menu .menu-btn, .menu-btn").length; }catch(e){ return 0; } }
+  function infos(){
+    var w = webgl(), E = window._escudosBR || {}, nEsc = Object.keys(E).length, tam = 0;
+    try{ tam = document.documentElement.outerHTML.length; }catch(e){}
+    return [
+      ["🏷️ Versão", "NWS 26 • v" + VERSAO],
+      ["📅 Atualizado em", DATA_V],
+      ["🎮 Modos no menu", String(contarModos())],
+      ["🛡️ Escudos carregados", String(nEsc)],
+      ["💾 Salvamento usado", kb(salvamento())],
+      ["📦 Tamanho do jogo", kb(tam)],
+      ["📱 Tela", (screen.width || 0) + " x " + (screen.height || 0) + " • densidade " + (window.devicePixelRatio || 1) + "x"],
+      ["🧊 3D (WebGL)", w.ok ? "Funciona" + (w.gpu ? " • " + w.gpu : "") : "Não funciona neste aparelho"],
+      ["📶 Internet", navigator.onLine ? "Conectado" : "Sem conexão"],
+      ["🙋 Jogador", (function(){ try{ return (typeof getNick === "function" && getNick()) || "sem nick"; }catch(e){ return "sem nick"; } })()],
+      ["🪙 Moedas", (function(){ try{ return String(estado.moedas || 0); }catch(e){ return "0"; } })()]
+    ];
+  }
+
+  // ---------- tela ----------
+  var css = document.createElement("style");
+  css.textContent =
+    "#cfg-ov{position:fixed;inset:0;z-index:99995;overflow:auto;background:#0d1117;color:#e6edf3;font-family:inherit}#cfg-ov *{box-sizing:border-box}" +
+    "#cfg-ov .cw{max-width:640px;margin:0 auto;padding:12px 14px 40px}#cfg-ov .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:0;background:#0d1117;padding:6px 0 10px;z-index:2}" +
+    "#cfg-ov h1{margin:0;font-size:1.4rem;color:var(--amarelo,#f2c572)}#cfg-ov .cx{width:auto;margin:0;padding:8px 14px;border-radius:10px;background:#21262d;color:#e6edf3;border:1px solid #30363d;font-weight:800;cursor:pointer}" +
+    "#cfg-ov .sec{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:12px;margin:10px 0}#cfg-ov .sec h2{margin:0 0 4px;font-size:1.05rem}#cfg-ov .sec p{margin:4px 0 8px;font-size:.86rem;opacity:.85;line-height:1.4}" +
+    "#cfg-ov .seg{display:flex;gap:6px}#cfg-ov .seg button{flex:1;width:auto;margin:0;padding:10px 6px;border-radius:10px;border:2px solid #30363d;background:#0d1117;color:#c9d1d9;font-weight:900;cursor:pointer}#cfg-ov .seg button.on{background:#238636;border-color:#3fb950;color:#fff}" +
+    "#cfg-ov .lbl{font-weight:800;font-size:.9rem;margin:10px 0 6px}#cfg-ov input[type=range]{width:100%;accent-color:#3fb950}" +
+    "#cfg-ov .prev{display:flex;gap:26px;align-items:center;justify-content:center;flex-wrap:wrap;background:#0d1117;border-radius:10px;padding:12px;margin-top:8px;min-height:70px}#cfg-ov .prev img{object-fit:contain}" +
+    "#cfg-ov .bar{height:10px;border-radius:5px;background:#21262d;overflow:hidden;margin:6px 0 2px}#cfg-ov .bar i{display:block;height:100%;background:linear-gradient(90deg,#3fb950,#d29922,#f85149)}" +
+    "#cfg-ov table{width:100%;border-collapse:collapse;font-size:.86rem}#cfg-ov td{padding:7px 4px;border-bottom:1px solid #21262d;vertical-align:top}#cfg-ov td:first-child{opacity:.8;white-space:nowrap;padding-right:10px}#cfg-ov td:last-child{font-weight:700;text-align:right;word-break:break-word}" +
+    "#cfg-ov .tg{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:800;font-size:.9rem}#cfg-ov .tg button{width:auto;margin:0;padding:7px 14px;border-radius:99px;border:2px solid #30363d;background:#0d1117;color:#c9d1d9;font-weight:900;cursor:pointer}#cfg-ov .tg button.on{background:#238636;border-color:#3fb950;color:#fff}" +
+    "#cfg-ov .ok{color:#3fb950;font-weight:800;font-size:.8rem;min-height:1em;margin-top:6px}";
+  document.head.appendChild(css);
+
+  var ov = null, aviso = "";
+  function fechar(){ if(ov){ ov.remove(); ov = null; } }
+  function nivel(){ return CFG.g3d === "baixo" ? 33 : CFG.g3d === "medio" ? 66 : 100; }
+  function render(){
+    var g = G3D[CFG.g3d] || G3D.alto, q = ESCQ[CFG.escQ] || ESCQ.alta, E = window._escudosBR || {};
+    var amostra = ["Bahia", "Flamengo", "Palmeiras", "Inter Miami"].filter(function(t){ return E[t] && E[t].src; });
+    var h = '<div class="cw"><div class="ctop"><button class="cx" id="cfg-sair">← Menu</button><h1>⚙️ Configurações</h1><span style="width:70px"></span></div>';
+    h += '<div class="sec"><h2>🧊 Gráficos 3D</h2><p>Vale para o <b>Futebol Física</b>, os <b>Pênaltis 3D</b> e o <b>Brasileirinho 3Ds</b>.</p>' +
+      '<div class="seg">' + ["baixo", "medio", "alto"].map(function(k){ return '<button data-g3d="' + k + '" class="' + (CFG.g3d === k ? "on" : "") + '">' + G3D[k].nome + '</button>'; }).join("") + '</div>' +
+      '<div class="bar"><i style="width:' + nivel() + '%"></i></div><p>' + g.desc + '</p>' +
+      '<table><tr><td>Resolução</td><td>' + Math.round(capPx() * 100) + '% (' + capPx().toFixed(2).replace(/\.?0+$/, "") + 'x)</td></tr><tr><td>Sombras</td><td>' + (g.sombra ? (CFG.g3d === "medio" ? "Simples" : "Suaves") : "Desligadas") + '</td></tr><tr><td>Bordas suavizadas</td><td>' + (g.aa ? "Sim" : "Não") + '</td></tr></table>' +
+      '<p style="font-size:.78rem;opacity:.7">A resolução muda na hora. Sombras e bordas valem na próxima vez que o modo 3D for aberto (se ele já estava aberto, recarregue o jogo).</p></div>';
+    h += '<div class="sec"><h2>🛡️ Escudos</h2><div class="lbl">Qualidade</div><div class="seg">' + ["baixa", "normal", "alta"].map(function(k){ return '<button data-escq="' + k + '" class="' + (CFG.escQ === k ? "on" : "") + '">' + ESCQ[k].nome + '</button>'; }).join("") + '</div><p>' + q.desc + '</p>' +
+      '<div class="lbl">Tamanho nas tabelas e listas: <span id="cfg-tval">' + CFG.escT + '%</span></div><input type="range" id="cfg-tam" min="70" max="150" step="10" value="' + CFG.escT + '">' +
+      '<div class="prev">' + amostra.map(function(t){ return '<img class="nws-esc" src="' + E[t].src + '" alt="' + t + '" title="' + t + '" style="width:32px;height:32px">'; }).join("") + '</div></div>';
+    h += '<div class="sec"><h2>📋 Informações</h2><table>' + infos().map(function(r){ return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join("") + '</table>' +
+      '<div class="tg" style="margin-top:12px"><span>Mostrar a versão no topo</span><button id="cfg-vtopo" class="' + (CFG.verTopo ? "on" : "") + '">' + (CFG.verTopo ? "Ligado" : "Desligado") + '</button></div></div>';
+    h += '<div class="sec"><div class="tg"><span>Voltar tudo ao padrão</span><button id="cfg-reset">↺ Padrão</button></div><div class="ok" id="cfg-ok">' + aviso + '</div></div></div>';
+    aviso = "";
+    ov.innerHTML = h;
+    var y = ov.scrollTop;
+    ov.querySelector("#cfg-sair").onclick = function(){ fechar(); try{ mostrar("menu"); }catch(e){} };
+    ov.querySelectorAll("[data-g3d]").forEach(function(b){ b.onclick = function(){ CFG.g3d = b.getAttribute("data-g3d"); gravar(); aplicar3D(); aviso = "✅ Gráficos 3D: " + G3D[CFG.g3d].nome; re(); }; });
+    ov.querySelectorAll("[data-escq]").forEach(function(b){ b.onclick = function(){ CFG.escQ = b.getAttribute("data-escq"); gravar(); aplicarEscudos(); aviso = "✅ Qualidade dos escudos: " + ESCQ[CFG.escQ].nome; setTimeout(re, 350); }; });
+    var r = ov.querySelector("#cfg-tam"); r.oninput = function(){ CFG.escT = Number(r.value) || 100; ov.querySelector("#cfg-tval").textContent = CFG.escT + "%"; document.documentElement.style.setProperty("--nws-esc", String(CFG.escT / 100)); };
+    r.onchange = function(){ gravar(); };
+    ov.querySelector("#cfg-vtopo").onclick = function(){ CFG.verTopo = !CFG.verTopo; gravar(); topo(); re(); };
+    ov.querySelector("#cfg-reset").onclick = function(){ for(var k in PAD) CFG[k] = PAD[k]; gravar(); aplicar3D(); aplicarEscudos(); topo(); aviso = "✅ Tudo voltou ao padrão"; re(); };
+    function re(){ var s = ov.scrollTop; render(); ov.scrollTop = s; }
+  }
+  function abrir(){ fechar(); ov = document.createElement("div"); ov.id = "cfg-ov"; document.body.appendChild(ov); render(); }
+  window.abrirConfig = abrir;
+
+  function botoes(){
+    topo();
+    if(!document.getElementById("btn-config")){
+      var ref = document.getElementById("btn-sera") || document.getElementById("btn-br-bolinhas") || document.getElementById("btn-torneios");
+      if(ref && ref.parentNode){ var b = document.createElement("button"); b.type = "button"; b.className = "menu-btn"; b.id = "btn-config"; b.style.borderColor = "#8b949e";
+        b.innerHTML = "<h3>⚙️ Configurações</h3><p>Gráficos 3D, qualidade e tamanho dos escudos, versão e informações do jogo</p>";
+        b.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); abrir(); }); ref.insertAdjacentElement("afterend", b); }
+    }
+    if(!document.getElementById("btn-config-topo")){
+      var som = document.getElementById("soundtrack-toggle");
+      if(som && som.parentNode){ var g = document.createElement("button"); g.type = "button"; g.id = "btn-config-topo"; g.title = "Configurações"; g.textContent = "⚙️";
+        g.style.cssText = "width:40px;min-width:40px;min-height:40px;margin:0 6px 0 0;padding:.25rem;background:#21262d;border:1px solid #44516a;border-radius:50%;font-size:1.15rem;line-height:1;cursor:pointer;color:#fff";
+        g.addEventListener("click", function(ev){ ev.preventDefault(); ev.stopPropagation(); abrir(); }); som.parentNode.insertBefore(g, som); }
+    }
+  }
+  function iniciar(){ botoes(); aplicarEscudos(); }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();
+  setTimeout(iniciar, 2000); setTimeout(function(){ botoes(); if(CFG.escQ !== "alta") aplicarEscudos(); }, 6000);
+})();
+
+</script>
 </body>
 </html>
